@@ -1,7 +1,9 @@
-//
+// src/UIEditor/UIEditor.tsx
 
 import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {Provider} from 'react-redux';
+import {store} from "../redux/store";
 
 const styles = createStyles({
     root: {
@@ -25,9 +27,11 @@ class UIEditor extends React.Component<Props, object> {
     render() {
         const {classes} = this.props;
         return (
-            <div className={classes.root}>
+            <Provider store={store}>
+                <div className={classes.root}>
 
-            </div>
+                </div>
+            </Provider>
         )
     }
 }
