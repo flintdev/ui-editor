@@ -2,16 +2,20 @@
 
 import {ComponentTreeNode} from "../interface";
 
+export interface ToolbarState {
+    stateDialog: {
+        open: boolean
+    }
+}
+
+export interface ComponentsState {
+    treeData: ComponentTreeNode[],
+    componentSelected: ComponentTreeNode | null,
+}
+
 export interface StoreState {
-    toolbar: {
-        stateDialog: {
-            open: boolean
-        }
-    },
-    components: {
-        treeData: ComponentTreeNode[],
-        treeNodeSelected: ComponentTreeNode | null,
-    },
+    toolbar: ToolbarState,
+    components: ComponentsState,
 }
 
 export const initState: StoreState = {
@@ -22,6 +26,6 @@ export const initState: StoreState = {
     },
     components: {
         treeData: [],
-        treeNodeSelected: null,
+        componentSelected: null,
     }
 };

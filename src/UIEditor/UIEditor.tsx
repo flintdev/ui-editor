@@ -8,7 +8,7 @@ import Toolbar from "../containers/Toolbar";
 
 const styles = createStyles({
     root: {
-
+        height: '100%'
     },
 });
 

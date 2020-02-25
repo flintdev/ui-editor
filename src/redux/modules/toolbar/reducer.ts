@@ -3,8 +3,9 @@
 import * as types from './types';
 import update from 'immutability-helper';
 import {ToolbarAction} from "./actions";
+import {ToolbarState} from "../../state";
 
-export function reducer(state: object, action: ToolbarAction) {
+export function reducer(state: ToolbarState, action: ToolbarAction) {
     switch (action.type) {
         case types.STATE_DIALOG_OPEN:
             return update(state, {
