@@ -1,4 +1,4 @@
-//
+// src/containers/ComponentTreeView/ComponentTreeView.tsx
 
 import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
@@ -7,10 +7,15 @@ import { Dispatch } from "redux";
 import { StoreState } from "src/redux/state";
 import * as actions from "src/redux/modules/components/actions";
 import {ComponentTreeNode} from "../../interface";
+import Paper from "@material-ui/core/Paper";
 
 const styles = createStyles({
     root: {
-
+        height: '100%'
+    },
+    paper: {
+        height: '100%',
+        borderRadius: 0,
     },
 });
 
@@ -32,7 +37,9 @@ class ComponentTreeView extends React.Component<Props, object> {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
+                <Paper className={classes.paper}>
 
+                </Paper>
             </div>
         )
     }

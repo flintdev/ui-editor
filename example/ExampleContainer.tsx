@@ -6,7 +6,7 @@ import UIEditor from "../src/UIEditor";
 
 const styles = createStyles({
     root: {
-
+        height: '100%'
     },
 });
 

@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
+import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import SaveIcon from '@material-ui/icons/Save';
 
 const styles = createStyles({
     root: {
@@ -29,6 +32,16 @@ const styles = createStyles({
     },
     actionButton: {
         backgroundColor: 'white',
+        marginLeft: 10,
+        marginRight: 10,
+    },
+    actionButtonBordered: {
+        backgroundColor: 'white',
+        marginLeft: 10,
+        marginRight: 10,
+        border: '1px grey solid',
+    },
+    saveButton: {
         marginLeft: 10,
         marginRight: 10,
     },
@@ -70,7 +83,25 @@ class Toolbar extends React.Component<Props, object> {
                                 </Button>
                             </td>
                             <td align={"right"}>
-
+                                <Button
+                                    variant={"contained"}
+                                    className={classes.actionButtonBordered}
+                                >
+                                    <AlbumOutlinedIcon/>&nbsp;&nbsp;State
+                                </Button>
+                                <Button
+                                    variant={"contained"}
+                                    className={classes.actionButtonBordered}
+                                >
+                                    <BuildOutlinedIcon/>&nbsp;&nbsp;Actions
+                                </Button>
+                                <Button
+                                    variant={"contained"}
+                                    className={classes.saveButton}
+                                    color={"primary"}
+                                >
+                                    <SaveIcon/>&nbsp;&nbsp;Save
+                                </Button>
                             </td>
                         </tr>
                         </tbody>
