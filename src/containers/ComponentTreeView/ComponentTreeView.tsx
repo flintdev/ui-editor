@@ -8,6 +8,7 @@ import { StoreState } from "src/redux/state";
 import * as actions from "src/redux/modules/components/actions";
 import {ComponentTreeNode} from "../../interface";
 import Paper from "@material-ui/core/Paper";
+import Typography from '@material-ui/core/Typography';
 
 const styles = createStyles({
     root: {
@@ -17,6 +18,20 @@ const styles = createStyles({
         height: '100%',
         borderRadius: 0,
     },
+    headerContainer: {
+        borderBottom: '1px solid lightgrey',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    headerText: {
+        color: 'grey',
+        fontWeight: 'bold',
+    },
+    treeContainer: {
+        padding: 5
+    }
 });
 
 export interface Props extends WithStyles<typeof styles>{
@@ -38,7 +53,12 @@ class ComponentTreeView extends React.Component<Props, object> {
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
+                    <div className={classes.headerContainer}>
+                        <Typography variant={"subtitle2"} className={classes.headerText}>COMPONENTS</Typography>
+                    </div>
+                    <div className={classes.treeContainer}>
 
+                    </div>
                 </Paper>
             </div>
         )
