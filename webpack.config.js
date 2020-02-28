@@ -27,7 +27,11 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
-            }
+            },
+            {
+                test: /\.(txt|yaml)$/,
+                use: 'raw-loader'
+            },
         ],
     },
     plugins: [

@@ -6,6 +6,7 @@ import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
 import { ActionData } from '../src/interface';
 import {ActionOperationType} from "../src/constants";
+import update from 'immutability-helper';
 
 const styles = createStyles({
     root: {
@@ -39,9 +40,8 @@ class ExampleContainer extends React.Component<Props, object> {
                 this.setState({actions});
             }
         } else if (type === ActionOperationType.Add) {
-            this.setState({
-                actions: [...actions, data]
-            })
+            actions.push(data);
+            this.setState({actions});
         } else if (type === ActionOperationType.Delete) {
             const index = actions.findIndex(action => action.name === data.name);
             if (index > -1) {
@@ -53,6 +53,7 @@ class ExampleContainer extends React.Component<Props, object> {
 
     render() {
         const {classes} = this.props;
+        console.log('rendered');
         return (
             <div className={classes.root}>
                 <UIEditor

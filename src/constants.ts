@@ -4,3 +4,10 @@ export enum ActionOperationType {
     Update = 'Update',
     Delete = 'Delete'
 }
+
+export enum LOADING_STATUS {
+    NOT_STARTED,
+    LOADING,
+    COMPLETE,
+    FAILED
+}

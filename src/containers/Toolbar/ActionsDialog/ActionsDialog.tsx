@@ -8,12 +8,8 @@ import {StoreState, ToolbarState} from "src/redux/state";
 import * as actions from "src/redux/modules/toolbar/actions";
 import List from '@material-ui/core/List';
 import ListItem, {ListItemProps} from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -23,9 +19,11 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import SaveIcon from '@material-ui/icons/Save';
-import {edit} from "ace-builds";
 import {ActionOperationType} from "../../../constants";
-import {act} from "react-dom/test-utils";
+import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
+import DialogForm, {Params, Callback} from "../../../components/DialogForm";
+import {AddActionDef} from "./definition";
+import ActionTemplate from './actionTemplate.txt';
 
 const styles = createStyles({
     root: {},
@@ -52,7 +50,6 @@ const styles = createStyles({
     },
     tdList: {
         width: 240,
-        overflow: 'scroll'
     },
     paperContent: {
         weight: '100%',
@@ -70,10 +67,19 @@ const styles = createStyles({
     paperList: {
         weight: '100%',
         height: '100%',
+        display: 'flex',
+        flexFlow: 'column',
+    },
+    actionList: {
+        flexGrow: 1,
+        overflow: 'scroll'
     },
     codeEditorContainer: {
         marginLeft: 20,
         height: '100%',
+    },
+    itemText: {
+        fontSize: 16
     }
 });
 
@@ -87,6 +93,7 @@ interface State {
     actionSelected: ActionData | undefined,
     codeValue: string,
     editing: boolean,
+    addActionDialogOpen: boolean,
 }
 
 class ActionsDialog extends React.Component<Props, object> {
@@ -94,6 +101,7 @@ class ActionsDialog extends React.Component<Props, object> {
         actionSelected: undefined,
         codeValue: '',
         editing: false,
+        addActionDialogOpen: false,
     };
 
     componentDidMount(): void {
@@ -102,6 +110,12 @@ class ActionsDialog extends React.Component<Props, object> {
 
     onEnter = () => {
 
+    };
+
+    handleAddActionDialogClose = () => {
+        this.setState({
+            addActionDialogOpen: false,
+        });
     };
 
     actionOnSelect = (action: ActionData) => () => {
@@ -123,6 +137,26 @@ class ActionsDialog extends React.Component<Props, object> {
         const action: ActionData = {name: actionSelected.name, code: codeValue};
         this.props.actionOnUpdate(ActionOperationType.Update, action);
         this.setState({editing: false});
+    };
+
+    handleAddActionClick = () => {
+        this.setState({addActionDialogOpen: true});
+    };
+
+    handleAddActionSubmit = (params: Params, callback: Callback) => {
+        const name = params.name as string;
+        const action: ActionData = {name: name, code: ActionTemplate};
+        this.props.actionOnUpdate(ActionOperationType.Add, action);
+        this.setState({actionSelected: action, codeValue: ActionTemplate});
+        this.forceUpdate();
+        callback.close();
+    };
+
+    handleDeleteActionClick = () => {
+        const {actionSelected} = this.state;
+        if (!actionSelected) return;
+        this.props.actionOnUpdate(ActionOperationType.Delete, actionSelected);
+        this.forceUpdate();
     };
 
     render() {
@@ -164,15 +198,32 @@ class ActionsDialog extends React.Component<Props, object> {
                             <tr>
                                 <td valign={"top"} className={classes.tdList}>
                                     <Paper className={classes.paperList}>
-                                        <List>
+                                        <Paper className={classes.paperHeader}>
+                                            <Button
+                                                size={"small"}
+                                                variant={"outlined"}
+                                                onClick={this.handleAddActionClick}
+                                            >
+                                                <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add
+                                            </Button>&nbsp;&nbsp;
+                                            <Button
+                                                size={"small"}
+                                                variant={"outlined"}
+                                                onClick={this.handleDeleteActionClick}
+                                            >
+                                                <IndeterminateCheckBoxOutlinedIcon fontSize={"small"}/>&nbsp;Delete
+                                            </Button>
+                                        </Paper>
+                                        <List className={classes.actionList}>
                                             {this.props.actions.map((action, i) => {
                                                 return (
                                                     <ListItem
+                                                        dense={true}
                                                         button key={i}
                                                         selected={!!actionSelected && action.name === actionSelected.name}
                                                         onClick={this.actionOnSelect(action)}
                                                     >
-                                                        <ListItemText primary={action.name}/>
+                                                        <ListItemText className={classes.itemText} primary={action.name}/>
                                                     </ListItem>
                                                 )
                                             })}
@@ -228,10 +279,16 @@ class ActionsDialog extends React.Component<Props, object> {
                             </tbody>
                         </table>
                     </div>
-                    <DialogActions>
-                        <Button onClick={this.props.actionsDialogClose}>Close</Button>
-                    </DialogActions>
                 </Dialog>
+
+                <DialogForm
+                    open={this.state.addActionDialogOpen}
+                    onClose={this.handleAddActionDialogClose}
+                    title={"New Action"}
+                    submitButtonTitle={"Add"}
+                    forms={AddActionDef}
+                    onSubmit={this.handleAddActionSubmit}
+                />
             </div>
         )
     }
