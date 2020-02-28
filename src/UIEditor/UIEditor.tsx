@@ -6,6 +6,8 @@ import {Provider} from 'react-redux';
 import {store} from "../redux/store";
 import Toolbar from "../containers/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView";
+import {ActionData} from "../interface";
+import ActionsDialog from "../containers/Toolbar/ActionsDialog";
 
 const styles = createStyles({
     root: {
@@ -43,7 +45,8 @@ const styles = createStyles({
 });
 
 export interface Props extends WithStyles<typeof styles>{
-
+    actions: ActionData[],
+    actionOnUpdate: (type: string, data: ActionData) => void,
 }
 
 class UIEditor extends React.Component<Props, object> {
@@ -80,6 +83,12 @@ class UIEditor extends React.Component<Props, object> {
                             </tbody>
                         </table>
                     </div>
+
+                    <ActionsDialog
+                        actions={this.props.actions}
+                        actionOnUpdate={this.props.actionOnUpdate}
+                    />
+
                 </div>
             </Provider>
         )

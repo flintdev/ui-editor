@@ -49,6 +49,7 @@ const styles = createStyles({
 
 export interface Props extends WithStyles<typeof styles>{
     stateDialogOpen: () => void,
+    actionsDialogOpen: () => void,
 }
 
 class Toolbar extends React.Component<Props, object> {
@@ -86,12 +87,14 @@ class Toolbar extends React.Component<Props, object> {
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButtonBordered}
+                                    onClick={this.props.stateDialogOpen}
                                 >
                                     <AlbumOutlinedIcon/>&nbsp;&nbsp;State
                                 </Button>
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButtonBordered}
+                                    onClick={this.props.actionsDialogOpen}
                                 >
                                     <BuildOutlinedIcon/>&nbsp;&nbsp;Actions
                                 </Button>
@@ -119,6 +122,7 @@ const mapStateToProps = (state: StoreState) => {
 const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
     return {
         stateDialogOpen: () => dispatch(actions.stateDialogOpen()),
+        actionsDialogOpen: () => dispatch(actions.actionsDialogOpen()),
     }
 };
 

@@ -5,7 +5,10 @@ import {ComponentTreeNode} from "../interface";
 export interface ToolbarState {
     stateDialog: {
         open: boolean
-    }
+    },
+    actionsDialog: {
+        open: boolean
+    },
 }
 
 export interface ComponentsState {
@@ -22,6 +25,9 @@ export const initState: StoreState = {
     toolbar: {
         stateDialog: {
             open: false,
+        },
+        actionsDialog: {
+            open: false
         }
     },
     components: {

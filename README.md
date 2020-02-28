@@ -3,7 +3,7 @@
 ```jsx
 <UIEditor
     editorData={editorData}
-    onSave=(editorData => {})
+    onSave={editorData => {}}
     stateData={stateData}
     stateOnUpdate={(type, data) => {}}
     actions={actions}

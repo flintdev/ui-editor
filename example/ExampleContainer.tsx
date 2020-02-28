@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
+import {actionsExample} from "./data/actions";
 
 const styles = createStyles({
     root: {
@@ -27,7 +28,12 @@ class ExampleContainer extends React.Component<Props, object> {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
-                <UIEditor/>
+                <UIEditor
+                    actions={actionsExample}
+                    actionOnUpdate={(type, data) => {
+
+                    }}
+                />
             </div>
         )
     }
