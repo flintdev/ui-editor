@@ -24,6 +24,8 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import SaveIcon from '@material-ui/icons/Save';
 import {edit} from "ace-builds";
+import {ActionOperationType} from "../../../constants";
+import {act} from "react-dom/test-utils";
 
 const styles = createStyles({
     root: {},
@@ -55,6 +57,8 @@ const styles = createStyles({
     paperContent: {
         weight: '100%',
         height: '100%',
+        display: 'flex',
+        flexFlow: 'column'
     },
     paperCodeEditorHeader: {
         paddingTop: 5,
@@ -114,7 +118,11 @@ class ActionsDialog extends React.Component<Props, object> {
     };
 
     handleCodeSaveButtonClick = () => {
-
+        const {codeValue, actionSelected} = this.state;
+        if (!actionSelected) return;
+        const action: ActionData = {name: actionSelected.name, code: codeValue};
+        this.props.actionOnUpdate(ActionOperationType.Update, action);
+        this.setState({editing: false});
     };
 
     render() {
@@ -199,14 +207,14 @@ class ActionsDialog extends React.Component<Props, object> {
                                             </Paper>
                                             <AceEditor
                                                 mode="javascript"
-                                                theme="tomorrow_night"
+                                                theme="tomorrow"
                                                 fontSize={14}
                                                 value={codeValue}
                                                 onChange={this.handleCodeChange}
                                                 showPrintMargin={true}
                                                 showGutter={true}
                                                 highlightActiveLine={true}
-                                                style={{width: '100%', height: '100%'}}
+                                                style={{width: '100%', flexGrow: 1}}
                                                 setOptions={{
                                                     showLineNumbers: true,
                                                     tabSize: 4,
