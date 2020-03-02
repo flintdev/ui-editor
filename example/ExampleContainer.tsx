@@ -5,7 +5,8 @@ import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
 import {ActionData, StateUpdaterData} from '../src/interface';
-import {ActionOperationType} from "../src/constants";
+import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
+import {stateUpdatersExample} from "./data/stateUpdaters";
 
 const styles = createStyles({
     root: {
@@ -19,11 +20,13 @@ export interface Props extends WithStyles<typeof styles>{
 
 interface State {
     actions: ActionData[],
+    stateUpdaters: StateUpdaterData[],
 }
 
 class ExampleContainer extends React.Component<Props, object> {
     state: State = {
-        actions: actionsExample
+        actions: actionsExample,
+        stateUpdaters: stateUpdatersExample,
     };
 
     componentDidMount(): void {
@@ -50,25 +53,43 @@ class ExampleContainer extends React.Component<Props, object> {
         }
     };
 
+    handleStateUpdatersOnUpdate = (type: string, data: StateUpdaterData) => {
+        let {stateUpdaters} = this.state;
+        if (type === StateUpdaterOperationType.Update) {
+            const index = stateUpdaters.findIndex(updater => updater.name === data.name);
+            if (index > -1) {
+                stateUpdaters[index] = data;
+                this.setState({stateUpdaters});
+            }
+        } else if (type === StateUpdaterOperationType.Add) {
+            stateUpdaters.push(data);
+            this.setState({stateUpdaters});
+        } else if (type === StateUpdaterOperationType.Delete) {
+            const index = stateUpdaters.findIndex(updater => updater.name === data.name);
+            if (index > -1) {
+                stateUpdaters.splice(index, 1);
+                this.setState({stateUpdaters});
+            }
+        }
+    };
+
     handleInitialStateChange = (value: object) => {
 
     };
 
-    handleStateUpdatersOnUpdate = (type: string, data: StateUpdaterData) => {
 
-    };
 
     render() {
         const {classes} = this.props;
-        console.log('rendered');
+        const {actions, stateUpdaters} = this.state;
         return (
             <div className={classes.root}>
                 <UIEditor
                     initialState={{}}
-                    stateUpdaters={[]}
+                    stateUpdaters={stateUpdaters}
                     initialStateOnChange={this.handleInitialStateChange}
                     stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
-                    actions={actionsExample}
+                    actions={actions}
                     actionOnUpdate={this.handleActionUpdate}
                 />
             </div>

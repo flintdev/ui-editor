@@ -22,7 +22,8 @@ import {AddStateUpdaterDef} from "./definition";
 
 const styles = createStyles({
     root: {
-
+        width: '100%',
+        height: '100%'
     },
     tableContent: {
         width: '100%',
