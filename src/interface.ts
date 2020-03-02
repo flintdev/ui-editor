@@ -12,3 +12,9 @@ export interface ActionData {
 export interface StateUpdaterData {
     name: string,
 }
+
+export interface UpdaterOperationData {
+    field: string,
+    operator: string,
+    parameter: string,
+}
