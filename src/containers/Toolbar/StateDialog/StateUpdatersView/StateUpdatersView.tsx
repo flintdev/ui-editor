@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {Dispatch} from "redux";
 import {StoreState, ToolbarState} from "src/redux/state";
 import * as actions from "src/redux/modules/toolbar/actions";
-import {StateUpdaterData, UpdaterOperationData} from "../../../../interface";
+import {StateUpdaterData, UpdaterOperationData, UpdaterOperatorOptions} from "../../../../interface";
 import List from '@material-ui/core/List';
 import ListItem, {ListItemProps} from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -32,6 +32,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const styles = createStyles({
     root: {
@@ -99,8 +104,18 @@ const styles = createStyles({
     },
     form: {
         backgroundColor: 'white',
-        margin: 3,
-    }
+        marginTop: 3,
+        marginBottom: 3,
+    },
+    tdIcon: {
+        width: 50,
+        textAlign: 'right'
+    },
+    tdOperator: {
+        width: 120,
+        paddingLeft: 5,
+        paddingRight: 5,
+    },
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
@@ -201,7 +216,6 @@ class StateUpdatersView extends React.Component<Props, object> {
     };
 
     render() {
-        console.log('rendered');
         const {classes} = this.props;
         const {stateUpdaterSelected, addUpdaterDialogOpen, editing, editingParams} = this.state;
         return (
@@ -327,10 +341,27 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                         onChange={this.handleOperationParamChange('field', i)}
                                                                         variant={"outlined"}
                                                                         size={"small"}
+                                                                        fullWidth={true}
                                                                     />
                                                                 </TableCell>
-                                                                <TableCell>
-
+                                                                <TableCell className={classes.tdOperator}>
+                                                                    <FormControl
+                                                                        className={classes.form}
+                                                                        size={"small"}
+                                                                        variant={"outlined"}
+                                                                        fullWidth={true}
+                                                                    >
+                                                                        <Select
+                                                                            value={operation.operator}
+                                                                            onChange={this.handleOperationParamChange('operator', i)}
+                                                                        >
+                                                                            {UpdaterOperatorOptions.map((operator, i) => {
+                                                                                return (
+                                                                                    <MenuItem key={i} value={operator}>{operator}</MenuItem>
+                                                                                )
+                                                                            })}
+                                                                        </Select>
+                                                                    </FormControl>
                                                                 </TableCell>
                                                                 <TableCell>
                                                                     <TextField
@@ -339,9 +370,10 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                         onChange={this.handleOperationParamChange('parameter', i)}
                                                                         variant={"outlined"}
                                                                         size={"small"}
+                                                                        fullWidth={true}
                                                                     />
                                                                 </TableCell>
-                                                                <TableCell>
+                                                                <TableCell className={classes.tdIcon}>
                                                                     <IconButton
                                                                         size={"small"}
                                                                     >

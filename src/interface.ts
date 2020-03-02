@@ -18,3 +18,26 @@ export interface UpdaterOperationData {
     operator: string,
     parameter: string,
 }
+
+export enum UpdaterOperator {
+    SET = 'SET',
+    PUSH = 'PUSH',
+    SPLICE = 'SPLICE',
+    UNSET = 'UNSET',
+    MERGE = 'MERGE',
+    ADD = 'ADD',
+    REMOVE = 'REMOVE',
+}
+
+export const UpdaterOperatorOptions = [
+    UpdaterOperator.SET,
+    UpdaterOperator.PUSH,
+    UpdaterOperator.SPLICE,
+    UpdaterOperator.UNSET,
+    UpdaterOperator.MERGE,
+    UpdaterOperator.ADD,
+    UpdaterOperator.REMOVE,
+];
+
+
+
