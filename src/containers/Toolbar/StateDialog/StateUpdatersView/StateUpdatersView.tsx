@@ -24,6 +24,14 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import IconButton from "@material-ui/core/IconButton";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 const styles = createStyles({
     root: {
@@ -85,6 +93,13 @@ const styles = createStyles({
     },
     operationsContainer: {
         padding: 20,
+    },
+    addOperationButton: {
+        backgroundColor: 'white'
+    },
+    form: {
+        backgroundColor: 'white',
+        margin: 3,
     }
 });
 
@@ -102,6 +117,8 @@ interface State {
         operations: UpdaterOperationData[]
     },
 }
+
+type OperationParamType = 'field' | 'operator' | 'parameter';
 
 class StateUpdatersView extends React.Component<Props, object> {
     state: State = {
@@ -154,7 +171,10 @@ class StateUpdatersView extends React.Component<Props, object> {
     };
 
     handleSaveButtonClick = () => {
-
+        const {editingParams} = this.state;
+        if (!editingParams) return;
+        this.props.stateUpdaterOnUpdate(StateUpdaterOperationType.Update, editingParams);
+        this.setState({editing: false});
     };
 
     handleUpdaterNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,10 +185,23 @@ class StateUpdatersView extends React.Component<Props, object> {
     };
 
     handleAddOperationClick = () => {
+        let {editingParams} = this.state;
+        if (!editingParams.operations) editingParams['operations'] = [];
+        editingParams.operations.push({
+            field: '', operator: 'SET', parameter: '',
+        });
+        this.setState({editingParams});
+    };
 
+    handleOperationParamChange = (type: OperationParamType, index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        let {editingParams} = this.state;
+        editingParams.operations[index][type] = event.target.value;
+        this.setState({editingParams});
+        this.setAsEditing();
     };
 
     render() {
+        console.log('rendered');
         const {classes} = this.props;
         const {stateUpdaterSelected, addUpdaterDialogOpen, editing, editingParams} = this.state;
         return (
@@ -255,6 +288,7 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                     </td>
                                                     <td align={"right"}>
                                                         <Button
+                                                            className={classes.addOperationButton}
                                                             variant={"outlined"}
                                                             size={"small"}
                                                             onClick={this.handleAddOperationClick}
@@ -271,6 +305,54 @@ class StateUpdatersView extends React.Component<Props, object> {
                                             <div>
                                                 <Alert severity={"warning"}>No operation in this updater.</Alert>
                                             </div>
+                                            }
+                                            {!!editingParams.operations && editingParams.operations.length > 0 &&
+                                            <Table padding={"none"}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Field Path</TableCell>
+                                                        <TableCell>Operator</TableCell>
+                                                        <TableCell>Parameter</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {editingParams.operations.map((operation, i) => {
+                                                        return (
+                                                            <TableRow key={i}>
+                                                                <TableCell>
+                                                                    <TextField
+                                                                        className={classes.form}
+                                                                        value={operation.field}
+                                                                        onChange={this.handleOperationParamChange('field', i)}
+                                                                        variant={"outlined"}
+                                                                        size={"small"}
+                                                                    />
+                                                                </TableCell>
+                                                                <TableCell>
+
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <TextField
+                                                                        className={classes.form}
+                                                                        value={operation.parameter}
+                                                                        onChange={this.handleOperationParamChange('parameter', i)}
+                                                                        variant={"outlined"}
+                                                                        size={"small"}
+                                                                    />
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <IconButton
+                                                                        size={"small"}
+                                                                    >
+                                                                        <DeleteOutlineIcon/>
+                                                                    </IconButton>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        )
+                                                    })}
+                                                </TableBody>
+                                            </Table>
                                             }
                                         </div>
 
