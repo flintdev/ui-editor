@@ -8,3 +8,7 @@ export interface ActionData {
     name: string,
     code: string,
 }
+
+export interface StateUpdaterData {
+    name: string,
+}

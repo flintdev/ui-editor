@@ -6,8 +6,9 @@ import {Provider} from 'react-redux';
 import {store} from "../redux/store";
 import Toolbar from "../containers/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView";
-import {ActionData} from "../interface";
+import {ActionData, StateUpdaterData} from "../interface";
 import ActionsDialog from "../containers/Toolbar/ActionsDialog";
+import StateDialog from "../containers/Toolbar/StateDialog";
 
 const styles = createStyles({
     root: {
@@ -44,10 +45,15 @@ const styles = createStyles({
     }
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles> {
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
+    initialState: object,
+    stateUpdaters: StateUpdaterData[],
+    initialStateOnChange: (value: object) => void,
+    stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
 }
+
 
 class UIEditor extends React.Component<Props, object> {
     state = {
@@ -87,6 +93,13 @@ class UIEditor extends React.Component<Props, object> {
                     <ActionsDialog
                         actions={this.props.actions}
                         actionOnUpdate={this.props.actionOnUpdate}
+                    />
+
+                    <StateDialog
+                        initialState={this.props.initialState}
+                        stateUpdaters={this.props.stateUpdaters}
+                        initialStateOnChange={this.props.initialStateOnChange}
+                        stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
                     />
 
                 </div>

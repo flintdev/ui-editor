@@ -4,9 +4,8 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
-import { ActionData } from '../src/interface';
+import {ActionData, StateUpdaterData} from '../src/interface';
 import {ActionOperationType} from "../src/constants";
-import update from 'immutability-helper';
 
 const styles = createStyles({
     root: {
@@ -51,12 +50,24 @@ class ExampleContainer extends React.Component<Props, object> {
         }
     };
 
+    handleInitialStateChange = (value: object) => {
+
+    };
+
+    handleStateUpdatersOnUpdate = (type: string, data: StateUpdaterData) => {
+
+    };
+
     render() {
         const {classes} = this.props;
         console.log('rendered');
         return (
             <div className={classes.root}>
                 <UIEditor
+                    initialState={{}}
+                    stateUpdaters={[]}
+                    initialStateOnChange={this.handleInitialStateChange}
+                    stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
                     actions={actionsExample}
                     actionOnUpdate={this.handleActionUpdate}
                 />
