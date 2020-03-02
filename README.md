@@ -1,14 +1,22 @@
 # ui-editor
 
 ```jsx
+this.operations = {};
+
 <UIEditor
-    editorData={editorData}
-    onSave={editorData => {}}
+    operations={this.operations};
     initialState={initialState}
     stateUpdaters={stateUpdaters}
     stateUpdaterOnUpdate={(type, data) => {}}
-    initialStateOnChange=(value => {})
+    initialStateOnChange={value => {}}
     actions={actions}
     actionOnUpdate={(type, data) => {}}
+    components={components}
+    componentsOnUpdate={newComponents => {}}
+    componentOnSelect={componentData => {}}
 />
+
+interface Operations {
+    selectComponent: (componentData: ComponentData) => void,
+}
 ```
