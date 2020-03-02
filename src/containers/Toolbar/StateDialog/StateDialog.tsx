@@ -12,6 +12,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import StateUpdatersView from "./StateUpdatersView";
 import {StateUpdaterData} from "../../../interface";
+import InitialStateView from "./InitialStateView";
 
 
 const styles = createStyles({
@@ -25,14 +26,14 @@ const styles = createStyles({
     },
     content: {
         margin: 10,
-        height: '80vh'
+        height: '80vh',
     },
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
-    initialState: object,
+    initialState: string,
     stateUpdaters: StateUpdaterData[],
-    initialStateOnChange: (value: object) => void,
+    initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
     stateDialogClose: () => void,
 }
@@ -88,6 +89,12 @@ class StateDialog extends React.Component<Props, object> {
                         <StateUpdatersView
                             stateUpdaters={this.props.stateUpdaters}
                             stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
+                        />
+                        }
+                        {tabIndex === 1 &&
+                        <InitialStateView
+                            initialState={this.props.initialState}
+                            initialStateOnChange={this.props.initialStateOnChange}
                         />
                         }
                     </div>

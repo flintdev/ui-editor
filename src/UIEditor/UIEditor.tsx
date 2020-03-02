@@ -48,9 +48,9 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles> {
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
-    initialState: object,
+    initialState: string,
     stateUpdaters: StateUpdaterData[],
-    initialStateOnChange: (value: object) => void,
+    initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
 }
 

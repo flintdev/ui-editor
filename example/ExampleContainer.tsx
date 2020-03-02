@@ -21,12 +21,14 @@ export interface Props extends WithStyles<typeof styles>{
 interface State {
     actions: ActionData[],
     stateUpdaters: StateUpdaterData[],
+    initialState: string
 }
 
 class ExampleContainer extends React.Component<Props, object> {
     state: State = {
         actions: actionsExample,
         stateUpdaters: stateUpdatersExample,
+        initialState: '',
     };
 
     componentDidMount(): void {
@@ -73,19 +75,17 @@ class ExampleContainer extends React.Component<Props, object> {
         }
     };
 
-    handleInitialStateChange = (value: object) => {
-
+    handleInitialStateChange = (value: string) => {
+        this.setState({initialState: value});
     };
-
-
 
     render() {
         const {classes} = this.props;
-        const {actions, stateUpdaters} = this.state;
+        const {actions, stateUpdaters, initialState} = this.state;
         return (
             <div className={classes.root}>
                 <UIEditor
-                    initialState={{}}
+                    initialState={initialState}
                     stateUpdaters={stateUpdaters}
                     initialStateOnChange={this.handleInitialStateChange}
                     stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
