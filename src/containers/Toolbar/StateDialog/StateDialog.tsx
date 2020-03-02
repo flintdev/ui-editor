@@ -21,6 +21,11 @@ const styles = createStyles({
     paperTabs: {
         paddingLeft: 20,
         paddingRight: 20,
+        borderRadius: 0,
+    },
+    content: {
+        margin: 10,
+        height: '80vh'
     },
 });
 
@@ -77,15 +82,15 @@ class StateDialog extends React.Component<Props, object> {
                             <Tab label={'State Updaters'}/>
                             <Tab label={'Initial State'}/>
                         </Tabs>
-                        <div>
-                            {tabIndex === 0 &&
-                            <StateUpdatersView
-                                stateUpdaters={this.props.stateUpdaters}
-                                stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
-                            />
-                            }
-                        </div>
                     </Paper>
+                    <div className={classes.content}>
+                        {tabIndex === 0 &&
+                        <StateUpdatersView
+                            stateUpdaters={this.props.stateUpdaters}
+                            stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
+                        />
+                        }
+                    </div>
                 </Dialog>
             </div>
         )
