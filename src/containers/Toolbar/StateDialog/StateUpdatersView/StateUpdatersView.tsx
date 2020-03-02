@@ -215,6 +215,13 @@ class StateUpdatersView extends React.Component<Props, object> {
         this.setAsEditing();
     };
 
+    handleRemoveOperationClick = (index: number) => () => {
+        let {editingParams} = this.state;
+        editingParams.operations.splice(index, 1);
+        this.setState({editingParams});
+        this.setAsEditing();
+    };
+
     render() {
         const {classes} = this.props;
         const {stateUpdaterSelected, addUpdaterDialogOpen, editing, editingParams} = this.state;
@@ -376,6 +383,7 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                 <TableCell className={classes.tdIcon}>
                                                                     <IconButton
                                                                         size={"small"}
+                                                                        onClick={this.handleRemoveOperationClick(i)}
                                                                     >
                                                                         <DeleteOutlineIcon/>
                                                                     </IconButton>
