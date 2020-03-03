@@ -26,6 +26,8 @@ export interface Props extends WithStyles<typeof styles>{
     dragHandleProps: any,
     text: string,
     icon: any,
+    selected?: boolean
+    onClick?: () => void
 }
 
 class TreeNodeCell extends React.Component<Props, object> {
@@ -36,6 +38,10 @@ class TreeNodeCell extends React.Component<Props, object> {
     componentDidMount(): void {
     
     }
+
+    handleCellClick = () => {
+        if (!!this.props.onClick) this.props.onClick();
+    };
 
     renderContent = () => {
         const {classes, icon, text} = this.props;

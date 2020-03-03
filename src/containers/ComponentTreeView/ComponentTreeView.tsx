@@ -23,6 +23,8 @@ import {TreeDataHelper} from "../../controllers/treeDataHelper";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TreeNodeCell from "./TreeNodeCell";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const styles = createStyles({
     root: {
@@ -50,7 +52,7 @@ const styles = createStyles({
         padding: 5,
         overflow: 'auto',
         flexGrow: 1,
-    }
+    },
 });
 
 export interface Props extends WithStyles<typeof styles>, ComponentState {
@@ -74,14 +76,16 @@ const getIcon = (
 ) => {
     if (item.children && item.children.length > 0) {
         return item.isExpanded ? (
-            <ExpandMoreIcon
+            <ArrowDropDownIcon
                 fontSize={"small"}
                 onClick={() => onCollapse(item.id)}
+                style={{color: 'dimgrey'}}
             />
         ) : (
-            <ChevronRightIcon
+            <ArrowRightIcon
                 fontSize={"small"}
                 onClick={() => onExpand(item.id)}
+                style={{color: 'dimgrey'}}
             />
         );
     }
