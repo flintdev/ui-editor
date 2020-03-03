@@ -19,22 +19,21 @@ import Tree, {
     ItemId,
     TreeSourcePosition, TreeDestinationPosition
 } from '@atlaskit/tree';
+import {TreeDataHelper} from "../../controllers/treeDataHelper";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
-import {TreeDataHelper} from "../../controllers/treeDataHelper";
-import List from '@material-ui/core/List';
-import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import TreeNodeCell from "./TreeNodeCell";
 
 const styles = createStyles({
     root: {
-        height: '100%'
+        height: '100%',
+
     },
     paper: {
         height: '100%',
         borderRadius: 0,
+        display: 'flex',
+        flexFlow: 'column',
     },
     headerContainer: {
         borderBottom: '1px solid lightgrey',
@@ -48,7 +47,9 @@ const styles = createStyles({
         fontWeight: 'bold',
     },
     treeContainer: {
-        padding: 5
+        padding: 5,
+        overflow: 'auto',
+        flexGrow: 1,
     }
 });
 
@@ -64,7 +65,7 @@ interface State {
     treeData: TreeData | undefined,
 }
 
-const PADDING_PER_LEVEL = 16;
+const PADDING_PER_LEVEL = 12;
 
 const getIcon = (
     item: TreeItem,
@@ -73,12 +74,18 @@ const getIcon = (
 ) => {
     if (item.children && item.children.length > 0) {
         return item.isExpanded ? (
-            <ExpandMoreIcon onClick={() => onCollapse(item.id)}/>
+            <ExpandMoreIcon
+                fontSize={"small"}
+                onClick={() => onCollapse(item.id)}
+            />
         ) : (
-            <ChevronRightIcon onClick={() => onExpand(item.id)}/>
+            <ChevronRightIcon
+                fontSize={"small"}
+                onClick={() => onExpand(item.id)}
+            />
         );
     }
-    return <FiberManualRecordOutlinedIcon/>
+    return <span/>;
 };
 
 class ComponentTreeView extends React.Component<Props, object> {
@@ -91,40 +98,39 @@ class ComponentTreeView extends React.Component<Props, object> {
         this.setState({treeData});
     }
 
-    renderTreeItem = ({ item, onExpand, onCollapse, provided }: RenderItemParams) => {
+    renderTreeItem = ({item, onExpand, onCollapse, provided, snapshot}: RenderItemParams) => {
         return (
             <div
                 ref={provided.innerRef}
                 {...provided.draggableProps}
-                {...provided.dragHandleProps}
             >
-                <ListItem>
-                    <ListItemIcon>
-                        {getIcon(item, onExpand, onCollapse)}
-                    </ListItemIcon>
-                    <ListItemText primary={item.data ? item.data.title : ''}/>
-                </ListItem>
+                <TreeNodeCell
+                    isDragging={snapshot.isDragging}
+                    text={item.data ? item.data.title : ''}
+                    icon={getIcon(item, onExpand, onCollapse)}
+                    dragHandleProps={provided.dragHandleProps}
+                />
             </div>
         );
     };
 
     onTreeItemExpand = (itemId: ItemId) => {
-        const { treeData } = this.state;
+        const {treeData} = this.state;
         if (!treeData) return;
         this.setState({
-            treeData: mutateTree(treeData, itemId, { isExpanded: true }),
+            treeData: mutateTree(treeData, itemId, {isExpanded: true}),
         });
     };
 
     onTreeItemCollapse = (itemId: ItemId) => {
-        const { treeData } = this.state;
+        const {treeData} = this.state;
         if (!treeData) return;
         this.setState({
-            treeData: mutateTree(treeData, itemId, { isExpanded: false }),
+            treeData: mutateTree(treeData, itemId, {isExpanded: false}),
         });
     };
 
-    getTreeData = ():TreeData => {
+    getTreeData = (): TreeData => {
         const {components} = this.props;
         return new TreeDataHelper().convertComponentsToTreeData(components);
     };
@@ -133,7 +139,7 @@ class ComponentTreeView extends React.Component<Props, object> {
         source: TreeSourcePosition,
         destination?: TreeDestinationPosition,
     ) => {
-        const { treeData } = this.state;
+        const {treeData} = this.state;
         if (!treeData) return;
         if (!destination) {
             return;
@@ -162,6 +168,7 @@ class ComponentTreeView extends React.Component<Props, object> {
                             onCollapse={this.onTreeItemCollapse}
                             onDragEnd={this.onDragEnd}
                             isDragEnabled={true}
+                            isNestingEnabled={true}
                             offsetPerLevel={PADDING_PER_LEVEL}
                         />
                         }
