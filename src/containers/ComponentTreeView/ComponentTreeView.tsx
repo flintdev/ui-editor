@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 import { StoreState } from "src/redux/state";
 import * as actions from "src/redux/modules/components/actions";
-import {ComponentTreeNode} from "../../interface";
+import {ComponentData} from "../../interface";
 import Paper from "@material-ui/core/Paper";
 import Typography from '@material-ui/core/Typography';
+import {ComponentState} from "react";
 
 const styles = createStyles({
     root: {
@@ -34,9 +35,12 @@ const styles = createStyles({
     }
 });
 
-export interface Props extends WithStyles<typeof styles>{
-    setTreeData: (treeData: ComponentTreeNode[]) => void,
-    selectComponent: (value: ComponentTreeNode) => void,
+export interface Props extends WithStyles<typeof styles>, ComponentState {
+    components: ComponentData[],
+    componentsOnUpdate: (components: ComponentData[]) => void,
+    componentOnSelect: (componentData: ComponentData) => void,
+    setTreeData: (treeData: ComponentData[]) => void,
+    selectComponent: (value: ComponentData) => void,
 }
 
 class ComponentTreeView extends React.Component<Props, object> {
@@ -71,8 +75,8 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
     return {
-        setTreeData: (treeData: ComponentTreeNode[]) => dispatch(actions.setTreeData(treeData)),
-        selectComponent: (value: ComponentTreeNode) => dispatch(actions.selectComponent(value)),
+        setTreeData: (treeData: ComponentData[]) => dispatch(actions.setTreeData(treeData)),
+        selectComponent: (value: ComponentData) => dispatch(actions.selectComponent(value)),
     }
 };
 

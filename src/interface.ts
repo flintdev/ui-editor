@@ -1,7 +1,12 @@
 // src/interface.ts
 
-export interface ComponentTreeNode {
-
+export interface ComponentData {
+    id?: string,
+    name: string,
+    params: object,
+    children?: ComponentData[],
+    path?: Array<string|number>,
+    tag?: string
 }
 
 export interface ActionData {

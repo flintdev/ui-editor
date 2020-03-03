@@ -1,6 +1,6 @@
 // src/redux/state.ts
 
-import {ComponentTreeNode} from "../interface";
+import {ComponentData} from "../interface";
 
 export interface ToolbarState {
     stateDialog: {
@@ -12,8 +12,8 @@ export interface ToolbarState {
 }
 
 export interface ComponentsState {
-    treeData: ComponentTreeNode[],
-    componentSelected: ComponentTreeNode | null,
+    treeData: ComponentData[],
+    componentSelected: ComponentData | null,
 }
 
 export interface StoreState {

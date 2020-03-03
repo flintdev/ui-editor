@@ -1,15 +1,15 @@
 // src/redux/modules/components/actions.ts
 
 import * as types from './types';
-import {ComponentTreeNode} from "../../../interface";
+import {ComponentData} from "../../../interface";
 
 // functions
 
-export function setTreeData(treeData: ComponentTreeNode[]): SetTreeData {
+export function setTreeData(treeData: ComponentData[]): SetTreeData {
     return { type: types.SET_TREE_DATA, treeData }
 }
 
-export function selectComponent(value: ComponentTreeNode): SelectComponent {
+export function selectComponent(value: ComponentData): SelectComponent {
     return { type: types.SELECT_COMPONENT, value }
 }
 
@@ -17,12 +17,12 @@ export function selectComponent(value: ComponentTreeNode): SelectComponent {
 
 export interface SetTreeData {
     type: typeof types.SET_TREE_DATA,
-    treeData: ComponentTreeNode[];
+    treeData: ComponentData[];
 }
 
 export interface SelectComponent {
     type: typeof types.SELECT_COMPONENT,
-    value: ComponentTreeNode
+    value: ComponentData
 }
 
 export type ComponentsAction =
