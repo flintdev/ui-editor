@@ -4,9 +4,10 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
-import {ActionData, StateUpdaterData} from '../src/interface';
+import {ActionData, ComponentData, StateUpdaterData} from '../src/interface';
 import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
+import {componentsExample} from "./data/components";
 
 const styles = createStyles({
     root: {
@@ -21,7 +22,8 @@ export interface Props extends WithStyles<typeof styles>{
 interface State {
     actions: ActionData[],
     stateUpdaters: StateUpdaterData[],
-    initialState: string
+    initialState: string,
+    components: ComponentData[],
 }
 
 class ExampleContainer extends React.Component<Props, object> {
@@ -29,6 +31,7 @@ class ExampleContainer extends React.Component<Props, object> {
         actions: actionsExample,
         stateUpdaters: stateUpdatersExample,
         initialState: '',
+        components: componentsExample,
     };
 
     componentDidMount(): void {
@@ -79,9 +82,17 @@ class ExampleContainer extends React.Component<Props, object> {
         this.setState({initialState: value});
     };
 
+    handleComponentsOnUpdate = (components: ComponentData[]) => {
+
+    };
+
+    handleComponentOnSelect = (componentData: ComponentData) => {
+
+    };
+
     render() {
         const {classes} = this.props;
-        const {actions, stateUpdaters, initialState} = this.state;
+        const {actions, stateUpdaters, initialState, components} = this.state;
         return (
             <div className={classes.root}>
                 <UIEditor
@@ -91,6 +102,9 @@ class ExampleContainer extends React.Component<Props, object> {
                     stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
                     actions={actions}
                     actionOnUpdate={this.handleActionUpdate}
+                    components={components}
+                    componentsOnUpdate={this.handleComponentsOnUpdate}
+                    componentOnSelect={this.handleComponentOnSelect}
                 />
             </div>
         )

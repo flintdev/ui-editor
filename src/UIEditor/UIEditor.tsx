@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import {store} from "../redux/store";
 import Toolbar from "../containers/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView";
-import {ActionData, StateUpdaterData} from "../interface";
+import {ActionData, ComponentData, StateUpdaterData} from "../interface";
 import ActionsDialog from "../containers/Toolbar/ActionsDialog";
 import StateDialog from "../containers/Toolbar/StateDialog";
 
@@ -52,6 +52,9 @@ export interface Props extends WithStyles<typeof styles> {
     stateUpdaters: StateUpdaterData[],
     initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    components: ComponentData[],
+    componentsOnUpdate: (components: ComponentData[]) => void,
+    componentOnSelect: (componentData: ComponentData) => void,
 }
 
 
@@ -77,7 +80,11 @@ class UIEditor extends React.Component<Props, object> {
                             <tbody>
                             <tr>
                                 <td valign={"top"} className={classes.tdLeft}>
-                                    <ComponentTreeView/>
+                                    <ComponentTreeView
+                                        components={this.props.components}
+                                        componentsOnUpdate={this.props.componentsOnUpdate}
+                                        componentOnSelect={this.props.componentOnSelect}
+                                    />
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
 
