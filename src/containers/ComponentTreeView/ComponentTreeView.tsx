@@ -20,8 +20,6 @@ import Tree, {
     TreeSourcePosition, TreeDestinationPosition
 } from '@atlaskit/tree';
 import {TreeDataHelper} from "../../controllers/treeDataHelper";
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TreeNodeCell from "./TreeNodeCell";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
@@ -65,6 +63,7 @@ export interface Props extends WithStyles<typeof styles>, ComponentState {
 
 interface State {
     treeData: TreeData | undefined,
+    item: TreeItem | undefined,
 }
 
 const PADDING_PER_LEVEL = 12;
@@ -95,6 +94,7 @@ const getIcon = (
 class ComponentTreeView extends React.Component<Props, object> {
     state: State = {
         treeData: undefined,
+        item: undefined
     };
 
     componentDidMount(): void {
@@ -103,6 +103,7 @@ class ComponentTreeView extends React.Component<Props, object> {
     }
 
     renderTreeItem = ({item, onExpand, onCollapse, provided, snapshot}: RenderItemParams) => {
+        const itemId = item.id as string;
         return (
             <div
                 ref={provided.innerRef}
@@ -113,9 +114,17 @@ class ComponentTreeView extends React.Component<Props, object> {
                     text={item.data ? item.data.title : ''}
                     icon={getIcon(item, onExpand, onCollapse)}
                     dragHandleProps={provided.dragHandleProps}
+                    onClick={this.handleTreeItemSelect(item)}
+                    selected={!!this.state.item && itemId === this.state.item.id}
                 />
             </div>
         );
+    };
+
+    handleTreeItemSelect = (item: TreeItem) => () => {
+        this.setState({item});
+        const componentData = new TreeDataHelper().getComponentDataByTreeItem(this.props.components, item);
+        this.props.selectComponent(componentData);
     };
 
     onTreeItemExpand = (itemId: ItemId) => {

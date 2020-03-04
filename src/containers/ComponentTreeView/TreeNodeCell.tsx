@@ -9,6 +9,11 @@ const styles = createStyles({
     root: {
         height: 30,
     },
+    rootSelected: {
+        height: 30,
+        backgroundColor: '#e0e0e0',
+        borderRadius: 4
+    },
     tdIcon: {
         paddingTop: 2,
         width: 20,
@@ -17,7 +22,7 @@ const styles = createStyles({
         fontSize: 14,
     },
     paper: {
-        padding: 5,
+
     }
 });
 
@@ -60,9 +65,13 @@ class TreeNodeCell extends React.Component<Props, object> {
     };
     
     render() {
-        const {classes, isDragging, dragHandleProps} = this.props;
+        const {classes, isDragging, dragHandleProps, selected} = this.props;
         return (
-            <div className={classes.root} {...dragHandleProps}>
+            <div
+                className={!!selected ? classes.rootSelected : classes.root}
+                {...dragHandleProps}
+                onClick={this.handleCellClick}
+            >
                 {isDragging &&
                 <Paper className={classes.paper}>
                     {this.renderContent()}

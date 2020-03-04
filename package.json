@@ -71,10 +71,6 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@atlaskit/button": "^13.3.7",
-    "@atlaskit/icon": "^20.0.2",
-    "@atlaskit/navigation": "^36.0.2",
-    "@atlaskit/tree": "^7.1.2",
-    "styled-components": "^5.0.1"
+    "@atlaskit/tree": "^7.1.2"
   }
 }
