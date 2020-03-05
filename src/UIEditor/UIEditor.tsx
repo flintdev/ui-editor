@@ -9,6 +9,7 @@ import ComponentTreeView from "../containers/ComponentTreeView";
 import {ActionData, ComponentData, StateUpdaterData} from "../interface";
 import ActionsDialog from "../containers/Toolbar/ActionsDialog";
 import StateDialog from "../containers/Toolbar/StateDialog";
+import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane";
 
 const styles = createStyles({
     root: {
@@ -37,11 +38,12 @@ const styles = createStyles({
         height: '100%'
     },
     tdMiddle: {
-        height: '100%'
+        height: '100%',
+        flex: 1
     },
     tdRight: {
         width: 240,
-        height: '100%'
+        height: '100%',
     }
 });
 
@@ -55,6 +57,9 @@ export interface Props extends WithStyles<typeof styles> {
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
+    handler: {
+        getComponentConfig: (name: string) => any;
+    }
 }
 
 
@@ -90,7 +95,9 @@ class UIEditor extends React.Component<Props, object> {
 
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
-
+                                    <ComponentEditPane
+                                        handler={this.props.handler}
+                                    />
                                 </td>
                             </tr>
                             </tbody>

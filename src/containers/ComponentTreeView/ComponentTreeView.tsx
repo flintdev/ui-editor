@@ -36,7 +36,7 @@ const styles = createStyles({
         flexFlow: 'column',
     },
     headerContainer: {
-        borderBottom: '1px solid lightgrey',
+        // borderBottom: '1px solid lightgrey',
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 10,

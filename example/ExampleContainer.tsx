@@ -8,6 +8,7 @@ import {ActionData, ComponentData, StateUpdaterData} from '../src/interface';
 import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
+import {getWidgetConfiguration} from '@flintdev/material-widgets';
 
 const styles = createStyles({
     root: {
@@ -105,6 +106,9 @@ class ExampleContainer extends React.Component<Props, object> {
                     components={components}
                     componentsOnUpdate={this.handleComponentsOnUpdate}
                     componentOnSelect={this.handleComponentOnSelect}
+                    handler={{
+                        getComponentConfig: getWidgetConfiguration
+                    }}
                 />
             </div>
         )

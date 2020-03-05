@@ -11,7 +11,7 @@ module.exports = {
         filename: "index.js",
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx", ".css"],
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".yaml"],
         alias: {
             src: path.resolve('./src'),
             example: path.resolve('./example'),
@@ -30,7 +30,7 @@ module.exports = {
             },
             {
                 test: /\.(txt|yaml)$/,
-                use: 'raw-loader'
+                use: 'raw-loader',
             },
         ],
     },
