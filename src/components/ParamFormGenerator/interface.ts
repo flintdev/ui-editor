@@ -16,6 +16,7 @@ export interface ParamItem {
     type: ItemType,
     defaultValue: any,
     ui: ItemUI,
+    options?: any[]
 }
 
 export interface Param {

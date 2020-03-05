@@ -1,49 +1,121 @@
 // src/components/ParamFormGenerator/ParamFormGenerator.tsx
 
 import * as React from 'react';
-import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
-import {Param} from "./interface";
+import {createStyles, WithStyles, withStyles} from '@material-ui/core/styles';
+import {ItemUI, Param, ParamItem} from "./interface";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 const styles = createStyles({
-    root: {
-
-    },
+    root: {},
     groupContainer: {
-
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderBottom: '1px solid #ddd',
     },
     groupText: {
         color: 'grey'
-    }
+    },
+    itemContainer: {
+        marginTop: 10,
+        marginBottom: 10,
+    },
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles> {
     params: Param[],
-    values?: object,
+    values?: any,
+    onChange: (values: any) => void,
 }
 
-class ParamFormGenerator extends React.Component<Props, object> {
-    state = {
+const FormTypeMap: any = {
+    integer: 'number',
+    string: 'text',
+    password: 'password',
+    email: 'email'
+};
 
-    };
+class ParamFormGenerator extends React.Component<Props, object> {
 
     componentDidMount(): void {
 
     }
 
+    getParamValue = (key: string, defaultValue: any) => {
+        const {values} = this.props;
+        if (!values || !values[key]) return defaultValue;
+        return values[key];
+    };
+
+    getFormType = (type: string) => {
+        return !!FormTypeMap[type] ? FormTypeMap[type] : 'text'
+    };
+
+    handleFormChange = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        let {values} = this.props;
+        values[key] = event.target.value;
+        this.props.onChange(values);
+    };
+
+    renderInput = (item: ParamItem) => {
+        const {key, name, type, defaultValue} = item;
+        const value = this.getParamValue(key, defaultValue);
+        return (
+            <TextField
+                value={value}
+                onChange={this.handleFormChange(key)}
+                label={name}
+                type={this.getFormType(type)}
+                variant={"outlined"}
+                size={"small"}
+                fullWidth={true}
+            />
+        )
+    };
+
+    renderSelect = (item: ParamItem) => {
+        const {key, name, type, defaultValue, options} = item;
+        const value = this.getParamValue(key, defaultValue);
+        return (
+            <TextField
+                label={name}
+                value={value}
+                onChange={this.handleFormChange(key)}
+                type={this.getFormType(type)}
+                fullWidth={true}
+                variant={"outlined"}
+                size={"small"}
+                select={true}
+            >
+                {options!.map((option, i) => {
+                    return (
+                        <MenuItem key={i} value={option}>{option}</MenuItem>
+                    )
+                })}
+            </TextField>
+        )
+    };
+
     render() {
-        const {classes, params, values} = this.props;
+        const {classes, params} = this.props;
         return (
             <div className={classes.root}>
                 {params.map((param, i) => {
                     return (
                         <div key={i} className={classes.groupContainer}>
-
+                            <Typography variant={"overline"}>{param.group.toUpperCase()}</Typography>
+                            {param.items.map((item, j) => {
+                                return (
+                                    <div key={j} className={classes.itemContainer}>
+                                        {item.ui === ItemUI.input && this.renderInput(item)}
+                                        {item.ui === ItemUI.select && this.renderSelect(item)}
+                                    </div>
+                                )
+                            })}
                         </div>
                     )
                 })}
