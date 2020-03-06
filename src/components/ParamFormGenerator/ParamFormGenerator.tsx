@@ -29,7 +29,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles> {
     params: Param[],
     values?: any,
-    onChange: (values: any) => void,
+    onChange: (values: any, init?: boolean) => void,
 }
 
 const FormTypeMap: any = {
@@ -42,8 +42,21 @@ const FormTypeMap: any = {
 class ParamFormGenerator extends React.Component<Props, object> {
 
     componentDidMount(): void {
-
+        this.initValues();
     }
+
+    initValues = () => {
+        let values: any = !!this.props.values ? this.props.values : {};
+        this.props.params.forEach(param => {
+            param.items.forEach(item => {
+                const {key, defaultValue} = item;
+                if (!values[key]) {
+                    values[key] = defaultValue;
+                }
+            });
+        });
+        this.props.onChange(values, true);
+    };
 
     getParamValue = (key: string, defaultValue: any) => {
         const {values} = this.props;

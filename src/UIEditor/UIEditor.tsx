@@ -96,6 +96,8 @@ class UIEditor extends React.Component<Props, object> {
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
                                     <ComponentEditPane
+                                        components={this.props.components}
+                                        componentsOnUpdate={this.props.componentsOnUpdate}
                                         handler={this.props.handler}
                                     />
                                 </td>
