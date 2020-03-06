@@ -14,7 +14,8 @@ import ParamFormGenerator from "../../components/ParamFormGenerator/ParamFormGen
 
 const styles = createStyles({
     root: {
-        height: '100%'
+        height: '100%',
+        overflow: 'scroll',
     },
     paper: {
         height: '100%',
@@ -36,6 +37,8 @@ const styles = createStyles({
     formsContainer: {
         marginLeft: 10,
         marginRight: 10,
+        flexGrow: 1,
+        overflow: 'scroll',
     },
 });
 

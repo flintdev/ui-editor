@@ -27,7 +27,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 const styles = createStyles({
     root: {
         height: '100%',
-
+        overflow: 'scroll',
     },
     paper: {
         height: '100%',
@@ -36,7 +36,6 @@ const styles = createStyles({
         flexFlow: 'column',
     },
     headerContainer: {
-        // borderBottom: '1px solid lightgrey',
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 10,
@@ -48,8 +47,8 @@ const styles = createStyles({
     },
     treeContainer: {
         padding: 5,
-        overflow: 'auto',
         flexGrow: 1,
+        overflow: 'scroll',
     },
 });
 
