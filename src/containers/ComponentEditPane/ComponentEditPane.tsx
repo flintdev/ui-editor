@@ -52,7 +52,7 @@ export interface Props extends WithStyles<typeof styles>, ComponentsState {
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     handler: {
-        getComponentConfig: (name: string) => any;
+        getWidgetConfig: (name: string) => any;
     }
 }
 
@@ -79,7 +79,7 @@ class ComponentEditPane extends React.Component<Props, object> {
             if (!componentSelected) return;
             const name = componentSelected.name;
             const values = componentSelected.params;
-            const configJson = this.props.handler.getComponentConfig(name);
+            const configJson = this.props.handler.getWidgetConfig(name);
             const {params, events} = configJson;
             this.setState({params, values});
         }

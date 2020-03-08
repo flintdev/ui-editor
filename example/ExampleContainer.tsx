@@ -8,7 +8,7 @@ import {ActionData, ComponentData, StateUpdaterData} from '../src/interface';
 import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
-import {getWidgetConfiguration} from '@flintdev/material-widgets';
+import {getWidgetConfiguration, getWidget} from '@flintdev/material-widgets';
 
 const styles = createStyles({
     root: {
@@ -34,7 +34,7 @@ class ExampleContainer extends React.Component<Props, object> {
         initialState: '',
         components: componentsExample,
     };
-
+    operations: any = {};
     componentDidMount(): void {
 
     }
@@ -84,7 +84,7 @@ class ExampleContainer extends React.Component<Props, object> {
     };
 
     handleComponentsOnUpdate = (components: ComponentData[]) => {
-
+        this.setState({components});
     };
 
     handleComponentOnSelect = (componentData: ComponentData) => {
@@ -97,6 +97,7 @@ class ExampleContainer extends React.Component<Props, object> {
         return (
             <div className={classes.root}>
                 <UIEditor
+                    operations={this.operations}
                     initialState={initialState}
                     stateUpdaters={stateUpdaters}
                     initialStateOnChange={this.handleInitialStateChange}
@@ -107,7 +108,8 @@ class ExampleContainer extends React.Component<Props, object> {
                     componentsOnUpdate={this.handleComponentsOnUpdate}
                     componentOnSelect={this.handleComponentOnSelect}
                     handler={{
-                        getComponentConfig: getWidgetConfiguration
+                        getWidgetConfig: getWidgetConfiguration,
+                        getWidget: getWidget
                     }}
                 />
             </div>

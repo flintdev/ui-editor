@@ -10,6 +10,7 @@ import {ActionData, ComponentData, StateUpdaterData} from "../interface";
 import ActionsDialog from "../containers/Toolbar/ActionsDialog";
 import StateDialog from "../containers/Toolbar/StateDialog";
 import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane";
+import UIEditorCanvas from '@flintdev/ui-editor-canvas';
 
 const styles = createStyles({
     root: {
@@ -48,6 +49,7 @@ const styles = createStyles({
 });
 
 export interface Props extends WithStyles<typeof styles> {
+    operations: any,
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
     initialState: string,
@@ -58,7 +60,8 @@ export interface Props extends WithStyles<typeof styles> {
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
     handler: {
-        getComponentConfig: (name: string) => any;
+        getWidgetConfig: (name: string) => any;
+        getWidget: (name: string, props: any) => void
     }
 }
 
@@ -71,6 +74,19 @@ class UIEditor extends React.Component<Props, object> {
     componentDidMount(): void {
 
     }
+
+    handleTreeComponentsOnUpdate = (components: ComponentData[]) => {
+        console.log('handleTreeComponentsOnUpdate');
+        console.log('operations', this.props.operations);
+        console.log('components', components);
+        this.props.operations.updateComponents(components);
+        this.props.componentsOnUpdate(components);
+    };
+
+    handleCanvasComponentsOnUpdate = (components: ComponentData[]) => {
+        console.log('handleCanvasComponentsOnUpdate');
+
+    };
 
     render() {
         const {classes} = this.props;
@@ -87,17 +103,24 @@ class UIEditor extends React.Component<Props, object> {
                                 <td valign={"top"} className={classes.tdLeft}>
                                     <ComponentTreeView
                                         components={this.props.components}
-                                        componentsOnUpdate={this.props.componentsOnUpdate}
+                                        componentsOnUpdate={this.handleTreeComponentsOnUpdate}
                                         componentOnSelect={this.props.componentOnSelect}
                                     />
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
-
+                                    <UIEditorCanvas
+                                        operations={this.props.operations}
+                                        components={this.props.components}
+                                        editorLib={this.props.handler}
+                                        componentsUpdated={this.props.componentsOnUpdate}
+                                        componentOnSelect={this.props.componentOnSelect}
+                                        isDnd={true}
+                                    />
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
                                     <ComponentEditPane
                                         components={this.props.components}
-                                        componentsOnUpdate={this.props.componentsOnUpdate}
+                                        componentsOnUpdate={this.handleTreeComponentsOnUpdate}
                                         handler={this.props.handler}
                                     />
                                 </td>

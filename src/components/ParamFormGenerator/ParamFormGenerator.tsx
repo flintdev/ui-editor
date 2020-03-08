@@ -2,13 +2,10 @@
 
 import * as React from 'react';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core/styles';
-import {ItemUI, Param, ParamItem} from "./interface";
+import {ItemType, ItemUI, Param, ParamItem} from "./interface";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 const styles = createStyles({
     root: {},
@@ -68,9 +65,11 @@ class ParamFormGenerator extends React.Component<Props, object> {
         return !!FormTypeMap[type] ? FormTypeMap[type] : 'text'
     };
 
-    handleFormChange = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleFormChange = (type: ItemType, key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         let {values} = this.props;
-        values[key] = event.target.value;
+        let value: any = event.target.value;
+        if (type === ItemType.integer) value = parseInt(value) as number;
+        values[key] = value;
         this.props.onChange(values);
     };
 
@@ -80,7 +79,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
         return (
             <TextField
                 value={value}
-                onChange={this.handleFormChange(key)}
+                onChange={this.handleFormChange(type, key)}
                 label={name}
                 type={this.getFormType(type)}
                 variant={"outlined"}
@@ -97,7 +96,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
             <TextField
                 label={name}
                 value={value}
-                onChange={this.handleFormChange(key)}
+                onChange={this.handleFormChange(type, key)}
                 type={this.getFormType(type)}
                 fullWidth={true}
                 variant={"outlined"}
