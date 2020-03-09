@@ -1,7 +1,7 @@
 // src/interface.ts
 
 export interface ComponentData {
-    id?: string,
+    id: string,
     name: string,
     params: object,
     children?: ComponentData[],

@@ -76,16 +76,17 @@ class UIEditor extends React.Component<Props, object> {
     }
 
     handleTreeComponentsOnUpdate = (components: ComponentData[]) => {
-        console.log('handleTreeComponentsOnUpdate');
-        console.log('operations', this.props.operations);
-        console.log('components', components);
+        this.props.operations.updateComponents(components);
+        this.props.componentsOnUpdate(components);
+    };
+
+    handleEditPaneComponentsOnUpdate = (components: ComponentData[]) => {
         this.props.operations.updateComponents(components);
         this.props.componentsOnUpdate(components);
     };
 
     handleCanvasComponentsOnUpdate = (components: ComponentData[]) => {
-        console.log('handleCanvasComponentsOnUpdate');
-
+        this.props.componentsOnUpdate(components);
     };
 
     render() {
@@ -112,7 +113,7 @@ class UIEditor extends React.Component<Props, object> {
                                         operations={this.props.operations}
                                         components={this.props.components}
                                         editorLib={this.props.handler}
-                                        componentsUpdated={this.props.componentsOnUpdate}
+                                        componentsUpdated={this.handleCanvasComponentsOnUpdate}
                                         componentOnSelect={this.props.componentOnSelect}
                                         isDnd={true}
                                     />
@@ -120,7 +121,7 @@ class UIEditor extends React.Component<Props, object> {
                                 <td valign={"top"} className={classes.tdRight}>
                                     <ComponentEditPane
                                         components={this.props.components}
-                                        componentsOnUpdate={this.handleTreeComponentsOnUpdate}
+                                        componentsOnUpdate={this.handleEditPaneComponentsOnUpdate}
                                         handler={this.props.handler}
                                     />
                                 </td>

@@ -21,12 +21,33 @@ export class TreeDataHelper {
         return components;
     };
 
+
     getComponentDataByTreeItem = (components: ComponentData[], item: TreeItem) => {
         const path = item.data.path;
         let componentData = _.get(components, path);
         componentData['path'] = path;
         return componentData;
     };
+
+    convertTreeDataToComponents = (treeData: TreeData): ComponentData[] => {
+        const {rootId, items} = treeData;
+        return this.recurToGetChildren(rootId as string, items);
+    };
+
+    private recurToGetChildren = (parentId: string, items: Items): ComponentData[] => {
+        const {children} = items[parentId];
+        if (!children) return [];
+        return children.map((childId: string) => {
+            const {data} = items[childId];
+            return {
+                id: childId,
+                name: data.title,
+                params: data.params,
+                children: this.recurToGetChildren(childId, items)
+            }
+        });
+    };
+
 
     convertComponentsToTreeData = (components: ComponentData[]): TreeData => {
         let items: Items = {};
@@ -36,7 +57,7 @@ export class TreeDataHelper {
         }
         items['root'] = {
             id: 'root',
-            children: components.map((_, i) => i),
+            children: components.map(componentData => componentData.id),
             isExpanded: true,
             data: {
                 title: 'Root',
@@ -50,16 +71,16 @@ export class TreeDataHelper {
     };
 
     private recurToGetItems = (componentData: ComponentData, items: Items, path: Path) => {
-        let {name, children} = componentData;
-        const id = path.join('-')!;
+        let {id, name, params, children} = componentData;
         children = !!children ? children : [];
         items[id] = {
             id: id,
-            children: children.map((_, i) => `${id}-children-${i}`),
+            children: children.map(componentData => componentData.id),
             isExpanded: true,
             data: {
                 title: name,
                 path: [...path],
+                params,
             }
         };
         for (let i=0;  i<children.length; i++) {

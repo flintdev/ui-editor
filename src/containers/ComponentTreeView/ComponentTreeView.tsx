@@ -56,7 +56,6 @@ export interface Props extends WithStyles<typeof styles>, ComponentState {
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
-    setTreeData: (treeData: ComponentData[]) => void,
     selectComponent: (value: ComponentData) => void,
 }
 
@@ -90,15 +89,22 @@ const getIcon = (
     return <span/>;
 };
 
-class ComponentTreeView extends React.Component<Props, object> {
+class ComponentTreeView extends React.PureComponent<Props, object> {
     state: State = {
         treeData: undefined,
         item: undefined
     };
-
+    treeDataHelper = new TreeDataHelper();
     componentDidMount(): void {
         const treeData = this.getTreeData();
         this.setState({treeData});
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<object>, snapshot?: any): void {
+        if (JSON.stringify(prevProps.components) !== JSON.stringify(this.props.components)) {
+            const treeData = this.getTreeData();
+            this.setState({treeData});
+        }
     }
 
     renderTreeItem = ({item, onExpand, onCollapse, provided, snapshot}: RenderItemParams) => {
@@ -122,7 +128,7 @@ class ComponentTreeView extends React.Component<Props, object> {
 
     handleTreeItemSelect = (item: TreeItem) => () => {
         this.setState({item});
-        const componentData = new TreeDataHelper().getComponentDataByTreeItem(this.props.components, item);
+        const componentData = this.treeDataHelper.getComponentDataByTreeItem(this.props.components, item);
         this.props.selectComponent(componentData);
     };
 
@@ -144,7 +150,7 @@ class ComponentTreeView extends React.Component<Props, object> {
 
     getTreeData = (): TreeData => {
         const {components} = this.props;
-        return new TreeDataHelper().convertComponentsToTreeData(components);
+        return this.treeDataHelper.convertComponentsToTreeData(components);
     };
 
     onDragEnd = (
@@ -153,13 +159,13 @@ class ComponentTreeView extends React.Component<Props, object> {
     ) => {
         const {treeData} = this.state;
         if (!treeData) return;
-        if (!destination) {
-            return;
-        }
+        if (!destination) return;
         const newTree = moveItemOnTree(treeData, source, destination);
         this.setState({
             treeData: newTree,
         });
+        const components = this.treeDataHelper.convertTreeDataToComponents(newTree);
+        this.props.componentsOnUpdate(components);
     };
 
     render() {
@@ -197,7 +203,6 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
     return {
-        setTreeData: (treeData: ComponentData[]) => dispatch(actions.setTreeData(treeData)),
         selectComponent: (value: ComponentData) => dispatch(actions.selectComponent(value)),
     }
 };

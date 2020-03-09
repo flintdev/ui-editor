@@ -95,7 +95,7 @@ class ComponentEditPane extends React.Component<Props, object> {
         const {components, componentSelected} = this.props;
         if (!componentSelected || !componentSelected.path) return;
         const newComponents = this.treeDataHelper.updateComponentParams(values, componentSelected.path, components);
-        this.props.componentsOnUpdate(newComponents);
+        this.props.componentsOnUpdate([...newComponents]);
         this.setState({editing: false});
     };
 

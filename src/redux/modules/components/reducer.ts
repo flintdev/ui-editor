@@ -7,10 +7,6 @@ import {ComponentsState} from "../../state";
 
 export function reducer(state: ComponentsState, action: ComponentsAction) {
     switch (action.type) {
-        case types.SET_TREE_DATA:
-            return update(state, {
-                treeData: {$set: action.treeData}
-            });
         case types.SELECT_COMPONENT:
             return update(state, {
                 componentSelected: {$set: action.value}

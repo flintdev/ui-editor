@@ -12,7 +12,6 @@ export interface ToolbarState {
 }
 
 export interface ComponentsState {
-    treeData: ComponentData[],
     componentSelected: ComponentData | null,
 }
 
@@ -31,7 +30,6 @@ export const initState: StoreState = {
         }
     },
     components: {
-        treeData: [],
         componentSelected: null,
     }
 };
