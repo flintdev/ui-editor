@@ -10,15 +10,8 @@ import {ComponentData} from "../../interface";
 import Paper from "@material-ui/core/Paper";
 import Typography from '@material-ui/core/Typography';
 import {ComponentState} from "react";
-import Tree, {
-    mutateTree,
-    moveItemOnTree,
-    RenderItemParams,
-    TreeData,
-    TreeItem,
-    ItemId,
-    TreeSourcePosition, TreeDestinationPosition
-} from '@atlaskit/tree';
+// @ts-ignore
+import Tree, {mutateTree, moveItemOnTree, RenderItemParams, TreeData, TreeItem, ItemId, TreeSourcePosition, TreeDestinationPosition} from '@atlaskit/tree';
 import {TreeDataHelper} from "../../controllers/treeDataHelper";
 import TreeNodeCell from "./TreeNodeCell";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';

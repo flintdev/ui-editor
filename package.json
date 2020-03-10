@@ -7,7 +7,7 @@
     "test": "test",
     "start": "webpack-dev-server --progress --color --mode development --config webpack.config.js",
     "build-example": "webpack --config webpack.config.js -w",
-    "build-dist": "rimraf dist && tsc --outDir dist/"
+    "build-dist": "rimraf dist && tsc --outDir dist/ && copyfiles -u 1 src/**/*.txt dist/"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-redux": "^7.1.5",
     "ace-builds": "^1.4.8",
+    "copyfiles": "^2.2.0",
     "css-loader": "^3.4.0",
     "file-loader": "^5.1.0",
     "fsevents": "^2.1.2",

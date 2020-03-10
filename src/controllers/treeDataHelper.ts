@@ -1,6 +1,7 @@
 // src/controllers/treeDataHelper.ts
 
 import {ComponentData} from "../interface";
+// @ts-ignore
 import {TreeData, TreeItem} from "@atlaskit/tree";
 import * as _ from 'lodash';
 
