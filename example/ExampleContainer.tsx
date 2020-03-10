@@ -9,6 +9,7 @@ import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
 import {getWidgetConfiguration, getWidget} from '@flintdev/material-widgets';
+import * as _ from 'lodash';
 
 const styles = createStyles({
     root: {
@@ -38,6 +39,18 @@ class ExampleContainer extends React.Component<Props, object> {
     componentDidMount(): void {
 
     }
+
+    handleAddComponentClick = () => {
+        const id = _.uniqueId('w');
+        console.log('id', id);
+        const data = {
+            id,
+            name: 'Button',
+            params: {label: 'Button'},
+            children: []
+        };
+        this.operations.addComponent(data);
+    };
 
     handleActionUpdate = (type: string, data: ActionData) => {
         let {actions} = this.state;
@@ -107,6 +120,7 @@ class ExampleContainer extends React.Component<Props, object> {
                     components={components}
                     componentsOnUpdate={this.handleComponentsOnUpdate}
                     componentOnSelect={this.handleComponentOnSelect}
+                    addComponentOnClick={this.handleAddComponentClick}
                     handler={{
                         getWidgetConfig: getWidgetConfiguration,
                         getWidget: getWidget

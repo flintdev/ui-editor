@@ -59,10 +59,11 @@ export interface Props extends WithStyles<typeof styles> {
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
+    addComponentOnClick: () => void,
     handler: {
         getWidgetConfig: (name: string) => any;
         getWidget: (name: string, props: any) => void
-    }
+    },
 }
 
 
@@ -95,7 +96,9 @@ class UIEditor extends React.Component<Props, object> {
             <Provider store={store}>
                 <div className={classes.root}>
                     <div className={classes.header}>
-                        <Toolbar/>
+                        <Toolbar
+                            addComponentOnClick={this.props.addComponentOnClick}
+                        />
                     </div>
                     <div className={classes.content}>
                         <table className={classes.table}>

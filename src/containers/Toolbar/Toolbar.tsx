@@ -48,6 +48,7 @@ const styles = createStyles({
 });
 
 export interface Props extends WithStyles<typeof styles>{
+    addComponentOnClick: () => void;
     stateDialogOpen: () => void,
     actionsDialogOpen: () => void,
 }
@@ -61,6 +62,10 @@ class Toolbar extends React.Component<Props, object> {
 
     }
 
+    handleInsertButtonClick = () => {
+        this.props.addComponentOnClick();
+    };
+
     render() {
         const {classes} = this.props;
         return (
@@ -73,6 +78,7 @@ class Toolbar extends React.Component<Props, object> {
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButton}
+                                    onClick={this.handleInsertButtonClick}
                                 >
                                     <AddIcon/>&nbsp;Insert
                                 </Button>
