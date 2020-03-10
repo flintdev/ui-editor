@@ -60,6 +60,7 @@ export interface Props extends WithStyles<typeof styles> {
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
     addComponentOnClick: () => void,
+    saveOnClick: () => void,
     handler: {
         getWidgetConfig: (name: string) => any;
         getWidget: (name: string, props: any) => void
@@ -98,6 +99,7 @@ class UIEditor extends React.Component<Props, object> {
                     <div className={classes.header}>
                         <Toolbar
                             addComponentOnClick={this.props.addComponentOnClick}
+                            saveOnClick={this.props.saveOnClick}
                         />
                     </div>
                     <div className={classes.content}>

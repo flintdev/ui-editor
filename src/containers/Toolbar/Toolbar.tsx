@@ -49,6 +49,7 @@ const styles = createStyles({
 
 export interface Props extends WithStyles<typeof styles>{
     addComponentOnClick: () => void;
+    saveOnClick: () => void;
     stateDialogOpen: () => void,
     actionsDialogOpen: () => void,
 }
@@ -64,6 +65,10 @@ class Toolbar extends React.Component<Props, object> {
 
     handleInsertButtonClick = () => {
         this.props.addComponentOnClick();
+    };
+
+    handleSaveButtonClick = () => {
+        this.props.saveOnClick();
     };
 
     render() {
@@ -108,6 +113,7 @@ class Toolbar extends React.Component<Props, object> {
                                     variant={"contained"}
                                     className={classes.saveButton}
                                     color={"primary"}
+                                    onClick={this.handleSaveButtonClick}
                                 >
                                     <SaveIcon/>&nbsp;&nbsp;Save
                                 </Button>
