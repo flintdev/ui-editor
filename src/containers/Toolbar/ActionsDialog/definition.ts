@@ -1,4 +1,4 @@
-import {Form} from "src/components/DialogForm";
+import {Form} from "../../../components/DialogForm";
 
 export const AddActionDef: Form[] = [
     {

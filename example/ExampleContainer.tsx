@@ -121,6 +121,7 @@ class ExampleContainer extends React.Component<Props, object> {
                     componentsOnUpdate={this.handleComponentsOnUpdate}
                     componentOnSelect={this.handleComponentOnSelect}
                     addComponentOnClick={this.handleAddComponentClick}
+                    saveOnClick={() => {}}
                     handler={{
                         getWidgetConfig: getWidgetConfiguration,
                         getWidget: getWidget
