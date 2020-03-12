@@ -270,6 +270,8 @@ class ActionsDialog extends React.Component<Props, object> {
                                                 setOptions={{
                                                     showLineNumbers: true,
                                                     tabSize: 4,
+                                                    useWorker: false
+
                                                 }}
                                             />
                                         </Paper>
