@@ -16,9 +16,9 @@ export class TreeDataHelper {
 
     }
 
-    updateComponentParams = (params: any, componentPath: Path, components: ComponentData[]) => {
-        const path = [...componentPath, 'params'];
-        _.set(components, path, params);
+    updateComponentParamsAndEvents = (params: any, events: any, componentPath: Path, components: ComponentData[]) => {
+        _.set(components, [...componentPath, 'params'], params);
+        _.set(components, [...componentPath, 'events'], events);
         return components;
     };
 

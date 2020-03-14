@@ -102,13 +102,14 @@ class ComponentEditPane extends React.Component<Props, object> {
 
     handleEventActionChange = (eventActions: EventAction[]) => {
         this.setState({eventActions});
+        if (!this.state.editing) this.setState({editing: true});
     };
 
     handleSaveClick = () => {
-        const {values} = this.state;
+        const {values, eventActions} = this.state;
         const {components, componentSelected} = this.props;
         if (!componentSelected || !componentSelected.path) return;
-        const newComponents = this.treeDataHelper.updateComponentParams(values, componentSelected.path, components);
+        const newComponents = this.treeDataHelper.updateComponentParamsAndEvents(values, eventActions, componentSelected.path, components);
         this.props.componentsOnUpdate([...newComponents]);
         this.setState({editing: false});
     };
