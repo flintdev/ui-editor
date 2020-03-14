@@ -12,8 +12,10 @@ import {Param} from "../../components/ParamFormGenerator/interface";
 import ParamFormGenerator from "../../components/ParamFormGenerator/ParamFormGenerator";
 import Button from "@material-ui/core/Button";
 import SaveIcon from '@material-ui/icons/Save';
-import {ComponentData} from "../../interface";
+import {ActionData, ComponentData} from "../../interface";
 import {TreeDataHelper} from "../../controllers/treeDataHelper";
+import EventsPane from "./EventsPane/EventsPane";
+import {Event, EventAction} from "./interface";
 
 const styles = createStyles({
     root: {
@@ -51,6 +53,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles>, ComponentsState {
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
+    actions: ActionData[],
     handler: {
         getWidgetConfig: (name: string) => any;
     }
@@ -59,6 +62,8 @@ export interface Props extends WithStyles<typeof styles>, ComponentsState {
 interface State {
     params: Param[],
     values: any,
+    events: Event[],
+    eventActions: EventAction[],
     editing: boolean,
 }
 
@@ -66,6 +71,8 @@ class ComponentEditPane extends React.Component<Props, object> {
     state: State = {
         params: [],
         values: {},
+        events: [],
+        eventActions: [],
         editing: false,
     };
     treeDataHelper = new TreeDataHelper();
@@ -79,15 +86,22 @@ class ComponentEditPane extends React.Component<Props, object> {
             if (!componentSelected) return;
             const name = componentSelected.name;
             const values = componentSelected.params;
+            const eventActions = componentSelected.events;
             const configJson = this.props.handler.getWidgetConfig(name);
-            const {params, events} = configJson;
-            this.setState({params, values});
+            let {params, events} = configJson;
+            console.log(configJson);
+            events = !!events ? events : [];
+            this.setState({params, values, events, eventActions});
         }
     }
 
     handleValuesChange = (values: any, init?: boolean) => {
         this.setState({values});
         if (!init && !this.state.editing) this.setState({editing: true});
+    };
+
+    handleEventActionChange = (eventActions: EventAction[]) => {
+        this.setState({eventActions});
     };
 
     handleSaveClick = () => {
@@ -101,7 +115,7 @@ class ComponentEditPane extends React.Component<Props, object> {
 
     render() {
         const {classes, componentSelected} = this.props;
-        const {params, values, editing} = this.state;
+        const {params, values, events, eventActions, editing} = this.state;
         if (!componentSelected) return <div/>;
         return (
             <div className={classes.root}>
@@ -111,7 +125,7 @@ class ComponentEditPane extends React.Component<Props, object> {
                             <tbody>
                             <tr>
                                 <td>
-                                    <Typography variant={"subtitle2"} className={classes.headerText}>{componentSelected.name}</Typography>
+                                    <Typography variant={"overline"} className={classes.headerText}>{componentSelected.name}</Typography>
                                 </td>
                                 <td align={"right"}>
                                     <Button
@@ -133,6 +147,12 @@ class ComponentEditPane extends React.Component<Props, object> {
                             params={params}
                             values={values}
                             onChange={this.handleValuesChange}
+                        />
+                        <EventsPane
+                            actions={this.props.actions}
+                            events={events}
+                            eventActions={eventActions}
+                            onChange={this.handleEventActionChange}
                         />
                     </div>
                 </Paper>

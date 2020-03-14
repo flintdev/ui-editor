@@ -4,6 +4,7 @@ export interface ComponentData {
     id: string,
     name: string,
     params: object,
+    events?: object,
     children?: ComponentData[],
     path?: Array<string|number>,
     tag?: string

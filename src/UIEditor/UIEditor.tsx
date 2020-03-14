@@ -36,7 +36,8 @@ const styles = createStyles({
     },
     tdLeft: {
         width: 240,
-        height: '100%'
+        height: '100%',
+        borderRight: '1px solid #ddd'
     },
     tdMiddle: {
         height: '100%',
@@ -45,6 +46,7 @@ const styles = createStyles({
     tdRight: {
         width: 240,
         height: '100%',
+        borderLeft: '1px solid #ddd'
     }
 });
 
@@ -127,6 +129,7 @@ class UIEditor extends React.Component<Props, object> {
                                     <ComponentEditPane
                                         components={this.props.components}
                                         componentsOnUpdate={this.handleEditPaneComponentsOnUpdate}
+                                        actions={this.props.actions}
                                         handler={this.props.handler}
                                     />
                                 </td>
