@@ -119,7 +119,9 @@ class EventsPane extends React.Component<Props, object> {
     };
 
     handleDeleteEventClick = (index: number) => () => {
-
+        let eventActions = !!this.props.eventActions ? this.props.eventActions : [];
+        eventActions.splice(index, 1);
+        this.props.onChange([...eventActions]);
     };
 
     render() {
