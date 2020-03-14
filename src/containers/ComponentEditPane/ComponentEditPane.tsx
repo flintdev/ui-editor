@@ -20,7 +20,7 @@ import {Event, EventAction} from "./interface";
 const styles = createStyles({
     root: {
         height: '100%',
-        overflow: 'scroll',
+        overflow: 'auto',
     },
     paper: {
         height: '100%',
