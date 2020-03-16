@@ -46,6 +46,9 @@ const styles = createStyles({
         marginRight: 10,
         flexGrow: 1,
         overflow: 'scroll',
+        '&::-webkit-scrollbar': {
+            display: 'none'
+        }
     },
     headerTable: {
         width: "100%"
