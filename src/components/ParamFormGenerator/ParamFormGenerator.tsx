@@ -125,12 +125,13 @@ class ParamFormGenerator extends React.Component<Props, object> {
             const {displayValue} = this.decodeDynamicValue(value);
             const newValue = displayValue as string;
             values[key] = this.formatValue(type, newValue);
+            this.props.onChange(values);
         } else {
             // switch to dynamic
             values[key] = this.encodeDynamicValue('$', value);
-            this.handleStateChipClick(item);
+            this.props.onChange(values);
+            this.handleStateChipClick(item)();
         }
-        this.props.onChange(values);
     };
 
     decodeDynamicValue = (value: string) => {
