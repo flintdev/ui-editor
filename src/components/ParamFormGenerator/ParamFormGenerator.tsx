@@ -6,6 +6,9 @@ import {ItemType, ItemUI, Param, ParamItem} from "./interface";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from "@material-ui/core/IconButton";
+import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const styles = createStyles({
     root: {},
@@ -21,6 +24,12 @@ const styles = createStyles({
         marginTop: 10,
         marginBottom: 10,
     },
+    tableItem: {
+        width: '100%',
+    },
+    tdAction: {
+        width: 30,
+    }
 });
 
 export interface Props extends WithStyles<typeof styles> {
@@ -68,9 +77,47 @@ class ParamFormGenerator extends React.Component<Props, object> {
     handleFormChange = (type: ItemType, key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         let {values} = this.props;
         let value: any = event.target.value;
-        if (type === ItemType.integer) value = parseInt(value) as number;
-        values[key] = value;
+        values[key] = this.formatValue(type, value);
         this.props.onChange(values);
+    };
+
+    private formatValue = (type: ItemType, value: string) => {
+        if (type === ItemType.integer) return parseInt(value) as number;
+        return value;
+    };
+
+    checkInputType = (key: string) => {
+        let {values} = this.props;
+        const value = (values[key]);
+        if (typeof value === "string" && value.includes('state::')) {
+            return 'dynamic';
+        } else {
+            return 'static'
+        }
+    };
+
+    toggleDynamicInput = (type: ItemType, key: string) => () => {
+        let {values} = this.props;
+        const value = (values[key]);
+        if (typeof value === "string" && value.includes('state::')) {
+            // switch to static
+            const {displayValue} = this.decodeDynamicValue(value);
+            const newValue = displayValue as string;
+            values[key] = this.formatValue(type, newValue);
+        } else {
+            // switch to dynamic
+            values[key] = `state::$::displayValue::${value}`;
+        }
+        this.props.onChange(values);
+    };
+
+    decodeDynamicValue = (value: string) => {
+        const parts = value.split('::');
+        if (parts.length !== 4) return {};
+        return {
+            state: parts[1],
+            displayValue: parts[3]
+        }
     };
 
     renderInput = (item: ParamItem) => {
@@ -121,10 +168,47 @@ class ParamFormGenerator extends React.Component<Props, object> {
                         <div key={i} className={classes.groupContainer}>
                             <Typography variant={"overline"}>{param.group.toUpperCase()}</Typography>
                             {param.items.map((item, j) => {
+                                const inputType = this.checkInputType(item.key);
                                 return (
                                     <div key={j} className={classes.itemContainer}>
-                                        {item.ui === ItemUI.input && this.renderInput(item)}
-                                        {item.ui === ItemUI.select && this.renderSelect(item)}
+                                        <table className={classes.tableItem}>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    {inputType === "static" &&
+                                                    <div>
+                                                        {item.ui === ItemUI.input && this.renderInput(item)}
+                                                        {item.ui === ItemUI.select && this.renderSelect(item)}
+                                                    </div>
+                                                    }
+                                                    {inputType === "dynamic" &&
+                                                    <div>
+
+                                                    </div>
+                                                    }
+                                                </td>
+                                                <td align={"right"} className={classes.tdAction}>
+                                                    {inputType === "static" &&
+                                                    <IconButton
+                                                        size={"small"}
+                                                        onClick={this.toggleDynamicInput(item.type, item.key)}
+                                                    >
+                                                        <AlbumOutlinedIcon fontSize={"small"}/>
+                                                    </IconButton>
+                                                    }
+                                                    {inputType === 'dynamic' &&
+                                                    <IconButton
+                                                        size={"small"}
+                                                        onClick={this.toggleDynamicInput(item.type, item.key)}
+                                                    >
+                                                        <EditOutlinedIcon fontSize={"small"}/>
+                                                    </IconButton>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 )
                             })}
