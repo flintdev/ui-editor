@@ -55,7 +55,7 @@ const styles = createStyles({
     },
     popoverContainer: {
         padding: 10,
-        width: 200,
+        width: 300,
     },
     form: {
         marginBottom: 10,

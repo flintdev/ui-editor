@@ -16,6 +16,8 @@ import {ActionData, ComponentData} from "../../interface";
 import {TreeDataHelper} from "../../controllers/treeDataHelper";
 import EventsPane from "./EventsPane/EventsPane";
 import {Event, EventAction} from "./interface";
+import DisplayPane from "./DisplayPane";
+import {DisplayInfo} from "./DisplayPane/interface";
 
 const styles = createStyles({
     root: {
@@ -65,6 +67,7 @@ interface State {
     events: Event[],
     eventActions: EventAction[],
     editing: boolean,
+    display: DisplayInfo
 }
 
 class ComponentEditPane extends React.Component<Props, object> {
@@ -74,6 +77,7 @@ class ComponentEditPane extends React.Component<Props, object> {
         events: [],
         eventActions: [],
         editing: false,
+        display: {type: 'always'},
     };
     treeDataHelper = new TreeDataHelper();
     componentDidMount(): void {
@@ -86,12 +90,14 @@ class ComponentEditPane extends React.Component<Props, object> {
             if (!componentSelected) return;
             const name = componentSelected.name;
             const values = componentSelected.params;
+            let display = componentSelected.display;
             const eventActions = componentSelected.events;
             const configJson = this.props.handler.getWidgetConfig(name);
             let {params, events} = configJson;
-            console.log(configJson);
             events = !!events ? events : [];
-            this.setState({params, values, events, eventActions});
+            display = !!display ? display : {type: 'always'};
+            console.log('display', display);
+            this.setState({params, values, events, eventActions, display});
         }
     }
 
@@ -105,18 +111,23 @@ class ComponentEditPane extends React.Component<Props, object> {
         if (!this.state.editing) this.setState({editing: true});
     };
 
+    handleDisplayChange = (display: DisplayInfo) => {
+        this.setState({display});
+        if (!this.state.editing) this.setState({editing: true});
+    };
+
     handleSaveClick = () => {
-        const {values, eventActions} = this.state;
+        const {values, eventActions, display} = this.state;
         const {components, componentSelected} = this.props;
         if (!componentSelected || !componentSelected.path) return;
-        const newComponents = this.treeDataHelper.updateComponentParamsAndEvents(values, eventActions, componentSelected.path, components);
+        const newComponents = this.treeDataHelper.updateComponentData(values, eventActions, display, componentSelected.path, components);
         this.props.componentsOnUpdate([...newComponents]);
         this.setState({editing: false});
     };
 
     render() {
         const {classes, componentSelected} = this.props;
-        const {params, values, events, eventActions, editing} = this.state;
+        const {params, values, events, eventActions, display, editing} = this.state;
         if (!componentSelected) return <div/>;
         return (
             <div className={classes.root}>
@@ -144,6 +155,10 @@ class ComponentEditPane extends React.Component<Props, object> {
                         </table>
                     </div>
                     <div className={classes.formsContainer}>
+                        <DisplayPane
+                            displayInfo={display}
+                            onChange={this.handleDisplayChange}
+                        />
                         <ParamFormGenerator
                             params={params}
                             values={values}

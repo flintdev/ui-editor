@@ -16,12 +16,12 @@ export class TreeDataHelper {
 
     }
 
-    updateComponentParamsAndEvents = (params: any, events: any, componentPath: Path, components: ComponentData[]) => {
+    updateComponentData = (params: any, events: any, display: any, componentPath: Path, components: ComponentData[]) => {
         _.set(components, [...componentPath, 'params'], params);
         _.set(components, [...componentPath, 'events'], events);
+        _.set(components, [...componentPath, 'display'], display);
         return components;
     };
-
 
     getComponentDataByTreeItem = (components: ComponentData[], item: TreeItem) => {
         const path = item.data.path;
