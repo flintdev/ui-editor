@@ -42,7 +42,6 @@ class ExampleContainer extends React.Component<Props, object> {
 
     handleAddComponentClick = () => {
         const id = _.uniqueId('w');
-        console.log('id', id);
         const data = {
             id,
             name: 'Button',

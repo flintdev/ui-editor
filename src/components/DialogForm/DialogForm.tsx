@@ -47,6 +47,7 @@ export interface Props extends WithStyles<typeof styles> {
     title?: string,
     submitButtonTitle?: string,
     closeButtonTitle?: string,
+    params?: Params,
     forms: Form[],
     onSubmit: (params: Params, callback: Callback) => void
 }
@@ -67,7 +68,10 @@ class DialogForm extends React.Component<Props, object> {
     }
 
     onEnter = () => {
-
+        const {params} = this.props;
+        if (!!params) {
+            this.setState({params});
+        }
     };
 
     handleSetStatus = (loadingStatus: LOADING_STATUS) => {

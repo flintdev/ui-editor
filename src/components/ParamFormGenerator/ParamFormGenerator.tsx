@@ -9,6 +9,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from "@material-ui/core/IconButton";
 import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import Chip from '@material-ui/core/Chip';
+import DialogForm, {Callback, Params} from "../DialogForm";
+import {AddStateUpdaterDef} from "../../containers/Toolbar/StateDialog/StateUpdatersView/definition";
+import {UpdateStateDef} from "./definition";
+import {StateUpdaterData} from "../../interface";
+import {StateUpdaterOperationType} from "../../constants";
 
 const styles = createStyles({
     root: {},
@@ -45,7 +51,21 @@ const FormTypeMap: any = {
     email: 'email'
 };
 
+interface State {
+    stateDialogOpen: boolean,
+    stateDialogParams: any,
+    stateEncodedValue: string,
+    itemKeySelected: string,
+}
+
+
 class ParamFormGenerator extends React.Component<Props, object> {
+    state: State = {
+        stateDialogOpen: false,
+        stateDialogParams: {},
+        stateEncodedValue: '',
+        itemKeySelected: '',
+    };
 
     componentDidMount(): void {
         this.initValues();
@@ -96,8 +116,9 @@ class ParamFormGenerator extends React.Component<Props, object> {
         }
     };
 
-    toggleDynamicInput = (type: ItemType, key: string) => () => {
+    toggleDynamicInput = (item: ParamItem) => () => {
         let {values} = this.props;
+        const {type, key} = item;
         const value = (values[key]);
         if (typeof value === "string" && value.includes('state::')) {
             // switch to static
@@ -106,7 +127,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
             values[key] = this.formatValue(type, newValue);
         } else {
             // switch to dynamic
-            values[key] = `state::$::displayValue::${value}`;
+            values[key] = this.encodeDynamicValue('$', value);
+            this.handleStateChipClick(item);
         }
         this.props.onChange(values);
     };
@@ -118,6 +140,41 @@ class ParamFormGenerator extends React.Component<Props, object> {
             state: parts[1],
             displayValue: parts[3]
         }
+    };
+
+    encodeDynamicValue = (state: string, displayValue: string) => {
+        return `state::${state}::displayValue::${displayValue}`;
+    };
+
+    handleStateChipClick = (item: ParamItem) => () => {
+        const {key, defaultValue} = item;
+        const value = this.getParamValue(key, defaultValue);
+        const {state} = this.decodeDynamicValue(value);
+        const params = {state};
+        this.setState({
+            stateDialogOpen: true,
+            stateDialogParams: params,
+            stateEncodedValue: value,
+            itemKeySelected: key
+        });
+    };
+
+    handleUpdateStateDialogClose = () => {
+        this.setState({
+            stateDialogOpen: false,
+            stateDialogParams: {},
+            stateEncodedValue: '',
+        });
+    };
+
+    handleUpdateStateSubmit = (params: Params, callback: Callback) => {
+        const state = params.state as string;
+        let {values} = this.props;
+        const {itemKeySelected, stateEncodedValue} = this.state;
+        const {displayValue} = this.decodeDynamicValue(stateEncodedValue);
+        values[itemKeySelected] = this.encodeDynamicValue(state, displayValue!);
+        this.props.onChange(values);
+        callback.close();
     };
 
     renderInput = (item: ParamItem) => {
@@ -159,8 +216,23 @@ class ParamFormGenerator extends React.Component<Props, object> {
         )
     };
 
+    renderStateChip = (item: ParamItem) => {
+        const {key, defaultValue} = item;
+        const value = this.getParamValue(key, defaultValue);
+        const {state} = this.decodeDynamicValue(value);
+        return (
+            <Chip
+                label={state}
+                variant={"outlined"}
+                size={"small"}
+                onClick={this.handleStateChipClick(item)}
+            />
+        )
+    };
+
     render() {
         const {classes, params} = this.props;
+        const {stateDialogOpen, stateDialogParams} = this.state;
         return (
             <div className={classes.root}>
                 {params.map((param, i) => {
@@ -183,7 +255,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
                                                     }
                                                     {inputType === "dynamic" &&
                                                     <div>
-
+                                                        {this.renderStateChip(item)}
                                                     </div>
                                                     }
                                                 </td>
@@ -191,7 +263,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
                                                     {inputType === "static" &&
                                                     <IconButton
                                                         size={"small"}
-                                                        onClick={this.toggleDynamicInput(item.type, item.key)}
+                                                        onClick={this.toggleDynamicInput(item)}
                                                     >
                                                         <AlbumOutlinedIcon fontSize={"small"}/>
                                                     </IconButton>
@@ -199,7 +271,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
                                                     {inputType === 'dynamic' &&
                                                     <IconButton
                                                         size={"small"}
-                                                        onClick={this.toggleDynamicInput(item.type, item.key)}
+                                                        onClick={this.toggleDynamicInput(item)}
                                                     >
                                                         <EditOutlinedIcon fontSize={"small"}/>
                                                     </IconButton>
@@ -215,6 +287,17 @@ class ParamFormGenerator extends React.Component<Props, object> {
                         </div>
                     )
                 })}
+
+                <DialogForm
+                    open={stateDialogOpen}
+                    onClose={this.handleUpdateStateDialogClose}
+                    title={"Edit State Field"}
+                    submitButtonTitle={"Update"}
+                    params={this.state.stateDialogParams}
+                    forms={UpdateStateDef}
+                    onSubmit={this.handleUpdateStateSubmit}
+                />
+
             </div>
         )
     }

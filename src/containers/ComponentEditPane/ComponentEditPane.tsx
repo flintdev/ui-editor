@@ -99,7 +99,6 @@ class ComponentEditPane extends React.Component<Props, object> {
             let {params, events} = configJson;
             events = !!events ? events : [];
             display = !!display ? display : {type: 'always'};
-            console.log('display', display);
             this.setState({params, values, events, eventActions, display});
         }
     }
