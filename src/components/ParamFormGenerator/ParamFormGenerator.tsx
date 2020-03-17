@@ -139,12 +139,12 @@ class ParamFormGenerator extends React.Component<Props, object> {
         if (parts.length !== 4) return {};
         return {
             state: parts[1],
-            displayValue: parts[3]
+            displayValue: JSON.parse(parts[3])
         }
     };
 
     encodeDynamicValue = (state: string, displayValue: string) => {
-        return `state::${state}::displayValue::${displayValue}`;
+        return `state::${state}::displayValue::${JSON.stringify(displayValue)}`;
     };
 
     handleStateChipClick = (item: ParamItem) => () => {
