@@ -4,8 +4,8 @@ import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-import { StoreState } from "src/redux/state";
-import * as actions from "src/redux/modules/components/actions";
+import { StoreState } from "../redux/state";
+import * as actions from "../redux/modules/components/actions";
 import {ActionData, ComponentData, StateUpdaterData} from "../interface";
 import Toolbar from "../containers/Toolbar/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView/ComponentTreeView";
@@ -101,12 +101,12 @@ class UIEditorContainer extends React.Component<Props, object> {
 
     handleCanvasComponentOnSelect = (componentData: ComponentData) => {
         this.props.selectComponent(componentData);
-        if (!!this.treeOperations) this.treeOperations.selectTreeItem(componentData.id);
+        if (!!this.treeOperations.selectTreeItem) this.treeOperations.selectTreeItem(componentData.id);
         this.props.componentOnSelect(componentData);
     };
 
     handleTreeViewComponentOnSelect = (componentData: ComponentData) => {
-        if (!!this.props.operations) this.props.operations.selectComponent(componentData);
+        if (!!this.props.operations.selectComponent) this.props.operations.selectComponent(componentData);
         this.props.componentOnSelect(componentData);
     };
 
