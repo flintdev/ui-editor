@@ -46,6 +46,7 @@ const styles = createStyles({
 });
 
 export interface Props extends WithStyles<typeof styles>, ComponentState {
+    operations: any,
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
@@ -93,6 +94,17 @@ class ComponentTreeView extends React.PureComponent<Props, object> {
         this.setState({treeData});
     }
 
+    componentWillMount(): void {
+        if (!!this.props.operations) {
+            this.props.operations.selectTreeItem = (id: string) => {
+                const {treeData} = this.state;
+                if (!treeData) return;
+                const item = this.treeDataHelper.getTreeItemById(treeData, id);
+                this.setState({item});
+            };
+        }
+    }
+
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<object>, snapshot?: any): void {
         if (JSON.stringify(prevProps.components) !== JSON.stringify(this.props.components)) {
             const treeData = this.getTreeData();
@@ -123,6 +135,7 @@ class ComponentTreeView extends React.PureComponent<Props, object> {
         this.setState({item});
         const componentData = this.treeDataHelper.getComponentDataByTreeItem(this.props.components, item);
         this.props.selectComponent(componentData);
+        this.props.componentOnSelect(componentData);
     };
 
     onTreeItemExpand = (itemId: ItemId) => {

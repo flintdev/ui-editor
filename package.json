@@ -1,6 +1,6 @@
 {
   "name": "@flintdev/ui-editor",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "npm package to build UI of applications by dragging and dropping components",
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/flintdev/model-editor#readme",
   "devDependencies": {
-    "@flintdev/material-widgets": "0.0.18",
+    "@flintdev/material-widgets": "0.0.20",
     "@material-ui/core": "^4.8.3",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.39",
@@ -77,6 +77,6 @@
   },
   "dependencies": {
     "@atlaskit/tree": "^7.1.2",
-    "@flintdev/ui-editor-canvas": "0.0.3"
+    "@flintdev/ui-editor-canvas": "0.0.4"
   }
 }

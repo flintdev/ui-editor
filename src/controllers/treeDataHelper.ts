@@ -30,6 +30,10 @@ export class TreeDataHelper {
         return componentData;
     };
 
+    getTreeItemById = (treeData: TreeData, id: string): TreeItem => {
+        return treeData.items[id];
+    };
+
     convertTreeDataToComponents = (treeData: TreeData): ComponentData[] => {
         const {rootId, items} = treeData;
         return this.recurToGetChildren(rootId as string, items);
@@ -48,7 +52,6 @@ export class TreeDataHelper {
             }
         });
     };
-
 
     convertComponentsToTreeData = (components: ComponentData[]): TreeData => {
         let items: Items = {};
