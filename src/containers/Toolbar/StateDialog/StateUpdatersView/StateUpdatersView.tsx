@@ -161,9 +161,9 @@ class StateUpdatersView extends React.Component<Props, object> {
 
     handleAddUpdaterSubmit = (params: Params, callback: Callback) => {
         const name = params.name as string;
-        const updater: StateUpdaterData = {name};
+        const updater: StateUpdaterData = {name, operations: []};
         this.props.stateUpdaterOnUpdate(StateUpdaterOperationType.Add, updater);
-        this.setState({stateUpdaterSelected: updater});
+        this.stateUpdaterOnSelect(updater)();
         this.forceUpdate();
         callback.close();
     };

@@ -18,6 +18,7 @@ export interface ActionData {
 
 export interface StateUpdaterData {
     name: string,
+    operations: UpdaterOperationData[],
 }
 
 export interface UpdaterOperationData {
