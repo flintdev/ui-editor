@@ -33,7 +33,7 @@ class ExampleContainer extends React.Component<Props, object> {
         actions: actionsExample,
         stateUpdaters: stateUpdatersExample,
         initialState: '',
-        components: componentsExample,
+        components: [],
     };
     operations: any = {};
     componentDidMount(): void {
@@ -46,7 +46,7 @@ class ExampleContainer extends React.Component<Props, object> {
             id,
             name: 'Button',
             params: {label: 'Button'},
-            children: []
+            children: [],
         };
         this.operations.addComponent(data);
     };

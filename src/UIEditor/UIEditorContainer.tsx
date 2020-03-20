@@ -100,9 +100,7 @@ class UIEditorContainer extends React.Component<Props, object> {
     };
 
     handleCanvasComponentOnSelect = (componentData: ComponentData) => {
-        this.props.selectComponent(componentData);
         if (!!this.treeOperations.selectTreeItem) this.treeOperations.selectTreeItem(componentData.id);
-        this.props.componentOnSelect(componentData);
     };
 
     handleTreeViewComponentOnSelect = (componentData: ComponentData) => {

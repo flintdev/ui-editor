@@ -100,7 +100,7 @@ class ComponentTreeView extends React.PureComponent<Props, object> {
                 const {treeData} = this.state;
                 if (!treeData) return;
                 const item = this.treeDataHelper.getTreeItemById(treeData, id);
-                this.setState({item});
+                this.handleTreeItemSelect(item)();
             };
         }
     }
