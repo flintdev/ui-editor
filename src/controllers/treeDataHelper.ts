@@ -16,10 +16,11 @@ export class TreeDataHelper {
 
     }
 
-    updateComponentData = (params: any, events: any, display: any, componentPath: Path, components: ComponentData[]) => {
+    updateComponentData = (params: any, events: any, display: any, repeat: any, componentPath: Path, components: ComponentData[]) => {
         _.set(components, [...componentPath, 'params'], params);
         _.set(components, [...componentPath, 'events'], events);
         _.set(components, [...componentPath, 'display'], display);
+        _.set(components, [...componentPath, 'repeat'], repeat);
         return components;
     };
 

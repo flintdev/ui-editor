@@ -7,4 +7,3 @@ export interface DisplayInfo {
     state? : string,
     value? : string,
 }
-

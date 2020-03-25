@@ -16,3 +16,8 @@ export interface EventAction {
     event: string,
     action: string
 }
+
+
+export interface RepeatInfo {
+    fieldPath: string
+}

@@ -6,6 +6,7 @@ export interface ComponentData {
     params: object,
     events?: any[],
     display?: object,
+    repeat?: object,
     children?: ComponentData[],
     path?: Array<string|number>,
     tag?: string

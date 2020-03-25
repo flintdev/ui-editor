@@ -15,9 +15,10 @@ import SaveIcon from '@material-ui/icons/Save';
 import {ActionData, ComponentData} from "../../interface";
 import {TreeDataHelper} from "../../controllers/treeDataHelper";
 import EventsPane from "./EventsPane/EventsPane";
-import {Event, EventAction} from "./interface";
+import {Event, EventAction, RepeatInfo} from "./interface";
 import DisplayPane from "./DisplayPane";
 import {DisplayInfo} from "./DisplayPane/interface";
+import RepeatPane from "./RepeatPane/RepeatPane";
 
 const styles = createStyles({
     root: {
@@ -70,7 +71,8 @@ interface State {
     events: Event[],
     eventActions: EventAction[],
     editing: boolean,
-    display: DisplayInfo
+    display: DisplayInfo,
+    repeat?: RepeatInfo,
 }
 
 class ComponentEditPane extends React.Component<Props, object> {
@@ -94,12 +96,13 @@ class ComponentEditPane extends React.Component<Props, object> {
             const name = componentSelected.name;
             const values = componentSelected.params;
             let display = componentSelected.display;
+            const repeat = componentSelected.repeat;
             const eventActions = componentSelected.events;
             const configJson = this.props.handler.getWidgetConfig(name);
             let {params, events} = configJson;
             events = !!events ? events : [];
             display = !!display ? display : {type: 'always'};
-            this.setState({params, values, events, eventActions, display});
+            this.setState({params, values, events, eventActions, display, repeat});
         }
     }
 
@@ -118,18 +121,23 @@ class ComponentEditPane extends React.Component<Props, object> {
         if (!this.state.editing) this.setState({editing: true});
     };
 
+    handleRepeatChange = (repeat?: RepeatInfo) => {
+        this.setState({repeat});
+        if (!this.state.editing) this.setState({editing: true});
+    };
+
     handleSaveClick = () => {
-        const {values, eventActions, display} = this.state;
+        const {values, eventActions, display, repeat} = this.state;
         const {components, componentSelected} = this.props;
         if (!componentSelected || !componentSelected.path) return;
-        const newComponents = this.treeDataHelper.updateComponentData(values, eventActions, display, componentSelected.path, components);
+        const newComponents = this.treeDataHelper.updateComponentData(values, eventActions, display, repeat, componentSelected.path, components);
         this.props.componentsOnUpdate([...newComponents]);
         this.setState({editing: false});
     };
 
     render() {
         const {classes, componentSelected} = this.props;
-        const {params, values, events, eventActions, display, editing} = this.state;
+        const {params, values, events, eventActions, display, repeat, editing} = this.state;
         if (!componentSelected) return <div/>;
         return (
             <div className={classes.root}>
@@ -171,6 +179,10 @@ class ComponentEditPane extends React.Component<Props, object> {
                             events={events}
                             eventActions={eventActions}
                             onChange={this.handleEventActionChange}
+                        />
+                        <RepeatPane
+                            repeatInfo={repeat}
+                            onChange={this.handleRepeatChange}
                         />
                     </div>
                 </Paper>
