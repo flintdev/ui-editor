@@ -68,7 +68,7 @@ export interface Props extends WithStyles<typeof styles>{
     saveOnClick: () => void,
     handler: {
         getWidgetConfig: (name: string) => any;
-        getWidget: (name: string, props: any) => void
+        getWidget: (name: string, props: any) => any
     },
 }
 
@@ -104,7 +104,7 @@ class UIEditorContainer extends React.Component<Props, object> {
     };
 
     handleTreeViewComponentOnSelect = (componentData: ComponentData) => {
-        if (!!this.props.operations.selectComponent) this.props.operations.selectComponent(componentData);
+        if (!!this.props.operations.selectComponentById) this.props.operations.selectComponentById(componentData.id);
         this.props.componentOnSelect(componentData);
     };
 
@@ -135,7 +135,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                     <UIEditorCanvas
                                         operations={this.props.operations}
                                         components={this.props.components}
-                                        editorLib={this.props.handler}
+                                        editorLib={{getWidget: this.props.handler.getWidget}}
                                         componentsUpdated={this.handleCanvasComponentsOnUpdate}
                                         componentOnSelect={this.handleCanvasComponentOnSelect}
                                         componentOnDelete={this.handleComponentOnDelete}

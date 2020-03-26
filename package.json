@@ -1,6 +1,6 @@
 {
   "name": "@flintdev/ui-editor",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "npm package to build UI of applications by dragging and dropping components",
   "main": "dist/index.js",
   "scripts": {
@@ -80,6 +80,6 @@
   },
   "dependencies": {
     "@atlaskit/tree": "^7.1.2",
-    "@flintdev/ui-editor-canvas": "0.0.7"
+    "@flintdev/ui-editor-canvas": "0.0.8"
   }
 }
