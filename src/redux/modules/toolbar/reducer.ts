@@ -31,6 +31,10 @@ export function reducer(state: ToolbarState, action: ToolbarAction) {
                     open: {$set: false}
                 }
             });
+        case types.SET_MODE:
+            return update(state, {
+                mode: {$set: action.mode}
+            });
 
         default:
             return state;

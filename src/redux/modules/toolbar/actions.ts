@@ -1,6 +1,7 @@
 // src/redux/modules/toolbar/actions.ts
 
 import * as types from './types';
+import {Mode} from "../../state";
 
 // functions
 
@@ -18,6 +19,10 @@ export function actionsDialogOpen(): ActionsDialogOpen {
 
 export function actionsDialogClose(): ActionsDialogClose {
     return { type: types.ACTIONS_DIALOG_CLOSE }
+}
+
+export function setMode(mode: Mode): SetMode {
+    return { type: types.SET_MODE, mode }
 }
 
 // interfaces
@@ -38,7 +43,13 @@ export interface ActionsDialogClose {
     type: typeof types.ACTIONS_DIALOG_CLOSE,
 }
 
+export interface SetMode {
+    type: typeof types.SET_MODE,
+    mode: Mode,
+}
+
 export type ToolbarAction =
+    SetMode |
     ActionsDialogOpen |
     ActionsDialogClose |
     StateDialogClose |

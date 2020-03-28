@@ -2,6 +2,8 @@
 
 import {ComponentData} from "../interface";
 
+export type Mode = 'editor' | 'preview';
+
 export interface ToolbarState {
     stateDialog: {
         open: boolean
@@ -9,6 +11,7 @@ export interface ToolbarState {
     actionsDialog: {
         open: boolean
     },
+    mode: Mode
 }
 
 export interface ComponentsState {
@@ -22,6 +25,7 @@ export interface StoreState {
 
 export const initState: StoreState = {
     toolbar: {
+        mode: 'editor',
         stateDialog: {
             open: false,
         },

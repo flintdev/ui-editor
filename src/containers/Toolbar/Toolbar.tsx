@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-import { StoreState } from "../../redux/state";
+import {Mode, StoreState, ToolbarState} from "../../redux/state";
 import * as actions from "../../redux/modules/toolbar/actions";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
@@ -14,6 +14,8 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
 import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import SaveIcon from '@material-ui/icons/Save';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = createStyles({
     root: {
@@ -45,13 +47,23 @@ const styles = createStyles({
         marginLeft: 10,
         marginRight: 10,
     },
+    modePaper: {
+        marginLeft: 10,
+        marginRight: 10,
+        display: 'inline-block',
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 2,
+        marginBottom: 2,
+    }
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles>, ToolbarState {
     addComponentOnClick: () => void;
     saveOnClick: () => void;
     stateDialogOpen: () => void,
     actionsDialogOpen: () => void,
+    setMode: (mode: Mode) => void,
 }
 
 class Toolbar extends React.Component<Props, object> {
@@ -71,8 +83,13 @@ class Toolbar extends React.Component<Props, object> {
         this.props.saveOnClick();
     };
 
+    handleModeSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) this.props.setMode("preview");
+        else this.props.setMode("editor");
+    };
+
     render() {
-        const {classes} = this.props;
+        const {classes, mode} = this.props;
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -93,6 +110,20 @@ class Toolbar extends React.Component<Props, object> {
                                 >
                                     <ZoomInIcon/>&nbsp;&nbsp;100%&nbsp;&nbsp;<ZoomOutIcon/>
                                 </Button>
+                                <Paper className={classes.modePaper}>
+                                    <FormControlLabel
+                                        value="mode"
+                                        control={
+                                            <Switch
+                                                color="primary"
+                                                checked={mode === 'preview'}
+                                                onChange={this.handleModeSwitchChange}
+                                            />
+                                        }
+                                        label="Preview"
+                                        labelPlacement="start"
+                                    />
+                                </Paper>
                             </td>
                             <td align={"right"}>
                                 <Button
@@ -135,6 +166,7 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
     return {
         stateDialogOpen: () => dispatch(actions.stateDialogOpen()),
         actionsDialogOpen: () => dispatch(actions.actionsDialogOpen()),
+        setMode: (mode: Mode) => dispatch(actions.setMode(mode)),
     }
 };
 

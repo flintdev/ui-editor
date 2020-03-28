@@ -33,7 +33,7 @@ class ExampleContainer extends React.Component<Props, object> {
         actions: actionsExample,
         stateUpdaters: stateUpdatersExample,
         initialState: '',
-        components: [],
+        components: componentsExample,
     };
     operations: any = {};
     componentDidMount(): void {
