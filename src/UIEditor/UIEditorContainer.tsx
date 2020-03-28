@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-import { StoreState } from "../redux/state";
+import {StoreState, ToolbarState} from "../redux/state";
 import * as actions from "../redux/modules/components/actions";
 import {ActionData, ComponentData, StateUpdaterData} from "../interface";
 import Toolbar from "../containers/Toolbar/Toolbar";
@@ -13,6 +13,7 @@ import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane
 import ActionsDialog from "../containers/Toolbar/ActionsDialog/ActionsDialog";
 import StateDialog from "../containers/Toolbar/StateDialog/StateDialog";
 import UIEditorCanvas from '@flintdev/ui-editor-canvas';
+import {ComponentState} from "react";
 
 const styles = createStyles({
     root: {
@@ -52,7 +53,7 @@ const styles = createStyles({
     }
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles>, ToolbarState, ComponentState {
     selectComponent: (value: ComponentData) => void,
     operations: any,
     actions: ActionData[],
@@ -109,7 +110,7 @@ class UIEditorContainer extends React.Component<Props, object> {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, mode} = this.props;
         return (
             <div className={classes.root}>
                 <div className={classes.root}>
@@ -139,7 +140,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                         componentsUpdated={this.handleCanvasComponentsOnUpdate}
                                         componentOnSelect={this.handleCanvasComponentOnSelect}
                                         componentOnDelete={this.handleComponentOnDelete}
-                                        isDnd={true}
+                                        isDnd={mode === "editor"}
                                     />
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
@@ -174,7 +175,7 @@ class UIEditorContainer extends React.Component<Props, object> {
 }
 
 const mapStateToProps = (state: StoreState) => {
-    return state.components;
+    return {...state.components, ...state.toolbar};
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
