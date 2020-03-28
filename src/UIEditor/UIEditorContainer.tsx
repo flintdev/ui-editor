@@ -133,15 +133,19 @@ class UIEditorContainer extends React.Component<Props, object> {
                                     />
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
-                                    <UIEditorCanvas
-                                        operations={this.props.operations}
-                                        components={this.props.components}
-                                        editorLib={{getWidget: this.props.handler.getWidget}}
-                                        componentsUpdated={this.handleCanvasComponentsOnUpdate}
-                                        componentOnSelect={this.handleCanvasComponentOnSelect}
-                                        componentOnDelete={this.handleComponentOnDelete}
-                                        isDnd={mode === "editor"}
-                                    />
+                                    <div style={{overflow: "auto", height: '100%'}}>
+                                        <div style={{overflow: "scroll"}}>
+                                            <UIEditorCanvas
+                                                operations={this.props.operations}
+                                                components={this.props.components}
+                                                editorLib={{getWidget: this.props.handler.getWidget}}
+                                                componentsUpdated={this.handleCanvasComponentsOnUpdate}
+                                                componentOnSelect={this.handleCanvasComponentOnSelect}
+                                                componentOnDelete={this.handleComponentOnDelete}
+                                                isDnd={mode === "editor"}
+                                            />
+                                        </div>
+                                    </div>
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
                                     <ComponentEditPane
