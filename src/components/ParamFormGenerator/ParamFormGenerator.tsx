@@ -99,6 +99,12 @@ class ParamFormGenerator extends React.Component<Props, object> {
         this.props.onChange(values);
     };
 
+    handleArrayValueUpdate = (key: string) => (value: any) => {
+        let {values} = this.props;
+        values[key] = value;
+        this.props.onChange(values);
+    };
+
     private formatValue = (type: ItemType, value: string) => {
         if (type === ItemType.integer) return parseInt(value) as number;
         return value;
@@ -182,7 +188,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
             <ListEditor
                 itemConfig={item}
                 value={value}
-                onUpdate={(value) => {}}
+                onUpdate={this.handleArrayValueUpdate(key)}
             />
         )
     };

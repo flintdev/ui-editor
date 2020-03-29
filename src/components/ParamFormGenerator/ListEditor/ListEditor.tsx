@@ -20,12 +20,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from "@material-ui/core/Button";
 
 const styles = createStyles({
-    root: {
-
-    },
-    content: {
-        padding: 20
-    },
+    root: {},
+    content: {},
     panel: {
         marginBottom: 10,
         border: '1px solid lightgrey'
@@ -35,7 +31,7 @@ const styles = createStyles({
     }
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles> {
     itemConfig: ParamItem,
     value: any,
     onUpdate: (value: any) => void,
@@ -51,7 +47,7 @@ class ListEditor extends React.Component<Props, object> {
         open: false,
         value: [],
     };
-    
+
     componentDidMount(): void {
 
     }
@@ -83,7 +79,7 @@ class ListEditor extends React.Component<Props, object> {
             <TextField
                 value={value}
                 onChange={this.handleFormChange(path)}
-                label={!!name? name : 'String'}
+                label={!!name ? name : 'String'}
                 variant={"outlined"}
                 size={"small"}
                 fullWidth={true}
@@ -100,7 +96,7 @@ class ListEditor extends React.Component<Props, object> {
                     <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon/>}
                     >
-                        <Typography variant={"subtitle2"}>{`#${index+1}`}</Typography>
+                        <Typography variant={"subtitle2"}>{`#${index + 1}`}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails className={classes.panelContent}>
                         {elementConfig?.type === 'string' &&
@@ -150,6 +146,12 @@ class ListEditor extends React.Component<Props, object> {
         else if (elementConfig.type === "array") return [this.getEmptyValue(elementConfig.element)];
     };
 
+    handleSubmitClick = () => {
+        const {value} = this.state;
+        this.props.onUpdate(value);
+        this.handleDialogClose();
+    };
+
     render() {
         const {classes, itemConfig, value} = this.props;
         const {open} = this.state;
@@ -167,12 +169,18 @@ class ListEditor extends React.Component<Props, object> {
                     onEnter={this.onEnter}
                     fullWidth={true}
                 >
-                    <div className={classes.content}>
-                        {value.map(
-                            (elementValue, index) => this.renderElementPanel(index, [index], elementValue, itemConfig.element)
-                        )}
-                        {this.renderAddElementButton([value.length], itemConfig.element)}
-                    </div>
+                    <DialogContent>
+                        <div className={classes.content}>
+                            {value.map(
+                                (elementValue, index) => this.renderElementPanel(index, [index], elementValue, itemConfig.element)
+                            )}
+                            {this.renderAddElementButton([value.length], itemConfig.element)}
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleDialogClose}>Close</Button>
+                        <Button variant={"contained"} color={"primary"} onClick={this.handleSubmitClick}>Update</Button>
+                    </DialogActions>
                 </Dialog>
             </div>
         )
