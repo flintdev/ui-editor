@@ -18,6 +18,8 @@ import * as _ from 'lodash';
 import TextField from "@material-ui/core/TextField";
 import AddIcon from '@material-ui/icons/Add';
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 const styles = createStyles({
     root: {},
@@ -26,9 +28,15 @@ const styles = createStyles({
         marginBottom: 10,
         border: '1px solid lightgrey'
     },
+    panelHeader: {
+        display: 'flex'
+    },
     panelContent: {
         display: 'grid'
-    }
+    },
+    headingText: {
+        flex: 1
+    },
 });
 
 export interface Props extends WithStyles<typeof styles> {
@@ -41,6 +49,8 @@ interface State {
     open: boolean,
     value: any
 }
+
+// todo: 2. support object data type
 
 class ListEditor extends React.Component<Props, object> {
     state: State = {
@@ -94,9 +104,16 @@ class ListEditor extends React.Component<Props, object> {
             <div key={index}>
                 <ExpansionPanel className={classes.panel}>
                     <ExpansionPanelSummary
+                        className={classes.panelHeader}
                         expandIcon={<ExpandMoreIcon/>}
                     >
-                        <Typography variant={"subtitle2"}>{`#${index + 1}`}</Typography>
+                        <Typography variant={"subtitle1"} className={classes.headingText}>{`#${index + 1}`}</Typography>
+                        <IconButton
+                            size={"small"}
+                            onClick={this.handleDeleteElementClick(path)}
+                        >
+                            <DeleteOutlineIcon fontSize={"small"}/>
+                        </IconButton>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails className={classes.panelContent}>
                         {elementConfig?.type === 'string' &&
@@ -137,6 +154,21 @@ class ListEditor extends React.Component<Props, object> {
         const emptyValue = this.getEmptyValue(elementConfig);
         let {value} = this.state;
         _.set(value, path, emptyValue);
+        this.setState({value});
+    };
+
+    handleDeleteElementClick = (path: any) => (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        let {value} = this.state;
+        if (path.length === 1) {
+            value.splice(path[0], 1);
+        } else {
+            const parentPath = path.slice(0, path.length - 1);
+            const index = path[path.length - 1];
+            let tempList = _.get(value, parentPath);
+            tempList.splice(index, 1);
+            _.set(value, parentPath, tempList);
+        }
         this.setState({value});
     };
 
