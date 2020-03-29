@@ -3,11 +3,20 @@
 export enum ItemType {
     integer = 'integer',
     string = 'string',
+    array = 'array',
+    object = 'object',
 }
 
 export enum ItemUI {
     input = 'input',
-    select = 'select'
+    select = 'select',
+    listEditor = 'list-editor'
+}
+
+export interface Element {
+    type: ItemType,
+    element?: Element,
+    items?: ParamItem[],
 }
 
 export interface ParamItem {
@@ -16,7 +25,8 @@ export interface ParamItem {
     type: ItemType,
     defaultValue: any,
     ui: ItemUI,
-    options?: any[]
+    options?: any[],
+    element?: Element,
 }
 
 export interface Param {

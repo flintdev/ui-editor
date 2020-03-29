@@ -11,10 +11,8 @@ import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Chip from '@material-ui/core/Chip';
 import DialogForm, {Callback, Params} from "../DialogForm";
-import {AddStateUpdaterDef} from "../../containers/Toolbar/StateDialog/StateUpdatersView/definition";
 import {UpdateStateDef} from "./definition";
-import {StateUpdaterData} from "../../interface";
-import {StateUpdaterOperationType} from "../../constants";
+import ListEditor from "./ListEditor";
 
 const styles = createStyles({
     root: {},
@@ -123,8 +121,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
         if (typeof value === "string" && value.includes('state::')) {
             // switch to static
             const {displayValue} = this.decodeDynamicValue(value);
-            const newValue = displayValue as string;
-            values[key] = this.formatValue(type, newValue);
+            values[key] = displayValue;
             this.props.onChange(values);
         } else {
             // switch to dynamic
@@ -143,7 +140,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
         }
     };
 
-    encodeDynamicValue = (state: string, displayValue: string) => {
+    encodeDynamicValue = (state: string, displayValue: any) => {
         return `state::${state}::displayValue::${JSON.stringify(displayValue)}`;
     };
 
@@ -176,6 +173,18 @@ class ParamFormGenerator extends React.Component<Props, object> {
         values[itemKeySelected] = this.encodeDynamicValue(state, displayValue!);
         this.props.onChange(values);
         callback.close();
+    };
+
+    renderListEditor = (item: ParamItem) => {
+        const {key, defaultValue} = item;
+        const value = this.getParamValue(key, defaultValue);
+        return (
+            <ListEditor
+                itemConfig={item}
+                value={value}
+                onUpdate={(value) => {}}
+            />
+        )
     };
 
     renderInput = (item: ParamItem) => {
@@ -252,6 +261,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
                                                     <div>
                                                         {item.ui === ItemUI.input && this.renderInput(item)}
                                                         {item.ui === ItemUI.select && this.renderSelect(item)}
+                                                        {item.ui === ItemUI.listEditor && this.renderListEditor(item)}
                                                     </div>
                                                     }
                                                     {inputType === "dynamic" &&
