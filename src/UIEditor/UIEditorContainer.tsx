@@ -134,7 +134,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
                                     <div style={{overflow: "auto", height: '100%'}}>
-                                        <div style={{overflow: "scroll"}}>
+                                        <div style={{overflow: "scroll", height: '100%'}}>
                                             <UIEditorCanvas
                                                 operations={this.props.operations}
                                                 components={this.props.components}
