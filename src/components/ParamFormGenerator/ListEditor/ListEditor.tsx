@@ -20,6 +20,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = createStyles({
     root: {},
@@ -97,6 +98,27 @@ class ListEditor extends React.Component<Props, object> {
         )
     };
 
+    renderSelect = (path, name: string, options: any[]) => {
+        const value = _.get(this.state.value, path);
+        return (
+            <TextField
+                label={name}
+                value={value}
+                onChange={this.handleFormChange(path)}
+                fullWidth={true}
+                variant={"outlined"}
+                size={"small"}
+                select={true}
+            >
+                {options.map((option, i) => {
+                    return (
+                        <MenuItem key={i} value={option}>{option}</MenuItem>
+                    )
+                })}
+            </TextField>
+        )
+    };
+
     renderElementPanel = (index: number, path: any, elementValue: any, elementConfig?: Element): any => {
         if (!elementConfig) return <div/>;
         const {classes} = this.props;
@@ -129,7 +151,15 @@ class ListEditor extends React.Component<Props, object> {
                         }
                         {elementConfig?.type === 'object' &&
                         <div>
-
+                            {!!elementConfig.items && elementConfig.items.map((item, index) => {
+                                const itemPath = [...path, item.key];
+                                return (
+                                    <div key={index}>
+                                        {item.ui === "input" && this.renderInput(itemPath, item.name)}
+                                        {item.ui === "select" && this.renderSelect(itemPath, item.name, item!.options)}
+                                    </div>
+                                )
+                            })}
                         </div>
                         }
                     </ExpansionPanelDetails>
