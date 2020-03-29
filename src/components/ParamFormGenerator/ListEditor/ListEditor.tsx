@@ -16,6 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as _ from 'lodash';
 import TextField from "@material-ui/core/TextField";
+import AddIcon from '@material-ui/icons/Add';
+import Button from "@material-ui/core/Button";
 
 const styles = createStyles({
     root: {
@@ -106,7 +108,12 @@ class ListEditor extends React.Component<Props, object> {
                             {this.renderInput(path)}
                         </div>
                         }
-                        {elementConfig?.type === 'array' && elementValue.map((item, index) => this.renderElementPanel(index, [...path, index], item, elementConfig.element))}
+                        {elementConfig?.type === 'array' &&
+                        <div>
+                            {elementValue.map((item, index) => this.renderElementPanel(index, [...path, index], item, elementConfig.element))}
+                            {this.renderAddElementButton([...path, elementValue.length], elementConfig.element)}
+                        </div>
+                        }
                         {elementConfig?.type === 'object' &&
                         <div>
 
@@ -116,6 +123,31 @@ class ListEditor extends React.Component<Props, object> {
                 </ExpansionPanel>
             </div>
         )
+    };
+
+    renderAddElementButton = (path: any, elementConfig: any) => {
+        return (
+            <Button
+                fullWidth={true}
+                color={"primary"}
+                onClick={this.handleAddElementClick(path, elementConfig)}
+            >
+                <AddIcon/>&nbsp;Add Element
+            </Button>
+        )
+    };
+
+    handleAddElementClick = (path: any, elementConfig: any) => () => {
+        const emptyValue = this.getEmptyValue(elementConfig);
+        let {value} = this.state;
+        _.set(value, path, emptyValue);
+        this.setState({value});
+    };
+
+    getEmptyValue = (elementConfig: any) => {
+        if (elementConfig.type === "string") return "";
+        else if (elementConfig.type === "integer") return 0;
+        else if (elementConfig.type === "array") return [this.getEmptyValue(elementConfig.element)];
     };
 
     render() {
@@ -139,6 +171,7 @@ class ListEditor extends React.Component<Props, object> {
                         {value.map(
                             (elementValue, index) => this.renderElementPanel(index, [index], elementValue, itemConfig.element)
                         )}
+                        {this.renderAddElementButton([value.length], itemConfig.element)}
                     </div>
                 </Dialog>
             </div>
