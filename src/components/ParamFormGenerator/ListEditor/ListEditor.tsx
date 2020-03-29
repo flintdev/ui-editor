@@ -51,8 +51,6 @@ interface State {
     value: any
 }
 
-// todo: 2. support object data type
-
 class ListEditor extends React.Component<Props, object> {
     state: State = {
         open: false,
@@ -98,7 +96,7 @@ class ListEditor extends React.Component<Props, object> {
         )
     };
 
-    renderSelect = (path, name: string, options: any[]) => {
+    renderSelect = (path, name: string, options?: any[]) => {
         const value = _.get(this.state.value, path);
         return (
             <TextField
@@ -110,7 +108,7 @@ class ListEditor extends React.Component<Props, object> {
                 size={"small"}
                 select={true}
             >
-                {options.map((option, i) => {
+                {options!.map((option, i) => {
                     return (
                         <MenuItem key={i} value={option}>{option}</MenuItem>
                     )
@@ -156,7 +154,7 @@ class ListEditor extends React.Component<Props, object> {
                                 return (
                                     <div key={index}>
                                         {item.ui === "input" && this.renderInput(itemPath, item.name)}
-                                        {item.ui === "select" && this.renderSelect(itemPath, item.name, item!.options)}
+                                        {item.ui === "select" && this.renderSelect(itemPath, item.name, item.options)}
                                     </div>
                                 )
                             })}
