@@ -2,15 +2,14 @@
 
 import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
-import { SketchPicker } from 'react-color';
+import {SketchPicker} from 'react-color';
 import Popover from "@material-ui/core/Popover";
 import Chip from "@material-ui/core/Chip";
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = createStyles({
-    root: {
-
-    },
+    root: {},
     chip: {
         marginRight: 10,
     },
@@ -27,6 +26,9 @@ const styles = createStyles({
     },
     avatar: {
         border: '1px solid #ddd'
+    },
+    tooltip: {
+
     }
 });
 
@@ -62,11 +64,11 @@ class ColorPicker extends React.Component<Props, object> {
     };
 
     render() {
-        const {classes, value} = this.props;
+        const {classes, value, name} = this.props;
         const {anchorEl} = this.state;
         return (
             <div className={classes.root}>
-                <div className={classes.container}>
+                <Tooltip title={name} placement="top" className={classes.tooltip}>
                     <Chip
                         className={classes.chip}
                         variant={"outlined"}
@@ -80,8 +82,7 @@ class ColorPicker extends React.Component<Props, object> {
                             >&nbsp;</Avatar>
                         }
                     />
-                </div>
-
+                </Tooltip>
                 <Popover
                     open={Boolean(anchorEl)}
                     onClose={this.handlePopoverClose}
