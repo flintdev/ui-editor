@@ -13,6 +13,7 @@ import Chip from '@material-ui/core/Chip';
 import DialogForm, {Callback, Params} from "../DialogForm";
 import {UpdateStateDef} from "./definition";
 import ListEditor from "./ListEditor";
+import ColorPicker from "./ColorPicker";
 
 const styles = createStyles({
     root: {},
@@ -96,6 +97,12 @@ class ParamFormGenerator extends React.Component<Props, object> {
         let {values} = this.props;
         let value: any = event.target.value;
         values[key] = this.formatValue(type, value);
+        this.props.onChange(values);
+    };
+
+    handleColorChange = (key: string) => (color: string) => {
+        let {values} = this.props;
+        values[key] = color;
         this.props.onChange(values);
     };
 
@@ -189,6 +196,18 @@ class ParamFormGenerator extends React.Component<Props, object> {
                 itemConfig={item}
                 value={value}
                 onUpdate={this.handleArrayValueUpdate(key)}
+            />
+        )
+    };
+
+    renderColorPicker = (item: ParamItem) => {
+        const {key, name, type, defaultValue} = item;
+        const value = this.getParamValue(key, defaultValue);
+        return (
+            <ColorPicker
+                name={name}
+                value={value}
+                onChange={this.handleColorChange(key)}
             />
         )
     };
