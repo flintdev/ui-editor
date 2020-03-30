@@ -287,6 +287,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
                                                         {item.ui === ItemUI.input && this.renderInput(item)}
                                                         {item.ui === ItemUI.select && this.renderSelect(item)}
                                                         {item.ui === ItemUI.listEditor && this.renderListEditor(item)}
+                                                        {item.ui === ItemUI.colorPicker && this.renderColorPicker(item)}
                                                     </div>
                                                     }
                                                     {inputType === "dynamic" &&

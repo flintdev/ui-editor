@@ -10,7 +10,8 @@ export enum ItemType {
 export enum ItemUI {
     input = 'input',
     select = 'select',
-    listEditor = 'list-editor'
+    listEditor = 'list-editor',
+    colorPicker = 'color-picker',
 }
 
 export interface Element {

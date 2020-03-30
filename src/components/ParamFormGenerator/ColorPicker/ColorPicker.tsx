@@ -24,6 +24,9 @@ const styles = createStyles({
     colorDiv: {
         width: 24,
         height: 24,
+    },
+    avatar: {
+        border: '1px solid #ddd'
     }
 });
 
@@ -51,7 +54,7 @@ class ColorPicker extends React.Component<Props, object> {
     };
 
     handlePopoverClose = () => {
-        this.setState({anchor: undefined});
+        this.setState({anchorEl: undefined});
     };
 
     handleColorChange = (color: any) => {
@@ -70,7 +73,12 @@ class ColorPicker extends React.Component<Props, object> {
                         label={value}
                         clickable={true}
                         onClick={this.handleChipClick}
-                        avatar={<Avatar style={{backgroundColor: value}}/>}
+                        avatar={
+                            <Avatar
+                                className={classes.avatar}
+                                style={{backgroundColor: value}}
+                            >&nbsp;</Avatar>
+                        }
                     />
                 </div>
 

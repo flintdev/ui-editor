@@ -33,4 +33,12 @@ export const componentsExample: ComponentData[] = [
             }
         ],
     },
+    {
+        id: '3',
+        name: 'NavBar',
+        params: {
+            bgColor: '#FFFFFF',
+            titleColor: '#000000'
+        }
+    }
 ];
