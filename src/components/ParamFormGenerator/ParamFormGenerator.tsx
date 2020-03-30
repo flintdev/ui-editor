@@ -85,7 +85,6 @@ class ParamFormGenerator extends React.Component<Props, object> {
 
     getParamValue = (key: string, defaultValue: any) => {
         const {values} = this.props;
-        if (!values || !values[key]) return defaultValue;
         return values[key];
     };
 

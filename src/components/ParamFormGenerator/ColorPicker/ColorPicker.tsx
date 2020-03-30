@@ -60,7 +60,7 @@ class ColorPicker extends React.Component<Props, object> {
     };
 
     handleColorChange = (color: any) => {
-        this.props.onChange(color.hex);
+        this.props.onChange(color.hex.toUpperCase());
     };
 
     render() {
