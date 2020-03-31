@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import {ActionData} from "../../../interface";
 import AceEditor from "react-ace";
-import 'ace-builds/webpack-resolver';
+// import 'ace-builds/webpack-resolver';
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import SaveIcon from '@material-ui/icons/Save';

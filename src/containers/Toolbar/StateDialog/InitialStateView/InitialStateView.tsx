@@ -8,7 +8,7 @@ import { StoreState } from "../../../../redux/state";
 import * as actions from "../../../../redux/modules/toolbar/actions";
 import Paper from "@material-ui/core/Paper";
 import AceEditor from "react-ace";
-import 'ace-builds/webpack-resolver';
+// import 'ace-builds/webpack-resolver';
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import Button from "@material-ui/core/Button";
