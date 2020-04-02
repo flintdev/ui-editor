@@ -1,9 +1,9 @@
 // src/containers/ComponentEditPane/ComponentEditPane.tsx
 
 import * as React from 'react';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { Dispatch } from "redux";
+import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {Dispatch} from "redux";
 import {ComponentsState, StoreState} from "../../redux/state";
 import * as actions from "../../redux/modules/components/actions";
 import Typography from "@material-ui/core/Typography";
@@ -19,6 +19,7 @@ import {Event, EventAction, RepeatInfo} from "./interface";
 import DisplayPane from "./DisplayPane";
 import {DisplayInfo} from "./DisplayPane/interface";
 import RepeatPane from "./RepeatPane/RepeatPane";
+import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {
@@ -85,6 +86,7 @@ class ComponentEditPane extends React.Component<Props, object> {
         display: {type: 'always'},
     };
     treeDataHelper = new TreeDataHelper();
+
     componentDidMount(): void {
 
     }
@@ -141,51 +143,59 @@ class ComponentEditPane extends React.Component<Props, object> {
         if (!componentSelected) return <div/>;
         return (
             <div className={classes.root}>
-                <Paper className={classes.paper}>
-                    <div className={classes.headerContainer}>
-                        <table className={classes.headerTable}>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <Typography variant={"overline"} className={classes.headerText}>{componentSelected.name}</Typography>
-                                </td>
-                                <td align={"right"}>
-                                    <Button
-                                        variant={"contained"}
-                                        size={"small"}
-                                        color={"primary"}
-                                        onClick={this.handleSaveClick}
-                                        disabled={!editing}
-                                    >
-                                        <SaveIcon fontSize={"small"}/>&nbsp; Save
-                                    </Button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className={classes.formsContainer}>
-                        <DisplayPane
-                            displayInfo={display}
-                            onChange={this.handleDisplayChange}
-                        />
-                        <ParamFormGenerator
-                            params={params}
-                            values={values}
-                            onChange={this.handleValuesChange}
-                        />
-                        <EventsPane
-                            actions={this.props.actions}
-                            events={events}
-                            eventActions={eventActions}
-                            onChange={this.handleEventActionChange}
-                        />
-                        <RepeatPane
-                            repeatInfo={repeat}
-                            onChange={this.handleRepeatChange}
-                        />
-                    </div>
-                </Paper>
+                <HotKeys
+                    keyMap={{SAVE: "command+s"}}
+                    handlers={{
+                        SAVE: this.handleSaveClick
+                    }}
+                >
+                    <Paper className={classes.paper}>
+                        <div className={classes.headerContainer}>
+                            <table className={classes.headerTable}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <Typography variant={"overline"}
+                                                    className={classes.headerText}>{componentSelected.name}</Typography>
+                                    </td>
+                                    <td align={"right"}>
+                                        <Button
+                                            variant={"contained"}
+                                            size={"small"}
+                                            color={"primary"}
+                                            onClick={this.handleSaveClick}
+                                            disabled={!editing}
+                                        >
+                                            <SaveIcon fontSize={"small"}/>&nbsp; Save
+                                        </Button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className={classes.formsContainer}>
+                            <DisplayPane
+                                displayInfo={display}
+                                onChange={this.handleDisplayChange}
+                            />
+                            <ParamFormGenerator
+                                params={params}
+                                values={values}
+                                onChange={this.handleValuesChange}
+                            />
+                            <EventsPane
+                                actions={this.props.actions}
+                                events={events}
+                                eventActions={eventActions}
+                                onChange={this.handleEventActionChange}
+                            />
+                            <RepeatPane
+                                repeatInfo={repeat}
+                                onChange={this.handleRepeatChange}
+                            />
+                        </div>
+                    </Paper>
+                </HotKeys>
             </div>
         )
     }
@@ -196,9 +206,7 @@ const mapStateToProps = (state: StoreState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
-    return {
-
-    }
+    return {}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ComponentEditPane));
