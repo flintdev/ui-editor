@@ -16,7 +16,6 @@ import Typography from '@material-ui/core/Typography';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import {ActionData} from "../../../interface";
 import AceEditor from "react-ace";
-// import 'ace-builds/webpack-resolver';
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import SaveIcon from '@material-ui/icons/Save';
@@ -25,6 +24,8 @@ import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateC
 import DialogForm, {Params, Callback} from "../../../components/DialogForm";
 import {AddActionDef} from "./definition";
 import ActionTemplate from './actionTemplate.txt';
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = createStyles({
     root: {},
@@ -81,6 +82,9 @@ const styles = createStyles({
     },
     itemText: {
         fontSize: 16
+    },
+    closeButton: {
+        marginLeft: 20,
     }
 });
 
@@ -88,6 +92,7 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
     actionsDialogClose: () => void,
+    stateDialogOpen: () => void,
 }
 
 interface State {
@@ -185,9 +190,13 @@ class ActionsDialog extends React.Component<Props, object> {
                                     <Button
                                         variant={"outlined"}
                                         size={"small"}
+                                        onClick={this.props.stateDialogOpen}
                                     >
                                         <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add State Updater
                                     </Button>
+                                    <IconButton size={"small"} className={classes.closeButton} onClick={this.props.actionsDialogClose}>
+                                        <CloseIcon/>
+                                    </IconButton>
                                 </td>
                             </tr>
                             </tbody>
@@ -304,6 +313,7 @@ const mapStateToProps = (state: StoreState) => {
 const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
     return {
         actionsDialogClose: () => dispatch(actions.actionsDialogClose()),
+        stateDialogOpen: () => dispatch(actions.stateDialogOpen()),
     }
 };
 

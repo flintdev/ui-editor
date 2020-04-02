@@ -13,6 +13,8 @@ import Tab from "@material-ui/core/Tab";
 import StateUpdatersView from "./StateUpdatersView";
 import {StateUpdaterData} from "../../../interface";
 import InitialStateView from "./InitialStateView";
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from "@material-ui/core/IconButton";
 
 
 const styles = createStyles({
@@ -28,6 +30,9 @@ const styles = createStyles({
         margin: 10,
         height: '80vh',
     },
+    table: {
+        width: '100%'
+    }
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
@@ -74,15 +79,28 @@ class StateDialog extends React.Component<Props, object> {
                     disableEnforceFocus={true}
                 >
                     <Paper className={classes.paperTabs}>
-                        <Tabs
-                            value={tabIndex}
-                            onChange={this.handleTabChange}
-                            indicatorColor={"primary"}
-                            textColor={"primary"}
-                        >
-                            <Tab label={'State Updaters'}/>
-                            <Tab label={'Initial State'}/>
-                        </Tabs>
+                        <table className={classes.table}>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <Tabs
+                                        value={tabIndex}
+                                        onChange={this.handleTabChange}
+                                        indicatorColor={"primary"}
+                                        textColor={"primary"}
+                                    >
+                                        <Tab label={'State Updaters'}/>
+                                        <Tab label={'Initial State'}/>
+                                    </Tabs>
+                                </td>
+                                <td align={"right"}>
+                                    <IconButton size={"small"} onClick={this.props.stateDialogClose}>
+                                        <CloseIcon/>
+                                    </IconButton>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </Paper>
                     <div className={classes.content}>
                         {tabIndex === 0 &&
