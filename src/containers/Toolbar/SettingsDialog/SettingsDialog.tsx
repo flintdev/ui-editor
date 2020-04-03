@@ -7,7 +7,7 @@ import {Dispatch} from "redux";
 import {StoreState, ToolbarState} from "../../../redux/state";
 import * as actions from "../../../redux/modules/toolbar/actions";
 import Dialog from "@material-ui/core/Dialog";
-import {PageDependency, SettingsData} from "../../../interface";
+import {AdditionalLibrary, PageDependency, SettingsData} from "../../../interface";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import Paper from "@material-ui/core/Paper";
@@ -17,6 +17,7 @@ import ListItem from '@material-ui/core/ListItem';
 import {SETTING_ITEMS, SettingItem} from "../../../constants";
 import {ListItemText} from "@material-ui/core";
 import DependencyPane from "./DependencyPane";
+import LibraryPane from "./LibraryPane/LibraryPane";
 
 const styles = createStyles({
     root: {},
@@ -26,18 +27,18 @@ const styles = createStyles({
         paddingLeft: 10,
         paddingRight: 10,
         borderRadius: 0,
-        marginBottom: 10,
     },
     tableHeader: {
         width: '100%'
     },
     dialogContent: {
         backgroundColor: '#f5f5f5',
-        paddingBottom: 10,
-        paddingRight: 10,
     },
     content: {
         marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10,
+        marginTop: 10,
     },
     closeButton: {
         marginLeft: 20,
@@ -78,13 +79,14 @@ class SettingsDialog extends React.Component<Props, object> {
         this.setState({settingItemSelected: name});
     };
 
-    handleSettingUpdate = (settings: SettingsData) => {
-        this.props.settingsOnUpdate(settings);
-    };
-
     handleDependenciesChange = (dependencies: PageDependency[]) => {
         const {settings} = this.props;
         this.props.settingsOnUpdate({...settings, dependencies});
+    };
+
+    handleLibrariesChange = (libraries: AdditionalLibrary[]) => {
+        const {settings} = this.props;
+        this.props.settingsOnUpdate({...settings, libraries});
     };
 
     render() {
@@ -150,7 +152,12 @@ class SettingsDialog extends React.Component<Props, object> {
                                                 onChange={this.handleDependenciesChange}
                                             />
                                             }
-                                            {settingItemSelected === SettingItem.Libraries && <div/>}
+                                            {settingItemSelected === SettingItem.Libraries &&
+                                            <LibraryPane
+                                                libraries={!!settings.libraries ? settings.libraries : []}
+                                                onChange={this.handleLibrariesChange}
+                                            />
+                                            }
                                             {settingItemSelected === SettingItem.LocalStorage && <div/>}
                                         </div>
                                     </td>

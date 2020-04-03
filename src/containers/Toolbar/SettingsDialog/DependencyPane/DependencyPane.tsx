@@ -11,10 +11,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableFooter from "@material-ui/core/TableFooter";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import TableFooter from "@material-ui/core/TableFooter";
 import Button from "@material-ui/core/Button";
 import AddIcon from '@material-ui/icons/Add';
 import DialogForm, {Callback, Params} from "../../../../components/DialogForm";
@@ -43,7 +43,7 @@ interface State {
 }
 
 class DependencyPane extends React.Component<Props, object> {
-    state = {
+    state: State = {
         addDependencyDialogOpen: false
     };
 
