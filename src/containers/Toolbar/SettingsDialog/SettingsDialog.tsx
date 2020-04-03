@@ -34,6 +34,7 @@ const styles = createStyles({
     dialogContent: {
         backgroundColor: '#f5f5f5',
         paddingBottom: 10,
+        paddingRight: 10,
     },
     content: {
         marginLeft: 10,

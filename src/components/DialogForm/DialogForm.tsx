@@ -72,10 +72,23 @@ class DialogForm extends React.Component<Props, object> {
     }
 
     onEnter = () => {
-        const {params} = this.props;
+        const params = this.initParams();
         if (!!params) {
             this.setState({params});
         }
+    };
+
+    initParams = () => {
+        let {params, forms} = this.props;
+
+        forms.forEach(form => {
+            const {key, defaultValue} = form;
+            if (!!defaultValue) {
+                params = !!params ? params : {};
+                params[key] = defaultValue;
+            }
+        });
+        return params;
     };
 
     handleSetStatus = (loadingStatus: LOADING_STATUS) => {
