@@ -11,6 +11,9 @@ export interface ToolbarState {
     actionsDialog: {
         open: boolean
     },
+    settingsDialog: {
+        open: boolean
+    },
     mode: Mode
 }
 
@@ -30,7 +33,10 @@ export const initState: StoreState = {
             open: false,
         },
         actionsDialog: {
-            open: false
+            open: false,
+        },
+        settingsDialog: {
+            open: false,
         }
     },
     components: {

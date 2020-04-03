@@ -31,6 +31,18 @@ export function reducer(state: ToolbarState, action: ToolbarAction) {
                     open: {$set: false}
                 }
             });
+        case types.SETTINGS_DIALOG_OPEN:
+            return update(state, {
+                settingsDialog: {
+                    open: {$set: true}
+                }
+            });
+        case types.SETTINGS_DIALOG_CLOSE:
+            return update(state, {
+                settingsDialog: {
+                    open: {$set: false}
+                }
+            });
         case types.SET_MODE:
             return update(state, {
                 mode: {$set: action.mode}

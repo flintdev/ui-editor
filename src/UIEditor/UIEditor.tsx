@@ -4,7 +4,7 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import {Provider} from 'react-redux';
 import {store} from "../redux/store";
-import {ActionData, ComponentData, StateUpdaterData} from "../interface";
+import {ActionData, ComponentData, SettingsData, StateUpdaterData} from "../interface";
 import UIEditorContainer from "./UIEditorContainer";
 
 const styles = createStyles({
@@ -19,6 +19,8 @@ export interface Props extends WithStyles<typeof styles> {
     stateUpdaters: StateUpdaterData[],
     initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    settings: SettingsData,
+    settingsOnUpdate: (settings: SettingsData) => void,
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,

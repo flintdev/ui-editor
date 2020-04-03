@@ -9,7 +9,27 @@ export interface ComponentData {
     repeat?: object,
     children?: ComponentData[],
     path?: Array<string|number>,
-    tag?: string
+    tag?: string,
+    canvas?: {
+        display?: string
+    }
+}
+
+export interface PageDependency {
+    type: 'script',
+    subtype: 'text/javascript',
+    href: string
+}
+
+export interface AdditionalLibrary {
+    name: string,
+    version: string,
+}
+
+export interface SettingsData {
+    dependencies?: PageDependency[],
+    libraries?: AdditionalLibrary[],
+    localStorage?: any,
 }
 
 export interface ActionData {

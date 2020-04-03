@@ -16,6 +16,7 @@ import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
 const styles = createStyles({
     root: {
@@ -63,6 +64,7 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     saveOnClick: () => void;
     stateDialogOpen: () => void,
     actionsDialogOpen: () => void,
+    settingsDialogOpen: () => void,
     setMode: (mode: Mode) => void,
 }
 
@@ -142,6 +144,13 @@ class Toolbar extends React.Component<Props, object> {
                                 </Button>
                                 <Button
                                     variant={"contained"}
+                                    className={classes.actionButtonBordered}
+                                    onClick={this.props.settingsDialogOpen}
+                                >
+                                    <SettingsOutlinedIcon/>&nbsp;&nbsp;Settings
+                                </Button>
+                                <Button
+                                    variant={"contained"}
                                     className={classes.saveButton}
                                     color={"primary"}
                                     onClick={this.handleSaveButtonClick}
@@ -166,6 +175,7 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
     return {
         stateDialogOpen: () => dispatch(actions.stateDialogOpen()),
         actionsDialogOpen: () => dispatch(actions.actionsDialogOpen()),
+        settingsDialogOpen: () => dispatch(actions.settingsDialogOpen()),
         setMode: (mode: Mode) => dispatch(actions.setMode(mode)),
     }
 };

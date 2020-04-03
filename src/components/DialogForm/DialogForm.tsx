@@ -9,11 +9,15 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from '@material-ui/core/Button';
 import {LOADING_STATUS} from "../../constants";
 import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = createStyles({
     root: {
 
     },
+    form: {
+        marginBottom: 10,
+    }
 });
 
 type FormType = 'input' | 'select';
@@ -29,7 +33,7 @@ export interface Form {
     dataType?: string,
     autofocus?: boolean,
     defaultValue?: FormValueType,
-    options?: Array<FormValueType>
+    options?: Array<FormValueType>,
 }
 
 export interface Params {
@@ -121,6 +125,7 @@ class DialogForm extends React.Component<Props, object> {
                                 <div key={i}>
                                     {type === "input" && 
                                     <TextField
+                                        className={classes.form}
                                         fullWidth
                                         value={value}
                                         label={label}
@@ -131,6 +136,26 @@ class DialogForm extends React.Component<Props, object> {
                                         autoFocus={!!autofocus}
                                         onChange={this.handleFormChange(key)}
                                     />
+                                    }
+                                    {type === "select" &&
+                                    <TextField
+                                        className={classes.form}
+                                        fullWidth
+                                        value={value}
+                                        label={label}
+                                        required={!!required}
+                                        helperText={helperText}
+                                        placeholder={placeholder}
+                                        autoFocus={!!autofocus}
+                                        onChange={this.handleFormChange(key)}
+                                        select
+                                    >
+                                        {!!options && options.map((option, i) => {
+                                            return (
+                                                <MenuItem key={i} value={option}>{option}</MenuItem>
+                                            )
+                                        })}
+                                    </TextField>
                                     }
                                 </div>
                             )

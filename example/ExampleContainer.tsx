@@ -4,7 +4,7 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
-import {ActionData, ComponentData, StateUpdaterData} from '../src/interface';
+import {ActionData, ComponentData, SettingsData, StateUpdaterData} from '../src/interface';
 import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
@@ -26,6 +26,7 @@ interface State {
     stateUpdaters: StateUpdaterData[],
     initialState: string,
     components: ComponentData[],
+    settings: SettingsData,
 }
 
 class ExampleContainer extends React.Component<Props, object> {
@@ -34,6 +35,7 @@ class ExampleContainer extends React.Component<Props, object> {
         stateUpdaters: stateUpdatersExample,
         initialState: '',
         components: componentsExample,
+        settings: {},
     };
     operations: any = {};
     componentDidMount(): void {
@@ -95,6 +97,10 @@ class ExampleContainer extends React.Component<Props, object> {
         this.setState({initialState: value});
     };
 
+    handleSettingsOnUpdate = (settings: SettingsData) => {
+        this.setState({settings});
+    };
+
     handleComponentsOnUpdate = (components: ComponentData[]) => {
         this.setState({components});
     };
@@ -105,7 +111,7 @@ class ExampleContainer extends React.Component<Props, object> {
 
     render() {
         const {classes} = this.props;
-        const {actions, stateUpdaters, initialState, components} = this.state;
+        const {actions, stateUpdaters, initialState, components, settings} = this.state;
         return (
             <div className={classes.root}>
                 <UIEditor
@@ -116,6 +122,8 @@ class ExampleContainer extends React.Component<Props, object> {
                     stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
                     actions={actions}
                     actionOnUpdate={this.handleActionUpdate}
+                    settings={settings}
+                    settingsOnUpdate={this.handleSettingsOnUpdate}
                     components={components}
                     componentsOnUpdate={this.handleComponentsOnUpdate}
                     componentOnSelect={this.handleComponentOnSelect}

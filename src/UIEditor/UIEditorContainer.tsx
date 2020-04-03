@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 import {StoreState, ToolbarState} from "../redux/state";
 import * as actions from "../redux/modules/components/actions";
-import {ActionData, ComponentData, StateUpdaterData} from "../interface";
+import {ActionData, ComponentData, SettingsData, StateUpdaterData} from "../interface";
 import Toolbar from "../containers/Toolbar/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView/ComponentTreeView";
 import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane";
@@ -14,6 +14,7 @@ import ActionsDialog from "../containers/Toolbar/ActionsDialog/ActionsDialog";
 import StateDialog from "../containers/Toolbar/StateDialog/StateDialog";
 import UIEditorCanvas from '@flintdev/ui-editor-canvas';
 import {ComponentState} from "react";
+import SettingsDialog from "../containers/Toolbar/SettingsDialog";
 
 const styles = createStyles({
     root: {
@@ -62,6 +63,8 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     stateUpdaters: StateUpdaterData[],
     initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    settings: SettingsData,
+    settingsOnUpdate: (settings: SettingsData) => void,
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
@@ -170,6 +173,11 @@ class UIEditorContainer extends React.Component<Props, object> {
                         stateUpdaters={this.props.stateUpdaters}
                         initialStateOnChange={this.props.initialStateOnChange}
                         stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
+                    />
+
+                    <SettingsDialog
+                        settings={this.props.settings}
+                        settingsOnUpdate={this.props.settingsOnUpdate}
                     />
 
                 </div>
