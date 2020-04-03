@@ -34,6 +34,7 @@ export interface Form {
     autofocus?: boolean,
     defaultValue?: FormValueType,
     options?: Array<FormValueType>,
+    multiline?: boolean,
 }
 
 export interface Params {
@@ -132,7 +133,7 @@ class DialogForm extends React.Component<Props, object> {
                     }
                     <DialogContent>
                         {forms.map((form, i) => {
-                            const {type, key, label, placeholder, helperText, required, defaultValue, dataType, autofocus, options} = form;
+                            const {type, key, label, placeholder, helperText, required, defaultValue, dataType, autofocus, options, multiline} = form;
                             const value = this.getParamValueByKey(key, defaultValue!);
                             return (
                                 <div key={i}>
@@ -148,6 +149,7 @@ class DialogForm extends React.Component<Props, object> {
                                         type={dataType}
                                         autoFocus={!!autofocus}
                                         onChange={this.handleFormChange(key)}
+                                        multiline={!!multiline}
                                     />
                                     }
                                     {type === "select" &&

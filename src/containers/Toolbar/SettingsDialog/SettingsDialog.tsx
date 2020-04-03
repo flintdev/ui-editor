@@ -7,7 +7,7 @@ import {Dispatch} from "redux";
 import {StoreState, ToolbarState} from "../../../redux/state";
 import * as actions from "../../../redux/modules/toolbar/actions";
 import Dialog from "@material-ui/core/Dialog";
-import {AdditionalLibrary, PageDependency, SettingsData} from "../../../interface";
+import {AdditionalLibrary, LocalStorageItem, PageDependency, SettingsData} from "../../../interface";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import Paper from "@material-ui/core/Paper";
@@ -18,6 +18,7 @@ import {SETTING_ITEMS, SettingItem} from "../../../constants";
 import {ListItemText} from "@material-ui/core";
 import DependencyPane from "./DependencyPane";
 import LibraryPane from "./LibraryPane/LibraryPane";
+import LocalStoragePane from "./LocalStoragePane/LocalStoragePane";
 
 const styles = createStyles({
     root: {},
@@ -89,6 +90,11 @@ class SettingsDialog extends React.Component<Props, object> {
         this.props.settingsOnUpdate({...settings, libraries});
     };
 
+    handleLocalStorageChange = (localStorage: LocalStorageItem[]) => {
+        const {settings} = this.props;
+        this.props.settingsOnUpdate({...settings, localStorage});
+    };
+
     render() {
         const {classes, settingsDialog, settings} = this.props;
         const {settingItemSelected} = this.state;
@@ -158,7 +164,12 @@ class SettingsDialog extends React.Component<Props, object> {
                                                 onChange={this.handleLibrariesChange}
                                             />
                                             }
-                                            {settingItemSelected === SettingItem.LocalStorage && <div/>}
+                                            {settingItemSelected === SettingItem.LocalStorage &&
+                                            <LocalStoragePane
+                                                localStorage={!!settings.localStorage ? settings.localStorage : []}
+                                                onChange={this.handleLocalStorageChange}
+                                            />
+                                            }
                                         </div>
                                     </td>
                                 </tr>

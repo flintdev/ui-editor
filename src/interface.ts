@@ -26,10 +26,15 @@ export interface AdditionalLibrary {
     version: string,
 }
 
+export interface LocalStorageItem {
+    key: string,
+    value: any,
+}
+
 export interface SettingsData {
     dependencies?: PageDependency[],
     libraries?: AdditionalLibrary[],
-    localStorage?: any,
+    localStorage?: LocalStorageItem[],
 }
 
 export interface ActionData {
