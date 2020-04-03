@@ -19,8 +19,8 @@ export const AddDependencyDef: Form[] = [
     },
     {
         type: "input",
-        key: "href",
-        label: "HREF",
+        key: "src",
+        label: "Source",
         required: true,
         autofocus: true,
     },

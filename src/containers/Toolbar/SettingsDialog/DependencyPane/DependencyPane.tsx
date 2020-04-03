@@ -68,8 +68,8 @@ class DependencyPane extends React.Component<Props, object> {
     handleAddDependencySubmit = (params: Params, callback: Callback) => {
         const type: any = params.type;
         const subtype: any = params.subtype;
-        const href = params.href as string;
-        const dependency: PageDependency = {type, subtype, href};
+        const src = params.src as string;
+        const dependency: PageDependency = {type, subtype, src};
         this.props.onChange([...this.props.dependencies, dependency]);
         this.forceUpdate();
         callback.close();
@@ -99,7 +99,7 @@ class DependencyPane extends React.Component<Props, object> {
                                 <TableRow>
                                     <TableCell>Type</TableCell>
                                     <TableCell>Subtype</TableCell>
-                                    <TableCell>HREF</TableCell>
+                                    <TableCell>Source</TableCell>
                                     <TableCell align={"right"}>
                                         
                                     </TableCell>
@@ -111,7 +111,7 @@ class DependencyPane extends React.Component<Props, object> {
                                         <TableRow key={i}>
                                             <TableCell>{item.type}</TableCell>
                                             <TableCell>{item.subtype}</TableCell>
-                                            <TableCell>{item.href}</TableCell>
+                                            <TableCell>{item.src}</TableCell>
                                             <TableCell align={"right"}>
                                                 <IconButton size={"small"} onClick={this.handleDeleteDependencyClick(i)}>
                                                     <DeleteOutlineOutlinedIcon/>

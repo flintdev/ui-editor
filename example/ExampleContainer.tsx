@@ -49,6 +49,9 @@ class ExampleContainer extends React.Component<Props, object> {
             name: 'Button',
             params: {label: 'Button'},
             children: [],
+            canvas: {
+                display: 'inline-block'
+            }
         };
         this.operations.addComponent(data);
     };

@@ -18,7 +18,7 @@ export interface ComponentData {
 export interface PageDependency {
     type: 'script',
     subtype: 'text/javascript',
-    href: string
+    src: string
 }
 
 export interface AdditionalLibrary {
