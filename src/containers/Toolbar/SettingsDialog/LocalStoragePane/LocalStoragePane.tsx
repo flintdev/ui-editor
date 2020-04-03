@@ -55,11 +55,11 @@ class LocalStoragePane extends React.Component<Props, object> {
     };
 
     handleAddKeyValueClick = () => {
-
+        this.setState({addKeyValueDialogOpen: true});
     };
 
     handleAddKeyValueDialogClose = () => {
-
+        this.setState({addKeyValueDialogOpen: false});
     };
 
     handleAddKeyValueSubmit = (params: Params, callback: Callback) => {

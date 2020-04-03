@@ -13,5 +13,6 @@ export const AddKeyValueDef: Form[] = [
         key: "value",
         label: "Value",
         required: true,
+        multiline: true,
     }
 ];
