@@ -84,7 +84,7 @@ class SettingsDialog extends React.Component<Props, object> {
 
     handleDependenciesChange = (dependencies: PageDependency[]) => {
         const {settings} = this.props;
-        this.props.settingsOnUpdate({dependencies, ...settings});
+        this.props.settingsOnUpdate({...settings, dependencies});
     };
 
     render() {
