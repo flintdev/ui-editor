@@ -165,9 +165,15 @@ class Toolbar extends React.Component<Props, object> {
                 </Paper>
 
                 <GlobalHotKeys
-                    keyMap={{SAVE: "command+s"}}
+                    keyMap={{
+                        SAVE: "command+s",
+                        STATE: "command+a",
+                        ACTION: "command+d"
+                    }}
                     handlers={{
-                        SAVE: this.handleSaveButtonClick
+                        SAVE: this.handleSaveButtonClick,
+                        STATE: this.props.stateDialogOpen,
+                        ACTION: this.props.actionsDialogOpen
                     }}
                 />
 
