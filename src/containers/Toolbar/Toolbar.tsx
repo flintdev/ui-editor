@@ -17,6 +17,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import {GlobalHotKeys, HotKeys} from 'react-hotkeys';
 
 const styles = createStyles({
     root: {
@@ -162,6 +163,14 @@ class Toolbar extends React.Component<Props, object> {
                         </tbody>
                     </table>
                 </Paper>
+
+                <GlobalHotKeys
+                    keyMap={{SAVE: "command+s"}}
+                    handlers={{
+                        SAVE: this.handleSaveButtonClick
+                    }}
+                />
+
             </div>
         )
     }

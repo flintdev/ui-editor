@@ -1,6 +1,6 @@
 {
   "name": "@flintdev/ui-editor",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "npm package to build UI of applications by dragging and dropping components",
   "main": "dist/index.js",
   "scripts": {

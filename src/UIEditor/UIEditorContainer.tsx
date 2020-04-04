@@ -15,6 +15,7 @@ import StateDialog from "../containers/Toolbar/StateDialog/StateDialog";
 import UIEditorCanvas from '@flintdev/ui-editor-canvas';
 import {ComponentState} from "react";
 import SettingsDialog from "../containers/Toolbar/SettingsDialog";
+import Paper from "@material-ui/core/Paper";
 
 const styles = createStyles({
     root: {
@@ -45,12 +46,18 @@ const styles = createStyles({
     },
     tdMiddle: {
         height: '100%',
-        flex: 1
+        flex: 1,
+        display: 'flex',
+        flexFlow: 'column'
     },
     tdRight: {
         width: 240,
         height: '100%',
         borderLeft: '1px solid #ddd'
+    },
+    paperCanvas: {
+        margin: 20,
+        flexGrow: 1
     }
 });
 
@@ -136,19 +143,21 @@ class UIEditorContainer extends React.Component<Props, object> {
                                     />
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
-                                    <div style={{overflow: "auto", height: '100%'}}>
+                                    <Paper className={classes.paperCanvas}>
                                         <div style={{overflow: "auto", height: '100%'}}>
-                                            <UIEditorCanvas
-                                                operations={this.props.operations}
-                                                components={this.props.components}
-                                                editorLib={{getWidget: this.props.handler.getWidget}}
-                                                componentsUpdated={this.handleCanvasComponentsOnUpdate}
-                                                componentOnSelect={this.handleCanvasComponentOnSelect}
-                                                componentOnDelete={this.handleComponentOnDelete}
-                                                isDnd={mode === "editor"}
-                                            />
+                                            <div style={{overflow: "auto", height: '100%'}}>
+                                                <UIEditorCanvas
+                                                    operations={this.props.operations}
+                                                    components={this.props.components}
+                                                    editorLib={{getWidget: this.props.handler.getWidget}}
+                                                    componentsUpdated={this.handleCanvasComponentsOnUpdate}
+                                                    componentOnSelect={this.handleCanvasComponentOnSelect}
+                                                    componentOnDelete={this.handleComponentOnDelete}
+                                                    isDnd={mode === "editor"}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Paper>
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
                                     <ComponentEditPane

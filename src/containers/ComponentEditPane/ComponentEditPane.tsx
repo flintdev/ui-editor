@@ -148,6 +148,7 @@ class ComponentEditPane extends React.Component<Props, object> {
                     handlers={{
                         SAVE: this.handleSaveClick
                     }}
+                    style={{height: '100%'}}
                 >
                     <Paper className={classes.paper}>
                         <div className={classes.headerContainer}>
@@ -155,8 +156,12 @@ class ComponentEditPane extends React.Component<Props, object> {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <Typography variant={"overline"}
-                                                    className={classes.headerText}>{componentSelected.name}</Typography>
+                                        <Typography
+                                            variant={"overline"}
+                                            className={classes.headerText}
+                                        >
+                                            {componentSelected.name}
+                                        </Typography>
                                     </td>
                                     <td align={"right"}>
                                         <Button
