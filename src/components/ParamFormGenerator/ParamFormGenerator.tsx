@@ -27,7 +27,7 @@ const styles = createStyles({
     },
     itemContainer: {
         marginTop: 10,
-        marginBottom: 10,
+        marginBottom: 0,
     },
     tableItem: {
         width: '100%',

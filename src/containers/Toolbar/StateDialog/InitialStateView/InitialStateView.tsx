@@ -1,20 +1,20 @@
 // src/containers/Toolbar/StateDialog/InitialStateView/InitialStateView.tsx
 
 import * as React from 'react';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { Dispatch } from "redux";
-import { StoreState } from "../../../../redux/state";
+import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {Dispatch} from "redux";
+import {StoreState} from "../../../../redux/state";
 import * as actions from "../../../../redux/modules/toolbar/actions";
 import Paper from "@material-ui/core/Paper";
 import AceEditor from "react-ace";
-// import 'ace-builds/webpack-resolver';
-import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SaveIcon from '@material-ui/icons/Save';
 import CodeTemplate from './codeTemplate.txt';
+import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {
@@ -40,7 +40,7 @@ const styles = createStyles({
     }
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles> {
     initialState: string,
     initialStateOnChange: (value: string) => void,
 }
@@ -78,46 +78,52 @@ class InitialStateView extends React.Component<Props, object> {
         const {codeValue, editing} = this.state;
         return (
             <div className={classes.root}>
-                <Paper className={classes.paper}>
-                    <Paper className={classes.paperHeader}>
-                        <table className={classes.table}>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <Typography variant={"subtitle2"}>INITIAL STATE (JavaScript)</Typography>
-                                </td>
-                                <td align={"right"}>
-                                    <Button
-                                        variant={"contained"}
-                                        size={"small"}
-                                        color={"primary"}
-                                        disabled={!editing}
-                                        onClick={this.handleSaveButtonClick}
-                                    >
-                                        <SaveIcon/>&nbsp;Save
-                                    </Button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <HotKeys
+                    keyMap={{SAVE: "command+s"}}
+                    handlers={{SAVE: this.handleSaveButtonClick}}
+                    style={{height: '100%'}}
+                >
+                    <Paper className={classes.paper}>
+                        <Paper className={classes.paperHeader}>
+                            <table className={classes.table}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <Typography variant={"subtitle2"}>INITIAL STATE (JavaScript)</Typography>
+                                    </td>
+                                    <td align={"right"}>
+                                        <Button
+                                            variant={"contained"}
+                                            size={"small"}
+                                            color={"primary"}
+                                            disabled={!editing}
+                                            onClick={this.handleSaveButtonClick}
+                                        >
+                                            <SaveIcon/>&nbsp;Save
+                                        </Button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </Paper>
+                        <AceEditor
+                            mode="json"
+                            theme="tomorrow"
+                            fontSize={14}
+                            value={codeValue}
+                            onChange={this.handleCodeChange}
+                            showPrintMargin={true}
+                            showGutter={true}
+                            highlightActiveLine={true}
+                            style={{width: '100%', flexGrow: 1}}
+                            setOptions={{
+                                showLineNumbers: true,
+                                tabSize: 4,
+                                useWorker: false
+                            }}
+                        />
                     </Paper>
-                    <AceEditor
-                        mode="javascript"
-                        theme="tomorrow"
-                        fontSize={14}
-                        value={codeValue}
-                        onChange={this.handleCodeChange}
-                        showPrintMargin={true}
-                        showGutter={true}
-                        highlightActiveLine={true}
-                        style={{width: '100%', flexGrow: 1}}
-                        setOptions={{
-                            showLineNumbers: true,
-                            tabSize: 4,
-                            useWorker: false
-                        }}
-                    />
-                </Paper>
+                </HotKeys>
             </div>
         )
     }
@@ -128,9 +134,7 @@ const mapStateToProps = (state: StoreState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
-    return {
-
-    }
+    return {}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(InitialStateView));

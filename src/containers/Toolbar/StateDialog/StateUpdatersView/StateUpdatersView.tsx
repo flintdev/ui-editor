@@ -34,6 +34,7 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {
@@ -224,193 +225,200 @@ class StateUpdatersView extends React.Component<Props, object> {
         const {stateUpdaterSelected, addUpdaterDialogOpen, editing, editingParams} = this.state;
         return (
             <div className={classes.root}>
-                <table className={classes.tableContent}>
-                    <tbody>
-                    <tr>
-                        <td valign={"top"} className={classes.tdList}>
-                            <Paper className={classes.paperList}>
-                                <Paper className={classes.paperHeader}>
-                                    <Button
-                                        size={"small"}
-                                        variant={"outlined"}
-                                        onClick={this.handleAddUpdaterClick}
-                                    >
-                                        <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add
-                                    </Button>&nbsp;&nbsp;
-                                    <Button
-                                        size={"small"}
-                                        variant={"outlined"}
-                                        onClick={this.handleDeleteUpdaterClick}
-                                    >
-                                        <IndeterminateCheckBoxOutlinedIcon fontSize={"small"}/>&nbsp;Delete
-                                    </Button>
-                                </Paper>
-                                <List className={classes.updaterList}>
-                                    {this.props.stateUpdaters.map((updater, i) => {
-                                        return (
-                                            <ListItem
-                                                dense={true}
-                                                button={true}
-                                                key={i}
-                                                selected={!!stateUpdaterSelected && stateUpdaterSelected.name === updater.name}
-                                                onClick={this.stateUpdaterOnSelect(updater)}
-                                            >
-                                                <ListItemText className={classes.itemText} primary={updater.name}/>
-                                            </ListItem>
-                                        )
-                                    })}
-                                </List>
-                            </Paper>
-                        </td>
-                        <td valign={"top"}>
-                            {!!stateUpdaterSelected &&
-                            <Paper className={classes.paperContent}>
-                                <Paper className={classes.paperHeader}>
-                                    <table className={classes.tableHeader}>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <Typography variant={"subtitle1"}>{stateUpdaterSelected.name}</Typography>
-                                            </td>
-                                            <td align={"right"}>
-                                                <Button
-                                                    size={"small"}
-                                                    variant={"contained"}
-                                                    color={"primary"}
-                                                    onClick={this.handleSaveButtonClick}
-                                                    disabled={!editing}
-                                                >
-                                                    <SaveIcon/>&nbsp;Save
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </Paper>
-                                <div className={classes.updaterContent}>
-                                    <TextField
-                                        value={editingParams.name}
-                                        onChange={this.handleUpdaterNameChange}
-                                        label={"Updater Name"}
-                                        variant={"outlined"}
-                                        fullWidth={true}
-                                        size={"small"}
-                                    />
-                                    <Paper className={classes.paperOperations}>
-                                        <Paper className={classes.paperOperationsHeader}>
-                                            <table className={classes.tableHeader}>
-                                                <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <Typography variant={"subtitle2"}>OPERATIONS</Typography>
-                                                    </td>
-                                                    <td align={"right"}>
-                                                        <Button
-                                                            className={classes.addOperationButton}
-                                                            variant={"outlined"}
-                                                            size={"small"}
-                                                            onClick={this.handleAddOperationClick}
-                                                        >
-                                                            <AddIcon/>&nbsp;Add Operation
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </Paper>
-                                        <div className={classes.operationsContainer}>
-                                            {(!editingParams.operations || editingParams.operations.length === 0) &&
-                                            <div>
-                                                <Alert severity={"warning"}>No operation in this updater.</Alert>
-                                            </div>
-                                            }
-                                            {!!editingParams.operations && editingParams.operations.length > 0 &&
-                                            <Table padding={"none"}>
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell>Field Path</TableCell>
-                                                        <TableCell>Operator</TableCell>
-                                                        <TableCell>Parameter</TableCell>
-                                                        <TableCell/>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {editingParams.operations.map((operation, i) => {
-                                                        return (
-                                                            <TableRow key={i}>
-                                                                <TableCell>
-                                                                    <TextField
-                                                                        className={classes.form}
-                                                                        value={operation.field}
-                                                                        onChange={this.handleOperationParamChange('field', i)}
-                                                                        variant={"outlined"}
-                                                                        size={"small"}
-                                                                        fullWidth={true}
-                                                                    />
-                                                                </TableCell>
-                                                                <TableCell className={classes.tdOperator}>
-                                                                    <FormControl
-                                                                        className={classes.form}
-                                                                        size={"small"}
-                                                                        variant={"outlined"}
-                                                                        fullWidth={true}
-                                                                    >
-                                                                        <Select
-                                                                            value={operation.operator}
-                                                                            onChange={this.handleOperationParamChange('operator', i)}
-                                                                        >
-                                                                            {UpdaterOperatorOptions.map((operator, i) => {
-                                                                                return (
-                                                                                    <MenuItem key={i} value={operator}>{operator}</MenuItem>
-                                                                                )
-                                                                            })}
-                                                                        </Select>
-                                                                    </FormControl>
-                                                                </TableCell>
-                                                                <TableCell>
-                                                                    <TextField
-                                                                        className={classes.form}
-                                                                        value={operation.parameter}
-                                                                        onChange={this.handleOperationParamChange('parameter', i)}
-                                                                        variant={"outlined"}
-                                                                        size={"small"}
-                                                                        fullWidth={true}
-                                                                    />
-                                                                </TableCell>
-                                                                <TableCell className={classes.tdIcon}>
-                                                                    <IconButton
-                                                                        size={"small"}
-                                                                        onClick={this.handleRemoveOperationClick(i)}
-                                                                    >
-                                                                        <DeleteOutlineIcon/>
-                                                                    </IconButton>
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        )
-                                                    })}
-                                                </TableBody>
-                                            </Table>
-                                            }
-                                        </div>
-
+                <HotKeys
+                    keyMap={{SAVE: "command+s"}}
+                    handlers={{SAVE: this.handleSaveButtonClick}}
+                    style={{height: '100%'}}
+                >
+                    <table className={classes.tableContent}>
+                        <tbody>
+                        <tr>
+                            <td valign={"top"} className={classes.tdList}>
+                                <Paper className={classes.paperList}>
+                                    <Paper className={classes.paperHeader}>
+                                        <Button
+                                            size={"small"}
+                                            variant={"outlined"}
+                                            onClick={this.handleAddUpdaterClick}
+                                        >
+                                            <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add
+                                        </Button>&nbsp;&nbsp;
+                                        <Button
+                                            size={"small"}
+                                            variant={"outlined"}
+                                            onClick={this.handleDeleteUpdaterClick}
+                                        >
+                                            <IndeterminateCheckBoxOutlinedIcon fontSize={"small"}/>&nbsp;Delete
+                                        </Button>
                                     </Paper>
-                                </div>
-                            </Paper>
-                            }
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                    <List className={classes.updaterList}>
+                                        {this.props.stateUpdaters.map((updater, i) => {
+                                            return (
+                                                <ListItem
+                                                    dense={true}
+                                                    button={true}
+                                                    key={i}
+                                                    selected={!!stateUpdaterSelected && stateUpdaterSelected.name === updater.name}
+                                                    onClick={this.stateUpdaterOnSelect(updater)}
+                                                >
+                                                    <ListItemText className={classes.itemText} primary={updater.name}/>
+                                                </ListItem>
+                                            )
+                                        })}
+                                    </List>
+                                </Paper>
+                            </td>
+                            <td valign={"top"}>
+                                {!!stateUpdaterSelected &&
+                                <Paper className={classes.paperContent}>
+                                    <Paper className={classes.paperHeader}>
+                                        <table className={classes.tableHeader}>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <Typography
+                                                        variant={"subtitle1"}>{stateUpdaterSelected.name}</Typography>
+                                                </td>
+                                                <td align={"right"}>
+                                                    <Button
+                                                        size={"small"}
+                                                        variant={"contained"}
+                                                        color={"primary"}
+                                                        onClick={this.handleSaveButtonClick}
+                                                        disabled={!editing}
+                                                    >
+                                                        <SaveIcon/>&nbsp;Save
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </Paper>
+                                    <div className={classes.updaterContent}>
+                                        <TextField
+                                            value={editingParams.name}
+                                            onChange={this.handleUpdaterNameChange}
+                                            label={"Updater Name"}
+                                            variant={"outlined"}
+                                            fullWidth={true}
+                                            size={"small"}
+                                        />
+                                        <Paper className={classes.paperOperations}>
+                                            <Paper className={classes.paperOperationsHeader}>
+                                                <table className={classes.tableHeader}>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <Typography variant={"subtitle2"}>OPERATIONS</Typography>
+                                                        </td>
+                                                        <td align={"right"}>
+                                                            <Button
+                                                                className={classes.addOperationButton}
+                                                                variant={"outlined"}
+                                                                size={"small"}
+                                                                onClick={this.handleAddOperationClick}
+                                                            >
+                                                                <AddIcon/>&nbsp;Add Operation
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </Paper>
+                                            <div className={classes.operationsContainer}>
+                                                {(!editingParams.operations || editingParams.operations.length === 0) &&
+                                                <div>
+                                                    <Alert severity={"warning"}>No operation in this updater.</Alert>
+                                                </div>
+                                                }
+                                                {!!editingParams.operations && editingParams.operations.length > 0 &&
+                                                <Table padding={"none"}>
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell>Field Path</TableCell>
+                                                            <TableCell>Operator</TableCell>
+                                                            <TableCell>Parameter</TableCell>
+                                                            <TableCell/>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {editingParams.operations.map((operation, i) => {
+                                                            return (
+                                                                <TableRow key={i}>
+                                                                    <TableCell>
+                                                                        <TextField
+                                                                            className={classes.form}
+                                                                            value={operation.field}
+                                                                            onChange={this.handleOperationParamChange('field', i)}
+                                                                            variant={"outlined"}
+                                                                            size={"small"}
+                                                                            fullWidth={true}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell className={classes.tdOperator}>
+                                                                        <FormControl
+                                                                            className={classes.form}
+                                                                            size={"small"}
+                                                                            variant={"outlined"}
+                                                                            fullWidth={true}
+                                                                        >
+                                                                            <Select
+                                                                                value={operation.operator}
+                                                                                onChange={this.handleOperationParamChange('operator', i)}
+                                                                            >
+                                                                                {UpdaterOperatorOptions.map((operator, i) => {
+                                                                                    return (
+                                                                                        <MenuItem key={i}
+                                                                                                  value={operator}>{operator}</MenuItem>
+                                                                                    )
+                                                                                })}
+                                                                            </Select>
+                                                                        </FormControl>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <TextField
+                                                                            className={classes.form}
+                                                                            value={operation.parameter}
+                                                                            onChange={this.handleOperationParamChange('parameter', i)}
+                                                                            variant={"outlined"}
+                                                                            size={"small"}
+                                                                            fullWidth={true}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell className={classes.tdIcon}>
+                                                                        <IconButton
+                                                                            size={"small"}
+                                                                            onClick={this.handleRemoveOperationClick(i)}
+                                                                        >
+                                                                            <DeleteOutlineIcon/>
+                                                                        </IconButton>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            )
+                                                        })}
+                                                    </TableBody>
+                                                </Table>
+                                                }
+                                            </div>
 
-                <DialogForm
-                    open={addUpdaterDialogOpen}
-                    onClose={this.handleAddUpdaterDialogClose}
-                    title={"New State Updater"}
-                    submitButtonTitle={"Add"}
-                    forms={AddStateUpdaterDef}
-                    onSubmit={this.handleAddUpdaterSubmit}
-                />
+                                        </Paper>
+                                    </div>
+                                </Paper>
+                                }
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
+                    <DialogForm
+                        open={addUpdaterDialogOpen}
+                        onClose={this.handleAddUpdaterDialogClose}
+                        title={"New State Updater"}
+                        submitButtonTitle={"Add"}
+                        forms={AddStateUpdaterDef}
+                        onSubmit={this.handleAddUpdaterSubmit}
+                    />
+                </HotKeys>
             </div>
         )
     }

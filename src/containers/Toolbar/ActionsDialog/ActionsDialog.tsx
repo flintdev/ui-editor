@@ -26,6 +26,7 @@ import {AddActionDef} from "./definition";
 import ActionTemplate from './actionTemplate.txt';
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
+import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {},
@@ -171,136 +172,145 @@ class ActionsDialog extends React.Component<Props, object> {
         const {codeValue, actionSelected, editing} = this.state;
         return (
             <div className={classes.root}>
-                <Dialog
-                    open={open}
-                    onClose={this.props.actionsDialogClose}
-                    onEnter={this.onEnter}
-                    maxWidth={"lg"}
-                    fullWidth={true}
-                    disableEnforceFocus={true}
+                <HotKeys
+                    keyMap={{SAVE: "command+s"}}
+                    handlers={{SAVE: this.handleCodeSaveButtonClick}}
+                    style={{height: '100%'}}
                 >
-                    <Paper className={classes.paperHeader}>
-                        <table className={classes.tableHeader}>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <Typography variant={"subtitle1"}>ACTIONS</Typography>
-                                </td>
-                                <td align={"right"}>
-                                    <Button
-                                        variant={"outlined"}
-                                        size={"small"}
-                                        onClick={this.props.stateDialogOpen}
-                                    >
-                                        <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add State Updater
-                                    </Button>
-                                    <IconButton size={"small"} className={classes.closeButton} onClick={this.props.actionsDialogClose}>
-                                        <CloseIcon/>
-                                    </IconButton>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </Paper>
-                    <div className={classes.content}>
-                        <table className={classes.tableContent}>
-                            <tbody>
-                            <tr>
-                                <td valign={"top"} className={classes.tdList}>
-                                    <Paper className={classes.paperList}>
-                                        <Paper className={classes.paperHeader}>
-                                            <Button
-                                                size={"small"}
-                                                variant={"outlined"}
-                                                onClick={this.handleAddActionClick}
-                                            >
-                                                <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add
-                                            </Button>&nbsp;&nbsp;
-                                            <Button
-                                                size={"small"}
-                                                variant={"outlined"}
-                                                onClick={this.handleDeleteActionClick}
-                                            >
-                                                <IndeterminateCheckBoxOutlinedIcon fontSize={"small"}/>&nbsp;Delete
-                                            </Button>
-                                        </Paper>
-                                        <List className={classes.actionList}>
-                                            {this.props.actions.map((action, i) => {
-                                                return (
-                                                    <ListItem
-                                                        dense={true}
-                                                        button key={i}
-                                                        selected={!!actionSelected && action.name === actionSelected.name}
-                                                        onClick={this.actionOnSelect(action)}
-                                                    >
-                                                        <ListItemText className={classes.itemText} primary={action.name}/>
-                                                    </ListItem>
-                                                )
-                                            })}
-                                        </List>
-                                    </Paper>
-                                </td>
-                                <td valign={"top"}>
-                                    <div className={classes.codeEditorContainer}>
-                                        {!!this.state.actionSelected &&
-                                        <Paper className={classes.paperContent}>
-                                            <Paper className={classes.paperCodeEditorHeader}>
-                                                <table className={classes.tableHeader}>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <Typography variant={"subtitle1"}>Code Block</Typography>
-                                                        </td>
-                                                        <td align={"right"}>
-                                                            <Button
-                                                                size={"small"}
-                                                                variant={"contained"}
-                                                                color={"primary"}
-                                                                onClick={this.handleCodeSaveButtonClick}
-                                                                disabled={!editing}
-                                                            >
-                                                                <SaveIcon/>&nbsp;Save
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                    <Dialog
+                        open={open}
+                        onClose={this.props.actionsDialogClose}
+                        onEnter={this.onEnter}
+                        maxWidth={"lg"}
+                        fullWidth={true}
+                        disableEnforceFocus={true}
+                    >
+                        <Paper className={classes.paperHeader}>
+                            <table className={classes.tableHeader}>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <Typography variant={"subtitle1"}>ACTIONS</Typography>
+                                    </td>
+                                    <td align={"right"}>
+                                        <Button
+                                            variant={"outlined"}
+                                            size={"small"}
+                                            onClick={this.props.stateDialogOpen}
+                                        >
+                                            <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add State Updater
+                                        </Button>
+                                        <IconButton size={"small"} className={classes.closeButton}
+                                                    onClick={this.props.actionsDialogClose}>
+                                            <CloseIcon/>
+                                        </IconButton>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </Paper>
+                        <div className={classes.content}>
+                            <table className={classes.tableContent}>
+                                <tbody>
+                                <tr>
+                                    <td valign={"top"} className={classes.tdList}>
+                                        <Paper className={classes.paperList}>
+                                            <Paper className={classes.paperHeader}>
+                                                <Button
+                                                    size={"small"}
+                                                    variant={"outlined"}
+                                                    onClick={this.handleAddActionClick}
+                                                >
+                                                    <AddBoxOutlinedIcon fontSize={"small"}/>&nbsp;Add
+                                                </Button>&nbsp;&nbsp;
+                                                <Button
+                                                    size={"small"}
+                                                    variant={"outlined"}
+                                                    onClick={this.handleDeleteActionClick}
+                                                >
+                                                    <IndeterminateCheckBoxOutlinedIcon fontSize={"small"}/>&nbsp;Delete
+                                                </Button>
                                             </Paper>
-                                            <AceEditor
-                                                mode="javascript"
-                                                theme="tomorrow"
-                                                fontSize={14}
-                                                value={codeValue}
-                                                onChange={this.handleCodeChange}
-                                                showPrintMargin={true}
-                                                showGutter={true}
-                                                highlightActiveLine={true}
-                                                style={{width: '100%', flexGrow: 1}}
-                                                setOptions={{
-                                                    showLineNumbers: true,
-                                                    tabSize: 4,
-                                                    useWorker: false
-
-                                                }}
-                                            />
+                                            <List className={classes.actionList}>
+                                                {this.props.actions.map((action, i) => {
+                                                    return (
+                                                        <ListItem
+                                                            dense={true}
+                                                            button key={i}
+                                                            selected={!!actionSelected && action.name === actionSelected.name}
+                                                            onClick={this.actionOnSelect(action)}
+                                                        >
+                                                            <ListItemText className={classes.itemText}
+                                                                          primary={action.name}/>
+                                                        </ListItem>
+                                                    )
+                                                })}
+                                            </List>
                                         </Paper>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </Dialog>
+                                    </td>
+                                    <td valign={"top"}>
+                                        <div className={classes.codeEditorContainer}>
+                                            {!!this.state.actionSelected &&
+                                            <Paper className={classes.paperContent}>
+                                                <Paper className={classes.paperCodeEditorHeader}>
+                                                    <table className={classes.tableHeader}>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <Typography variant={"subtitle1"}>Code
+                                                                    Block</Typography>
+                                                            </td>
+                                                            <td align={"right"}>
+                                                                <Button
+                                                                    size={"small"}
+                                                                    variant={"contained"}
+                                                                    color={"primary"}
+                                                                    onClick={this.handleCodeSaveButtonClick}
+                                                                    disabled={!editing}
+                                                                >
+                                                                    <SaveIcon/>&nbsp;Save
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </Paper>
+                                                <AceEditor
+                                                    mode="javascript"
+                                                    theme="tomorrow"
+                                                    fontSize={14}
+                                                    value={codeValue}
+                                                    onChange={this.handleCodeChange}
+                                                    showPrintMargin={true}
+                                                    showGutter={true}
+                                                    highlightActiveLine={true}
+                                                    style={{width: '100%', flexGrow: 1}}
+                                                    setOptions={{
+                                                        showLineNumbers: true,
+                                                        tabSize: 4,
+                                                        useWorker: false
 
-                <DialogForm
-                    open={this.state.addActionDialogOpen}
-                    onClose={this.handleAddActionDialogClose}
-                    title={"New Action"}
-                    submitButtonTitle={"Add"}
-                    forms={AddActionDef}
-                    onSubmit={this.handleAddActionSubmit}
-                />
+                                                    }}
+                                                />
+                                            </Paper>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </Dialog>
+
+                    <DialogForm
+                        open={this.state.addActionDialogOpen}
+                        onClose={this.handleAddActionDialogClose}
+                        title={"New Action"}
+                        submitButtonTitle={"Add"}
+                        forms={AddActionDef}
+                        onSubmit={this.handleAddActionSubmit}
+                    />
+                </HotKeys>
             </div>
         )
     }
