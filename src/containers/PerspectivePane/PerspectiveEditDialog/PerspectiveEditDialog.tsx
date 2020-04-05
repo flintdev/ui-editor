@@ -75,8 +75,9 @@ class PerspectiveEditDialog extends React.Component<Props, object> {
 
     handleSubmitToUpdate = () => {
         const {name, code} = this.state;
-        const {index} = this.props;
+        let {index} = this.props;
         const perspectiveData: PerspectiveData = {name, code};
+        if (!index) index = -1;
         this.props.onUpdate(perspectiveData, index);
     };
 

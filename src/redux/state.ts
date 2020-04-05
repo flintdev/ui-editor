@@ -3,6 +3,7 @@
 import {ComponentData, PerspectiveData} from "../interface";
 
 export type Mode = 'editor' | 'preview';
+export type DialogMode = 'create' | 'edit';
 
 export interface ToolbarState {
     stateDialog: {
@@ -19,9 +20,9 @@ export interface ToolbarState {
 
 export interface PerspectiveEditDialogState {
     open: boolean,
-    perspectiveData: PerspectiveData | null,
-    index: number,
-    mode: 'create' | 'edit'
+    perspectiveData?: PerspectiveData,
+    index?: number,
+    mode: DialogMode
 }
 export interface ComponentsState {
     componentSelected: ComponentData | null,
@@ -50,7 +51,7 @@ export const initState: StoreState = {
         componentSelected: null,
         perspectiveEditDialog: {
             open: false,
-            perspectiveData: null,
+            perspectiveData: undefined,
             mode: 'create',
             index: -1
         },

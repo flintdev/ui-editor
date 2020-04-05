@@ -1,12 +1,12 @@
 // src/UIEditor/UIEditorContainer.tsx
 
 import * as React from 'react';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { Dispatch } from "redux";
+import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {Dispatch} from "redux";
 import {StoreState, ToolbarState} from "../redux/state";
 import * as actions from "../redux/modules/components/actions";
-import {ActionData, ComponentData, SettingsData, StateUpdaterData} from "../interface";
+import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterData} from "../interface";
 import Toolbar from "../containers/Toolbar/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView/ComponentTreeView";
 import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane";
@@ -16,6 +16,9 @@ import UIEditorCanvas from '@flintdev/ui-editor-canvas';
 import {ComponentState} from "react";
 import SettingsDialog from "../containers/Toolbar/SettingsDialog";
 import Paper from "@material-ui/core/Paper";
+import PerspectivePane from "../containers/PerspectivePane";
+import Splitter from 'm-react-splitters';
+import 'm-react-splitters/lib/splitters.css';
 
 const styles = createStyles({
     root: {
@@ -58,7 +61,14 @@ const styles = createStyles({
     paperCanvas: {
         margin: 20,
         flexGrow: 1
-    }
+    },
+    splitView: {
+        flexGrow: 1,
+        display: 'flex',
+        flexFlow: "column",
+        height: '100%',
+
+    },
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState, ComponentState {
@@ -72,6 +82,8 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
     settings: SettingsData,
     settingsOnUpdate: (settings: SettingsData) => void,
+    perspectives: PerspectiveData[],
+    perspectivesOnUpdate: (perspectives: PerspectiveData[]) => void,
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
@@ -84,10 +96,9 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
 }
 
 class UIEditorContainer extends React.Component<Props, object> {
-    state = {
-
-    };
+    state = {};
     treeOperations: any = {};
+
     componentDidMount(): void {
 
     }
@@ -135,12 +146,31 @@ class UIEditorContainer extends React.Component<Props, object> {
                             <tbody>
                             <tr>
                                 <td valign={"top"} className={classes.tdLeft}>
-                                    <ComponentTreeView
-                                        operations={this.treeOperations}
-                                        components={this.props.components}
-                                        componentsOnUpdate={this.handleTreeComponentsOnUpdate}
-                                        componentOnSelect={this.handleTreeViewComponentOnSelect}
-                                    />
+                                    <Paper className={classes.splitView}>
+                                        <Splitter
+                                            position="vertical"
+                                            primaryPaneMaxHeight={"50%"}
+                                            primaryPaneMinHeight={"50px"}
+                                            primaryPaneHeight="200px"
+                                            postPoned={false}
+                                        >
+                                            <div>
+                                                <PerspectivePane
+                                                    perspectives={this.props.perspectives}
+                                                    perspectivesOnUpdate={this.props.perspectivesOnUpdate}
+                                                />
+                                            </div>
+                                            <div>
+                                                <ComponentTreeView
+                                                    operations={this.treeOperations}
+                                                    components={this.props.components}
+                                                    componentsOnUpdate={this.handleTreeComponentsOnUpdate}
+                                                    componentOnSelect={this.handleTreeViewComponentOnSelect}
+                                                />
+                                            </div>
+                                        </Splitter>
+                                    </Paper>
+
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
                                     <Paper className={classes.paperCanvas}>

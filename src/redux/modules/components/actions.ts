@@ -9,7 +9,7 @@ export function selectComponent(value: ComponentData): SelectComponent {
     return { type: types.SELECT_COMPONENT, value }
 }
 
-export function perspectiveEditDialogOpen(mode: 'create'|'edit', perspectiveData: PerspectiveData, index: number): PerspectiveEditDialogOpen {
+export function perspectiveEditDialogOpen(mode: 'create'|'edit', perspectiveData?: PerspectiveData, index?: number): PerspectiveEditDialogOpen {
     return { type: types.PERSPECTIVE_EDIT_DIALOG_OPEN, mode, perspectiveData, index }
 }
 
@@ -27,8 +27,8 @@ export interface SelectComponent {
 export interface PerspectiveEditDialogOpen {
     type: typeof types.PERSPECTIVE_EDIT_DIALOG_OPEN,
     mode: 'create' | 'edit',
-    perspectiveData: PerspectiveData|null,
-    index: number
+    perspectiveData?: PerspectiveData,
+    index?: number
 }
 
 

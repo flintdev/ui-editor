@@ -42,6 +42,7 @@
     "jest": "^24.9.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
+    "m-react-splitters": "^1.2.0",
     "npm": "^6.13.6",
     "raw-loader": "^4.0.0",
     "react": "^16.12.0",
@@ -73,7 +74,8 @@
     "ace-builds": "^1.4.8",
     "react-ace": "^8.0.0",
     "redux-thunk": "^2.3.0 || ^2.0.0",
-    "react-hotkeys": "^2.0.0"
+    "react-hotkeys": "^2.0.0",
+    "m-react-splitters": "^1.2.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
