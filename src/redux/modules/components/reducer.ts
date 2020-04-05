@@ -11,6 +11,22 @@ export function reducer(state: ComponentsState, action: ComponentsAction) {
             return update(state, {
                 componentSelected: {$set: action.value}
             });
+        case types.PERSPECTIVE_EDIT_DIALOG_OPEN:
+            return update(state, {
+                perspectiveEditDialog: {
+                    open: {$set: true},
+                    perspectiveData: {$set: action.perspectiveData},
+                    mode: {$set: action.mode},
+                    index: {$set: action.index}
+                }
+            });
+        case types.PERSPECTIVE_EDIT_DIALOG_CLOSE:
+            return update(state, {
+                perspectiveEditDialog: {
+                    open: {$set: false}
+                }
+            });
+
         default:
             return state;
     }

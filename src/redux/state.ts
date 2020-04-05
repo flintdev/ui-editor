@@ -1,6 +1,6 @@
 // src/redux/state.ts
 
-import {ComponentData} from "../interface";
+import {ComponentData, PerspectiveData} from "../interface";
 
 export type Mode = 'editor' | 'preview';
 
@@ -17,8 +17,15 @@ export interface ToolbarState {
     mode: Mode
 }
 
+export interface PerspectiveEditDialogState {
+    open: boolean,
+    perspectiveData: PerspectiveData | null,
+    index: number,
+    mode: 'create' | 'edit'
+}
 export interface ComponentsState {
     componentSelected: ComponentData | null,
+    perspectiveEditDialog: PerspectiveEditDialogState
 }
 
 export interface StoreState {
@@ -41,5 +48,11 @@ export const initState: StoreState = {
     },
     components: {
         componentSelected: null,
+        perspectiveEditDialog: {
+            open: false,
+            perspectiveData: null,
+            mode: 'create',
+            index: -1
+        },
     }
 };

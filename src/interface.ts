@@ -15,6 +15,11 @@ export interface ComponentData {
     }
 }
 
+export interface PerspectiveData {
+    name: string,
+    code: string
+}
+
 export interface PageDependency {
     type: 'script',
     subtype: 'text/javascript',

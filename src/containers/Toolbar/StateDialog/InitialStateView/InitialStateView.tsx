@@ -89,7 +89,7 @@ class InitialStateView extends React.Component<Props, object> {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <Typography variant={"subtitle2"}>INITIAL STATE (JavaScript)</Typography>
+                                        <Typography variant={"subtitle2"}>INITIAL STATE (JSON)</Typography>
                                     </td>
                                     <td align={"right"}>
                                         <Button
