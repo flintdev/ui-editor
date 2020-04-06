@@ -16,10 +16,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import {ComponentState} from "react";
 
 const styles = createStyles({
     root: {
-
+        backgroundColor: 'white'
     },
     headerContainer: {
         paddingTop: 2,
@@ -35,14 +36,18 @@ const styles = createStyles({
         fontWeight: 'bold',
     },
     listContainer: {
-        overflow: 'scroll'
+        overflow: 'auto'
+    },
+    list: {
+        overflow: 'auto'
     }
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles>, ComponentState {
     perspectives: PerspectiveData[],
     perspectivesOnUpdate: (perspectives: PerspectiveData[]) => void,
     perspectiveEditDialogOpen: (mode: DialogMode, perspectiveData?: PerspectiveData, index?: number) => void,
+    selectPerspective: (perspectiveData: PerspectiveData) => void,
 }
 
 interface State {
@@ -84,8 +89,12 @@ class PerspectivePane extends React.Component<Props, object> {
         this.props.perspectiveEditDialogOpen("create");
     };
 
+    handleItemClick = (perspectiveData: PerspectiveData) => () => {
+        this.props.selectPerspective(perspectiveData);
+    };
+
     render() {
-        const {classes, perspectives} = this.props;
+        const {classes, perspectives, perspectiveDataSelected} = this.props;
         return (
             <div className={classes.root}>
                 <div className={classes.headerContainer}>
@@ -105,10 +114,15 @@ class PerspectivePane extends React.Component<Props, object> {
                     </table>
                 </div>
                 <div className={classes.listContainer}>
-                    <List dense={true}>
+                    <List dense={true} className={classes.list}>
                         {!!perspectives && perspectives.map((item, i) => {
                             return (
-                                <ListItem key={i} button={true}>
+                                <ListItem
+                                    key={i}
+                                    button={true}
+                                    selected={item === perspectiveDataSelected}
+                                    onClick={this.handleItemClick(item)}
+                                >
                                     <ListItemText primary={item.name}/>
                                     <IconButton size={"small"}>
                                         <EditIcon fontSize={"inherit"} onClick={this.handleEditItemClick(item, i)}/>
@@ -135,6 +149,7 @@ const mapStateToProps = (state: StoreState) => {
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
     return {
         perspectiveEditDialogOpen: (mode: DialogMode, perspectiveData?: PerspectiveData, index?: number) => dispatch(actions.perspectiveEditDialogOpen(mode, perspectiveData, index)),
+        selectPerspective: (perspectiveData: PerspectiveData) => dispatch(actions.selectPerspective(perspectiveData)),
     }
 };
 

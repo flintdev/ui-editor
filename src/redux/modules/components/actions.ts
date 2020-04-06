@@ -9,6 +9,10 @@ export function selectComponent(value: ComponentData): SelectComponent {
     return { type: types.SELECT_COMPONENT, value }
 }
 
+export function selectPerspective(perspectiveData?: PerspectiveData): SelectPerspective {
+    return { type: types.SELECT_PERSPECTIVE, perspectiveData }
+}
+
 export function perspectiveEditDialogOpen(mode: 'create'|'edit', perspectiveData?: PerspectiveData, index?: number): PerspectiveEditDialogOpen {
     return { type: types.PERSPECTIVE_EDIT_DIALOG_OPEN, mode, perspectiveData, index }
 }
@@ -24,6 +28,11 @@ export interface SelectComponent {
     value: ComponentData
 }
 
+export interface SelectPerspective {
+    type: typeof types.SELECT_PERSPECTIVE,
+    perspectiveData?: PerspectiveData
+}
+
 export interface PerspectiveEditDialogOpen {
     type: typeof types.PERSPECTIVE_EDIT_DIALOG_OPEN,
     mode: 'create' | 'edit',
@@ -31,12 +40,12 @@ export interface PerspectiveEditDialogOpen {
     index?: number
 }
 
-
 export interface PerspectiveEditDialogClose {
     type: typeof types.PERSPECTIVE_EDIT_DIALOG_CLOSE,
 }
 
 export type ComponentsAction =
+    SelectPerspective |
     PerspectiveEditDialogOpen |
     PerspectiveEditDialogClose |
     SelectComponent;

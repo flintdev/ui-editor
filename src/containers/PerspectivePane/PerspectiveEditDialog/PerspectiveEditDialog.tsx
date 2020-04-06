@@ -108,6 +108,7 @@ class PerspectiveEditDialog extends React.Component<Props, object> {
                             label={'Name of Perspective'}
                             fullWidth={true}
                             onChange={this.handleNameChange}
+                            autoFocus={true}
                         />
                         <Paper className={classes.paper}>
                             <AceEditor

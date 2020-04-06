@@ -4,7 +4,7 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
-import {ActionData, ComponentData, SettingsData, StateUpdaterData} from '../src/interface';
+import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterData} from '../src/interface';
 import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
@@ -27,6 +27,7 @@ interface State {
     initialState: string,
     components: ComponentData[],
     settings: SettingsData,
+    perspectives: PerspectiveData[],
 }
 
 class ExampleContainer extends React.Component<Props, object> {
@@ -36,6 +37,7 @@ class ExampleContainer extends React.Component<Props, object> {
         initialState: '',
         components: componentsExample,
         settings: {},
+        perspectives: [],
     };
     operations: any = {};
     componentDidMount(): void {
@@ -104,6 +106,10 @@ class ExampleContainer extends React.Component<Props, object> {
         this.setState({settings});
     };
 
+    handlePerspectivesOnUpdate = (perspectives: PerspectiveData[]) => {
+        this.setState({perspectives});
+    };
+
     handleComponentsOnUpdate = (components: ComponentData[]) => {
         this.setState({components});
     };
@@ -114,7 +120,7 @@ class ExampleContainer extends React.Component<Props, object> {
 
     render() {
         const {classes} = this.props;
-        const {actions, stateUpdaters, initialState, components, settings} = this.state;
+        const {actions, stateUpdaters, initialState, components, settings, perspectives} = this.state;
         return (
             <div className={classes.root}>
                 <UIEditor
@@ -127,6 +133,8 @@ class ExampleContainer extends React.Component<Props, object> {
                     actionOnUpdate={this.handleActionUpdate}
                     settings={settings}
                     settingsOnUpdate={this.handleSettingsOnUpdate}
+                    perspectives={perspectives}
+                    perspectivesOnUpdate={this.handlePerspectivesOnUpdate}
                     components={components}
                     componentsOnUpdate={this.handleComponentsOnUpdate}
                     componentOnSelect={this.handleComponentOnSelect}

@@ -26,6 +26,7 @@ export interface PerspectiveEditDialogState {
 }
 export interface ComponentsState {
     componentSelected: ComponentData | null,
+    perspectiveDataSelected?: PerspectiveData,
     perspectiveEditDialog: PerspectiveEditDialogState
 }
 
@@ -49,6 +50,7 @@ export const initState: StoreState = {
     },
     components: {
         componentSelected: null,
+        perspectiveDataSelected: undefined,
         perspectiveEditDialog: {
             open: false,
             perspectiveData: undefined,
