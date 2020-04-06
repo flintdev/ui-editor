@@ -148,7 +148,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                 <td valign={"top"} className={classes.tdLeft}>
                                     <Paper className={classes.splitView}>
                                         <Splitter
-                                            position="vertical"
+                                            position="horizontal"
                                             primaryPaneMaxHeight={"50%"}
                                             primaryPaneMinHeight={"50px"}
                                             primaryPaneHeight="200px"

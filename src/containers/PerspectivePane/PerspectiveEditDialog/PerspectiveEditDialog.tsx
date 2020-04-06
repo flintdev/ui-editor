@@ -1,9 +1,9 @@
 // src/containers/PerspectivePane/PerspectiveEditDialog/PerspectiveEditDialog.tsx
 
 import * as React from 'react';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { Dispatch } from "redux";
+import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {Dispatch} from "redux";
 import {PerspectiveEditDialogState, StoreState} from "../../../redux/state";
 import * as actions from "../../../redux/modules/components/actions";
 import Dialog from "@material-ui/core/Dialog";
@@ -19,9 +19,7 @@ import "ace-builds/src-noconflict/theme-tomorrow";
 import {PerspectiveData} from "../../../interface";
 
 const styles = createStyles({
-    root: {
-
-    },
+    root: {},
     paper: {
         marginTop: 10,
         padding: 10,
@@ -32,6 +30,7 @@ export interface Props extends WithStyles<typeof styles>, PerspectiveEditDialogS
     perspectiveEditDialogClose: () => void,
     onCreate: (perspectiveData: PerspectiveData) => void,
     onUpdate: (perspectiveData: PerspectiveData, index: number) => void,
+    onDelete: (index: number) => void,
 }
 
 interface State {
@@ -71,14 +70,23 @@ class PerspectiveEditDialog extends React.Component<Props, object> {
         const {name, code} = this.state;
         const perspectiveData: PerspectiveData = {name, code};
         this.props.onCreate(perspectiveData);
+        this.props.perspectiveEditDialogClose();
     };
 
     handleSubmitToUpdate = () => {
         const {name, code} = this.state;
         let {index} = this.props;
         const perspectiveData: PerspectiveData = {name, code};
-        if (!index) index = -1;
+        if (index === undefined) index = -1;
         this.props.onUpdate(perspectiveData, index);
+        this.props.perspectiveEditDialogClose();
+    };
+
+    handleSubmitToDelete = () => {
+        let {index} = this.props;
+        if (index === undefined) index = -1;
+        this.props.onDelete(index);
+        this.props.perspectiveEditDialogClose();
     };
 
     render() {
@@ -123,10 +131,26 @@ class PerspectiveEditDialog extends React.Component<Props, object> {
                     <DialogActions>
                         <Button onClick={this.props.perspectiveEditDialogClose}>Close</Button>
                         {mode === "create" &&
-                        <Button variant={"contained"} color={"primary"} onClick={this.handleSubmitToCreate}>Create</Button>
+                        <Button variant={"contained"} color={"primary"}
+                                onClick={this.handleSubmitToCreate}>Create</Button>
                         }
                         {mode === "edit" &&
-                        <Button variant={"contained"} color={"primary"} onClick={this.handleSubmitToUpdate}>Update</Button>
+                        <React.Fragment>
+                            <Button
+                                variant={"outlined"}
+                                color={"secondary"}
+                                onClick={this.handleSubmitToDelete}
+                            >
+                                Delete
+                            </Button>
+                            <Button
+                                variant={"contained"}
+                                color={"primary"}
+                                onClick={this.handleSubmitToUpdate}
+                            >
+                                Update
+                            </Button>
+                        </React.Fragment>
                         }
                     </DialogActions>
                 </Dialog>

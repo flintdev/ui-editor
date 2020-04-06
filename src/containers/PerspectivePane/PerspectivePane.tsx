@@ -15,23 +15,28 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 
 const styles = createStyles({
     root: {
 
     },
     headerContainer: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 2,
+        paddingBottom: 0,
         paddingLeft: 10,
         paddingRight: 10,
-        display: 'flex'
+    },
+    table: {
+        width: '100%',
     },
     headerText: {
         color: 'grey',
         fontWeight: 'bold',
-        flex: 1
     },
+    listContainer: {
+        overflow: 'scroll'
+    }
 });
 
 export interface Props extends WithStyles<typeof styles>{
@@ -59,15 +64,24 @@ class PerspectivePane extends React.Component<Props, object> {
     };
 
     handlePerspectiveOnUpdate = (perspectiveData: PerspectiveData, index: number) => {
+        let {perspectives} = this.props;
+        perspectives[index] = perspectiveData;
+        this.props.perspectivesOnUpdate([...perspectives]);
+    };
 
+    handlePerspectiveOnDelete = (index: number) => {
+        let {perspectives} = this.props;
+        perspectives.splice(index, 1);
+        this.props.perspectivesOnUpdate([...perspectives]);
+    };
+
+    handleEditItemClick = (perspectiveData: PerspectiveData, index: number) => (event: React.MouseEvent) => {
+        event.stopPropagation();
+        this.props.perspectiveEditDialogOpen("edit", perspectiveData, index);
     };
 
     handleOpenCreateDialog = () => {
         this.props.perspectiveEditDialogOpen("create");
-    };
-
-    handleOpenUpdateDialog = (perspectiveData: PerspectiveData, index: number) => {
-        this.props.perspectiveEditDialogOpen("edit", perspectiveData, index);
     };
 
     render() {
@@ -75,17 +89,30 @@ class PerspectivePane extends React.Component<Props, object> {
         return (
             <div className={classes.root}>
                 <div className={classes.headerContainer}>
-                    <Typography variant={"subtitle2"} className={classes.headerText}>PERSPECTIVES</Typography>
-                    <IconButton size={"small"} onClick={this.handleOpenCreateDialog}>
-                        <AddIcon fontSize={"small"}/>
-                    </IconButton>
+                    <table className={classes.table}>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <Typography variant={"subtitle2"} className={classes.headerText}>PERSPECTIVES</Typography>
+                            </td>
+                            <td align={"right"}>
+                                <IconButton size={"small"} onClick={this.handleOpenCreateDialog}>
+                                    <AddIcon fontSize={"small"}/>
+                                </IconButton>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div>
+                <div className={classes.listContainer}>
                     <List dense={true}>
                         {!!perspectives && perspectives.map((item, i) => {
                             return (
-                                <ListItem key={i}>
+                                <ListItem key={i} button={true}>
                                     <ListItemText primary={item.name}/>
+                                    <IconButton size={"small"}>
+                                        <EditIcon fontSize={"inherit"} onClick={this.handleEditItemClick(item, i)}/>
+                                    </IconButton>
                                 </ListItem>
                             )
                         })}
@@ -94,6 +121,7 @@ class PerspectivePane extends React.Component<Props, object> {
                 <PerspectiveEditDialog
                     onCreate={this.handlePerspectiveOnCreate}
                     onUpdate={this.handlePerspectiveOnUpdate}
+                    onDelete={this.handlePerspectiveOnDelete}
                 />
             </div>
         )
