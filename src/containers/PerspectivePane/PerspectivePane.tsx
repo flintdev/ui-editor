@@ -40,6 +40,10 @@ const styles = createStyles({
     },
     list: {
         overflow: 'auto'
+    },
+    listItem: {
+        paddingTop: 0,
+        paddingBottom: 0,
     }
 });
 
@@ -120,6 +124,7 @@ class PerspectivePane extends React.Component<Props, object> {
                         {!!perspectives && perspectives.map((item, i) => {
                             return (
                                 <ListItem
+                                    className={classes.listItem}
                                     key={i}
                                     button={true}
                                     selected={item === perspectiveDataSelected}
