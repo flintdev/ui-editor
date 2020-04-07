@@ -111,7 +111,11 @@ class ComponentTreeView extends React.Component<Props, object> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<object>, snapshot?: any): void {
-        if (!_.isEqual(prevProps.components, this.props.components) || !_.isEqual(prevProps.perspectiveDataSelected, this.props.perspectiveDataSelected)) {
+        if (
+            !_.isEqual(prevProps.components, this.props.components) ||
+            !_.isEqual(prevProps.perspectiveDataSelected, this.props.perspectiveDataSelected) ||
+            !_.isEqual(prevProps._mark, this.props._mark)
+        ) {
             this.updateTreeData();
         }
     }

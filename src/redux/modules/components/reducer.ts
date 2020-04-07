@@ -30,7 +30,10 @@ export function reducer(state: ComponentsState, action: ComponentsAction) {
                     open: {$set: false}
                 }
             });
-
+        case types.INCREASE_MARK:
+            return update(state, {
+                _mark: {$set: state._mark + 1}
+            });
         default:
             return state;
     }

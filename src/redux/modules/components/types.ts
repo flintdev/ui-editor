@@ -5,3 +5,5 @@ export const SELECT_PERSPECTIVE = 'components/SELECT_PERSPECTIVE';
 // perspective edit dialog
 export const PERSPECTIVE_EDIT_DIALOG_OPEN = 'components/PERSPECTIVE_EDIT_DIALOG_OPEN';
 export const PERSPECTIVE_EDIT_DIALOG_CLOSE = 'components/PERSPECTIVE_EDIT_DIALOG_CLOSE';
+//
+export const INCREASE_MARK = 'components/INCREASE_MARK';

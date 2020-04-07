@@ -21,6 +21,11 @@ export function perspectiveEditDialogClose(): PerspectiveEditDialogClose {
     return { type: types.PERSPECTIVE_EDIT_DIALOG_CLOSE }
 }
 
+export function increaseMark(): IncreaseMark {
+    return { type: types.INCREASE_MARK }
+}
+
+
 // interfaces
 
 export interface SelectComponent {
@@ -44,7 +49,12 @@ export interface PerspectiveEditDialogClose {
     type: typeof types.PERSPECTIVE_EDIT_DIALOG_CLOSE,
 }
 
+export interface IncreaseMark {
+    type: typeof types.INCREASE_MARK,
+}
+
 export type ComponentsAction =
+    IncreaseMark |
     SelectPerspective |
     PerspectiveEditDialogOpen |
     PerspectiveEditDialogClose |

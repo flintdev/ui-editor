@@ -28,6 +28,7 @@ export interface ComponentsState {
     componentSelected: ComponentData | null,
     perspectiveDataSelected?: PerspectiveData,
     perspectiveEditDialog: PerspectiveEditDialogState
+    _mark: number,
 }
 
 export interface StoreState {
@@ -57,5 +58,6 @@ export const initState: StoreState = {
             mode: 'create',
             index: -1
         },
+        _mark: 1,
     }
 };

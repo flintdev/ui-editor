@@ -74,6 +74,7 @@ const styles = createStyles({
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState, ComponentState {
     selectComponent: (value: ComponentData) => void,
+    increaseMark: () => void,
     operations: any,
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
@@ -114,6 +115,7 @@ class UIEditorContainer extends React.Component<Props, object> {
 
     handleCanvasComponentsOnUpdate = (components: ComponentData[]) => {
         this.props.componentsOnUpdate(components);
+        this.props.increaseMark();
     };
 
     handleComponentOnDelete = (componentData: ComponentData) => {
@@ -244,6 +246,7 @@ const mapStateToProps = (state: StoreState) => {
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
     return {
         selectComponent: (value: ComponentData) => dispatch(actions.selectComponent(value)),
+        increaseMark: () => dispatch(actions.increaseMark()),
     }
 };
 
