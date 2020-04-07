@@ -177,7 +177,8 @@ class ComponentTreeView extends React.Component<Props, object> {
         this.setState({
             treeData: newTree,
         });
-        const components = this.treeDataHelper.convertTreeDataToComponents(newTree);
+        const components = this.treeDataHelper.convertTreeDataToComponents(newTree, this.props.components);
+        console.log(components);
         this.props.componentsOnUpdate(components);
     };
 

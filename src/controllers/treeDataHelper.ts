@@ -35,9 +35,9 @@ export class TreeDataHelper {
         return treeData.items[id];
     };
 
-    convertTreeDataToComponents = (treeData: TreeData): ComponentData[] => {
+    convertTreeDataToComponents = (treeData: TreeData, components: ComponentData[]): ComponentData[] => {
         const {rootId, items} = treeData;
-        return this.recurToGetChildren(rootId as string, items);
+        return this.recurToGetChildren(rootId as string, items, components);
     };
 
     private recurToGetIdPathMap = (idPathMap: any, path: Path, componentData: ComponentData) => {
@@ -84,16 +84,16 @@ export class TreeDataHelper {
         return _.get(data, pathList);
     };
 
-    private recurToGetChildren = (parentId: string, items: Items): ComponentData[] => {
+    private recurToGetChildren = (parentId: string, items: Items, components: ComponentData[]): ComponentData[] => {
         const {children} = items[parentId];
         if (!children) return [];
         return children.map((childId: string) => {
             const {data} = items[childId];
             return {
+                ...data.props,
                 id: childId,
                 name: data.title,
-                params: data.params,
-                children: this.recurToGetChildren(childId, items)
+                children: this.recurToGetChildren(childId, items, components),
             }
         });
     };
@@ -120,7 +120,7 @@ export class TreeDataHelper {
     };
 
     private recurToGetItems = (componentData: ComponentData, items: Items, path: Path) => {
-        let {id, name, params, children, hidden} = componentData;
+        let {id, name, children, hidden} = componentData;
         if (!!hidden) return;
         children = !!children ? children : [];
         items[id] = {
@@ -130,7 +130,7 @@ export class TreeDataHelper {
             data: {
                 title: name,
                 path: [...path],
-                params,
+                props: {...componentData},
             }
         };
         for (let i=0;  i<children.length; i++) {

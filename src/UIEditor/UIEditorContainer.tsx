@@ -111,6 +111,7 @@ class UIEditorContainer extends React.Component<Props, object> {
 
     handleEditPaneComponentsOnUpdate = (components: ComponentData[]) => {
         this.props.componentsOnUpdate(components);
+        this.props.increaseMark();
     };
 
     handleCanvasComponentsOnUpdate = (components: ComponentData[]) => {
