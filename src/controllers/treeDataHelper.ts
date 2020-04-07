@@ -76,7 +76,6 @@ export class TreeDataHelper {
             item.children = this.recurToHideChildren(item, stateJson);
             return item;
         });
-
     };
 
     private getValueByPath = (path: string, data: any) => {
