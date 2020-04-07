@@ -4,18 +4,18 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import {Dispatch} from "redux";
-import {StoreState} from "../../redux/state";
+import {ComponentsState, StoreState} from "../../redux/state";
 import * as actions from "../../redux/modules/components/actions";
 import {ComponentData} from "../../interface";
 import Paper from "@material-ui/core/Paper";
 import Typography from '@material-ui/core/Typography';
-import {ComponentState} from "react";
 // @ts-ignore
 import Tree, {mutateTree, moveItemOnTree, RenderItemParams, TreeData, TreeItem, ItemId, TreeSourcePosition, TreeDestinationPosition} from '@atlaskit/tree';
 import {TreeDataHelper} from "../../controllers/treeDataHelper";
 import TreeNodeCell from "./TreeNodeCell";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import * as _ from 'lodash';
 
 const styles = createStyles({
     root: {
@@ -45,7 +45,7 @@ const styles = createStyles({
     },
 });
 
-export interface Props extends WithStyles<typeof styles>, ComponentState {
+export interface Props extends WithStyles<typeof styles>, ComponentsState {
     operations: any,
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
@@ -83,16 +83,21 @@ const getIcon = (
     return <span/>;
 };
 
-class ComponentTreeView extends React.PureComponent<Props, object> {
+class ComponentTreeView extends React.Component<Props, object> {
     state: State = {
         treeData: undefined,
-        item: undefined
+        item: undefined,
     };
     treeDataHelper = new TreeDataHelper();
     componentDidMount(): void {
-        const treeData = this.getTreeData();
-        this.setState({treeData});
+        this.updateTreeData();
     }
+
+    updateTreeData = () => {
+        const {components} = this.props;
+        const treeData = this.getTreeData(components);
+        this.setState({treeData});
+    };
 
     componentWillMount(): void {
         if (!!this.props.operations) {
@@ -106,9 +111,8 @@ class ComponentTreeView extends React.PureComponent<Props, object> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<object>, snapshot?: any): void {
-        if (JSON.stringify(prevProps.components) !== JSON.stringify(this.props.components)) {
-            const treeData = this.getTreeData();
-            this.setState({treeData});
+        if (!_.isEqual(prevProps.components, this.props.components) || !_.isEqual(prevProps.perspectiveDataSelected, this.props.perspectiveDataSelected)) {
+            this.updateTreeData();
         }
     }
 
@@ -154,8 +158,7 @@ class ComponentTreeView extends React.PureComponent<Props, object> {
         });
     };
 
-    getTreeData = (): TreeData => {
-        const {components} = this.props;
+    getTreeData = (components: ComponentData[]): TreeData => {
         return this.treeDataHelper.convertComponentsToTreeData(components);
     };
 

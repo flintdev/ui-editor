@@ -46,6 +46,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles>, ComponentState {
     perspectives: PerspectiveData[],
     perspectivesOnUpdate: (perspectives: PerspectiveData[]) => void,
+    perspectiveSelected: (perspectiveData: PerspectiveData) => void,
     perspectiveEditDialogOpen: (mode: DialogMode, perspectiveData?: PerspectiveData, index?: number) => void,
     selectPerspective: (perspectiveData: PerspectiveData) => void,
 }
@@ -91,6 +92,7 @@ class PerspectivePane extends React.Component<Props, object> {
 
     handleItemClick = (perspectiveData: PerspectiveData) => () => {
         this.props.selectPerspective(perspectiveData);
+        this.props.perspectiveSelected(perspectiveData);
     };
 
     render() {

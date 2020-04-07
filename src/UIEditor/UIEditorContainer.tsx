@@ -129,6 +129,10 @@ class UIEditorContainer extends React.Component<Props, object> {
         this.props.componentOnSelect(componentData);
     };
 
+    handlePerspectiveSelected = (perspectiveData: PerspectiveData) => {
+
+    };
+
     hideComponents = () => {
         const {perspectiveDataSelected, components} = this.props;
         if (!perspectiveDataSelected) return components;
@@ -165,6 +169,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                                 <PerspectivePane
                                                     perspectives={this.props.perspectives}
                                                     perspectivesOnUpdate={this.props.perspectivesOnUpdate}
+                                                    perspectiveSelected={this.handlePerspectiveSelected}
                                                 />
                                             </div>
                                             <div>

@@ -106,7 +106,7 @@ export class TreeDataHelper {
         }
         items['root'] = {
             id: 'root',
-            children: components.map(componentData => componentData.id),
+            children: components.filter(componentData => !componentData.hidden).map(componentData => componentData.id),
             isExpanded: true,
             data: {
                 title: 'Root',
@@ -120,11 +120,12 @@ export class TreeDataHelper {
     };
 
     private recurToGetItems = (componentData: ComponentData, items: Items, path: Path) => {
-        let {id, name, params, children} = componentData;
+        let {id, name, params, children, hidden} = componentData;
+        if (!!hidden) return;
         children = !!children ? children : [];
         items[id] = {
             id: id,
-            children: children.map(componentData => componentData.id),
+            children: children.filter(componentData => !componentData.hidden).map(componentData => componentData.id),
             isExpanded: true,
             data: {
                 title: name,
