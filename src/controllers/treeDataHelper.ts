@@ -40,15 +40,6 @@ export class TreeDataHelper {
         return this.recurToGetChildren(rootId as string, items);
     };
 
-    mergeComponents = (originalComponents: ComponentData[], filteredComponents: ComponentData[]) => {
-        // 1. merge filtered components into original components
-        // 2. new added components should not change relative position in filtered components
-        let idPathMap = {};
-        originalComponents.forEach((item, index) => {
-            this.recurToGetIdPathMap(idPathMap, [index], item);
-        })
-    };
-
     private recurToGetIdPathMap = (idPathMap: any, path: Path, componentData: ComponentData) => {
         const {id, children} = componentData;
         idPathMap[id] = path;
