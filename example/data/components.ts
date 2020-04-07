@@ -13,6 +13,7 @@ export const componentsExample: ComponentData[] = [
             ]
         },
         children: [],
+        // hidden: true,
     },
     {
         id: '2',

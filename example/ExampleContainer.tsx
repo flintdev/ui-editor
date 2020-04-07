@@ -8,6 +8,7 @@ import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterDa
 import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
+import {perspectivesSample} from "./data/perspectives";
 import {getWidgetConfiguration, getWidget} from '@flintdev/material-widgets';
 import * as _ from 'lodash';
 
@@ -37,7 +38,7 @@ class ExampleContainer extends React.Component<Props, object> {
         initialState: '',
         components: componentsExample,
         settings: {},
-        perspectives: [],
+        perspectives: perspectivesSample,
     };
     operations: any = {};
     componentDidMount(): void {

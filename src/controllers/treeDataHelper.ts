@@ -40,6 +40,59 @@ export class TreeDataHelper {
         return this.recurToGetChildren(rootId as string, items);
     };
 
+    mergeComponents = (originalComponents: ComponentData[], filteredComponents: ComponentData[]) => {
+        // 1. merge filtered components into original components
+        // 2. new added components should not change relative position in filtered components
+        let idPathMap = {};
+        originalComponents.forEach((item, index) => {
+            this.recurToGetIdPathMap(idPathMap, [index], item);
+        })
+    };
+
+    private recurToGetIdPathMap = (idPathMap: any, path: Path, componentData: ComponentData) => {
+        const {id, children} = componentData;
+        idPathMap[id] = path;
+        if (!children) return;
+        children.forEach((item, index) => {
+            this.recurToGetIdPathMap(idPathMap, [...path, 'children', index], item);
+        });
+    };
+
+    hideComponentsByState = (components: ComponentData[], stateJson: any): ComponentData[] => {
+        const newComponents: ComponentData[] = [];
+        for (let item of components) {
+            if (!!item.display && item.display.type === "conditional") {
+                const statePath = item.display.state;
+                const value = item.display.value;
+                if (!statePath || !value) item.hidden = true;
+                else item.hidden = this.getValueByPath(statePath, stateJson) !== value;
+            } else item.hidden = false;
+            item.children = this.recurToHideChildren(item, stateJson);
+            newComponents.push(item);
+        }
+        return newComponents;
+    };
+
+    private recurToHideChildren = (componentData: ComponentData, stateJson: any): ComponentData[] => {
+        if (!componentData.children) return [];
+        return componentData.children.map((item) => {
+            if (!!item.display && item.display.type === "conditional") {
+                const statePath = item.display.state;
+                const value = item.display.value;
+                if (!statePath || !value) item.hidden = true;
+                else item.hidden = this.getValueByPath(statePath, stateJson) !== value;
+            } else item.hidden = false;
+            item.children = this.recurToHideChildren(item, stateJson);
+            return item;
+        });
+
+    };
+
+    private getValueByPath = (path: string, data: any) => {
+        const pathList = path.split('.').slice(1);
+        return _.get(data, pathList);
+    };
+
     private recurToGetChildren = (parentId: string, items: Items): ComponentData[] => {
         const {children} = items[parentId];
         if (!children) return [];

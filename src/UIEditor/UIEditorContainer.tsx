@@ -19,6 +19,7 @@ import Paper from "@material-ui/core/Paper";
 import PerspectivePane from "../containers/PerspectivePane";
 import Splitter from 'm-react-splitters';
 import 'm-react-splitters/lib/splitters.css';
+import {TreeDataHelper} from "../controllers/treeDataHelper";
 
 const styles = createStyles({
     root: {
@@ -98,18 +99,16 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
 class UIEditorContainer extends React.Component<Props, object> {
     state = {};
     treeOperations: any = {};
-
+    treeDataHelper: TreeDataHelper = new TreeDataHelper();
     componentDidMount(): void {
 
     }
 
     handleTreeComponentsOnUpdate = (components: ComponentData[]) => {
-        this.props.operations.updateComponents(components);
         this.props.componentsOnUpdate(components);
     };
 
     handleEditPaneComponentsOnUpdate = (components: ComponentData[]) => {
-        this.props.operations.updateComponents(components);
         this.props.componentsOnUpdate(components);
     };
 
@@ -130,8 +129,16 @@ class UIEditorContainer extends React.Component<Props, object> {
         this.props.componentOnSelect(componentData);
     };
 
+    hideComponents = () => {
+        const {perspectiveDataSelected, components} = this.props;
+        if (!perspectiveDataSelected) return components;
+        const stateJson = JSON.parse(perspectiveDataSelected.code);
+        return this.treeDataHelper.hideComponentsByState(components, stateJson);
+    };
+
     render() {
         const {classes, mode} = this.props;
+        const components = this.hideComponents();
         return (
             <div className={classes.root}>
                 <div className={classes.root}>
@@ -163,7 +170,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                             <div>
                                                 <ComponentTreeView
                                                     operations={this.treeOperations}
-                                                    components={this.props.components}
+                                                    components={components}
                                                     componentsOnUpdate={this.handleTreeComponentsOnUpdate}
                                                     componentOnSelect={this.handleTreeViewComponentOnSelect}
                                                 />
@@ -178,7 +185,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                             <div style={{overflow: "auto", height: '100%'}}>
                                                 <UIEditorCanvas
                                                     operations={this.props.operations}
-                                                    components={this.props.components}
+                                                    components={components}
                                                     editorLib={{getWidget: this.props.handler.getWidget}}
                                                     componentsUpdated={this.handleCanvasComponentsOnUpdate}
                                                     componentOnSelect={this.handleCanvasComponentOnSelect}

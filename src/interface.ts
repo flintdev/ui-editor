@@ -3,13 +3,14 @@
 export interface ComponentData {
     id: string,
     name: string,
-    params: object,
+    params: any,
     events?: any[],
-    display?: object,
-    repeat?: object,
+    display?: any,
+    repeat?: any,
     children?: ComponentData[],
     path?: Array<string|number>,
     tag?: string,
+    hidden?: boolean,
     canvas?: {
         display?: string
     }
