@@ -83,18 +83,41 @@ export class TreeDataHelper {
         return _.get(data, pathList);
     };
 
-    private recurToGetChildren = (parentId: string, items: Items, components: ComponentData[]): ComponentData[] => {
-        const {children} = items[parentId];
-        if (!children) return [];
-        return children.map((childId: string) => {
-            const {data} = items[childId];
-            return {
-                ...data.props,
-                id: childId,
-                name: data.title,
-                children: this.recurToGetChildren(childId, items, components),
+    private recurToGetChildren = (parentId: string, items: Items, componentChildren: ComponentData[]): ComponentData[] => {
+        const itemChildIds = items[parentId].children;
+        const newComponents: ComponentData[] = [];
+        let tempIds: any[] = [];
+        for (const itemId of itemChildIds) {
+            for (const component of componentChildren) {
+                const {id, hidden} = component;
+                if (!!hidden) {
+                    if (!tempIds.includes(id)) {
+                        newComponents.push(component);
+                        tempIds.push(id);
+                    }
+                } else {
+                    if (itemId === id) {
+                        component.children = !!component.children ? component.children : [];
+                        component.children = this.recurToGetChildren(id, items, component.children);
+                        newComponents.push(component);
+                        tempIds.push(id);
+                    }
+                }
             }
-        });
+        }
+        for (const itemId of itemChildIds) {
+            if (!tempIds.includes(itemId)) {
+                const {data} = items[itemId];
+                newComponents.push({
+                    ...data.props,
+                    id: itemId,
+                    name: data.title,
+                    children: this.recurToGetChildren(itemId as string, items, data.props.children)
+                });
+                tempIds.push(itemId);
+            }
+        }
+        return newComponents;
     };
 
     convertComponentsToTreeData = (components: ComponentData[]): TreeData => {
