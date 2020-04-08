@@ -38,6 +38,9 @@ const styles = createStyles({
     headingText: {
         flex: 1
     },
+    form: {
+        marginBottom: 10,
+    }
 });
 
 export interface Props extends WithStyles<typeof styles> {
@@ -83,9 +86,11 @@ class ListEditor extends React.Component<Props, object> {
     };
 
     renderInput = (path, name?: string) => {
+        const {classes} = this.props;
         const value = _.get(this.state.value, path);
         return (
             <TextField
+                className={classes.form}
                 value={value}
                 onChange={this.handleFormChange(path)}
                 label={!!name ? name : 'String'}
@@ -97,9 +102,11 @@ class ListEditor extends React.Component<Props, object> {
     };
 
     renderSelect = (path, name: string, options?: any[]) => {
+        const {classes} = this.props;
         const value = _.get(this.state.value, path);
         return (
             <TextField
+                className={classes.form}
                 label={name}
                 value={value}
                 onChange={this.handleFormChange(path)}

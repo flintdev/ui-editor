@@ -28,6 +28,9 @@ const styles = createStyles({
     titleText: {
         color: 'grey'
     },
+    valueTd: {
+        wordBreak: 'break-all'
+    }
 });
 
 export interface Props extends WithStyles<typeof styles> {
@@ -105,7 +108,7 @@ class LocalStoragePane extends React.Component<Props, object> {
                                     return (
                                         <TableRow key={i}>
                                             <TableCell>{item.key}</TableCell>
-                                            <TableCell>{item.value}</TableCell>
+                                            <TableCell className={classes.valueTd}>{item.value}</TableCell>
                                             <TableCell align={"right"}>
                                                 <IconButton size={"small"}
                                                             onClick={this.handleDeleteKeyValueClick(i)}>
