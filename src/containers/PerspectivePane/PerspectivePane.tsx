@@ -49,6 +49,7 @@ const styles = createStyles({
 
 export interface Props extends WithStyles<typeof styles>, ComponentState {
     perspectives: PerspectiveData[],
+    initialState: string,
     perspectivesOnUpdate: (perspectives: PerspectiveData[]) => void,
     perspectiveSelected: (perspectiveData: PerspectiveData) => void,
     perspectiveEditDialogOpen: (mode: DialogMode, perspectiveData?: PerspectiveData, index?: number) => void,
@@ -57,6 +58,11 @@ export interface Props extends WithStyles<typeof styles>, ComponentState {
 
 interface State {
     perspectiveEditDialogOpen: boolean,
+}
+
+enum DefaultPerspective {
+    AllComponents = "All Components",
+    InitialState = "Initial State",
 }
 
 class PerspectivePane extends React.Component<Props, object> {
@@ -99,6 +105,19 @@ class PerspectivePane extends React.Component<Props, object> {
         this.props.perspectiveSelected(perspectiveData);
     };
 
+    handleAllComponentsClick = () => {
+        const perspectiveData: PerspectiveData = {name: DefaultPerspective.AllComponents, code: "{}"};
+        this.handleItemClick(perspectiveData)();
+    };
+
+    handleInitialStateClick = () => {
+        const perspectiveData: PerspectiveData = {
+            name: DefaultPerspective.InitialState,
+            code: this.props.initialState,
+        };
+        this.handleItemClick(perspectiveData)();
+    };
+
     render() {
         const {classes, perspectives, perspectiveDataSelected} = this.props;
         return (
@@ -121,6 +140,22 @@ class PerspectivePane extends React.Component<Props, object> {
                 </div>
                 <div className={classes.listContainer}>
                     <List dense={true} className={classes.list}>
+                        <ListItem
+                            className={classes.listItem}
+                            button={true}
+                            selected={perspectiveDataSelected?.name === DefaultPerspective.AllComponents}
+                            onClick={this.handleAllComponentsClick}
+                        >
+                            <ListItemText primary={DefaultPerspective.AllComponents}/>
+                        </ListItem>
+                        <ListItem
+                            className={classes.listItem}
+                            button={true}
+                            selected={perspectiveDataSelected?.name === DefaultPerspective.InitialState}
+                            onClick={this.handleInitialStateClick}
+                        >
+                            <ListItemText primary={DefaultPerspective.InitialState}/>
+                        </ListItem>
                         {!!perspectives && perspectives.map((item, i) => {
                             return (
                                 <ListItem

@@ -52,7 +52,8 @@ export class TreeDataHelper {
     hideComponentsByState = (components: ComponentData[], stateJson: any): ComponentData[] => {
         const newComponents: ComponentData[] = [];
         for (let item of components) {
-            if (!!item.display && item.display.type === "conditional") {
+            if (Object.keys(stateJson).length === 0) item.hidden = false;
+            else if (!!item.display && item.display.type === "conditional") {
                 const statePath = item.display.state;
                 const value = item.display.value;
                 if (!statePath || !value) item.hidden = true;

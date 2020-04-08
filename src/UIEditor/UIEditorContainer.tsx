@@ -171,6 +171,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                             <div>
                                                 <PerspectivePane
                                                     perspectives={this.props.perspectives}
+                                                    initialState={this.props.initialState}
                                                     perspectivesOnUpdate={this.props.perspectivesOnUpdate}
                                                     perspectiveSelected={this.handlePerspectiveSelected}
                                                 />
