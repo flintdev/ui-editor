@@ -27,6 +27,7 @@ import ActionTemplate from './actionTemplate.txt';
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import {HotKeys} from "react-hotkeys";
+import LaunchIcon from '@material-ui/icons/Launch';
 
 const styles = createStyles({
     root: {},
@@ -86,14 +87,22 @@ const styles = createStyles({
     },
     closeButton: {
         marginLeft: 20,
-    }
+    },
+    actionButton: {
+        marginLeft: 10,
+    },
 });
+
+export interface OpenVSCodeCallback {
+    backToActionEditor: (code: string) => void;
+}
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
     actionsDialogClose: () => void,
     stateDialogOpen: () => void,
+    openVSCode: (code: string, callback: OpenVSCodeCallback) => void,
 }
 
 interface State {
@@ -101,6 +110,7 @@ interface State {
     codeValue: string,
     editing: boolean,
     addActionDialogOpen: boolean,
+    vscodeEditing: boolean,
 }
 
 class ActionsDialog extends React.Component<Props, object> {
@@ -109,6 +119,7 @@ class ActionsDialog extends React.Component<Props, object> {
         codeValue: '',
         editing: false,
         addActionDialogOpen: false,
+        vscodeEditing: false,
     };
 
     componentDidMount(): void {
@@ -166,10 +177,23 @@ class ActionsDialog extends React.Component<Props, object> {
         this.forceUpdate();
     };
 
+    handleOpenVSCodeClick = () => {
+        const {codeValue} = this.state;
+        this.setState({vscodeEditing: true});
+        this.props.openVSCode(codeValue, {
+            backToActionEditor: (newCode) => {
+                this.setState({
+                    codeValue: newCode,
+                    vscodeEditing: false,
+                });
+            }
+        });
+    };
+
     render() {
         const {classes, actionsDialog} = this.props;
         const {open} = actionsDialog;
-        const {codeValue, actionSelected, editing} = this.state;
+        const {codeValue, actionSelected, editing, vscodeEditing} = this.state;
         return (
             <div className={classes.root}>
                 <HotKeys
@@ -262,6 +286,17 @@ class ActionsDialog extends React.Component<Props, object> {
                                                             </td>
                                                             <td align={"right"}>
                                                                 <Button
+                                                                    className={classes.actionButton}
+                                                                    size={"small"}
+                                                                    variant={"outlined"}
+                                                                    onClick={this.handleOpenVSCodeClick}
+                                                                    disabled={!vscodeEditing}
+                                                                >
+
+                                                                    <LaunchIcon/>&nbsp;{vscodeEditing ? "Editing In VSCode" : "Edit In VSCode"}
+                                                                </Button>
+                                                                <Button
+                                                                    className={classes.actionButton}
                                                                     size={"small"}
                                                                     variant={"contained"}
                                                                     color={"primary"}

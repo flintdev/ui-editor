@@ -10,7 +10,7 @@ import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterDa
 import Toolbar from "../containers/Toolbar/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView/ComponentTreeView";
 import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane";
-import ActionsDialog from "../containers/Toolbar/ActionsDialog/ActionsDialog";
+import ActionsDialog, {OpenVSCodeCallback} from "../containers/Toolbar/ActionsDialog/ActionsDialog";
 import StateDialog from "../containers/Toolbar/StateDialog/StateDialog";
 import UIEditorCanvas from '@flintdev/ui-editor-canvas';
 import {ComponentState} from "react";
@@ -94,6 +94,7 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     handler: {
         getWidgetConfig: (name: string) => any;
         getWidget: (name: string, props: any) => any
+        openVSCode: (code: string, callback: OpenVSCodeCallback) => void,
     },
 }
 
@@ -210,7 +211,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                         components={this.props.components}
                                         componentsOnUpdate={this.handleEditPaneComponentsOnUpdate}
                                         actions={this.props.actions}
-                                        handler={this.props.handler}
+                                        handler={{getWidgetConfig: this.props.handler.getWidgetConfig}}
                                     />
                                 </td>
                             </tr>
@@ -221,6 +222,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                     <ActionsDialog
                         actions={this.props.actions}
                         actionOnUpdate={this.props.actionOnUpdate}
+                        openVSCode={this.props.handler.openVSCode}
                     />
 
                     <StateDialog
