@@ -111,9 +111,11 @@ class PerspectivePane extends React.Component<Props, object> {
     };
 
     handleInitialStateClick = () => {
+        let code = this.props.initialState;
+        if (!code || code === "") code = '{}';
         const perspectiveData: PerspectiveData = {
             name: DefaultPerspective.InitialState,
-            code: this.props.initialState,
+            code
         };
         this.handleItemClick(perspectiveData)();
     };
