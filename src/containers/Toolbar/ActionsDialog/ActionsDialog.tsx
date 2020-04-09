@@ -130,6 +130,10 @@ class ActionsDialog extends React.Component<Props, object> {
 
     };
 
+    onExit = () => {
+        this.handleCodeSaveButtonClick();
+    };
+
     handleAddActionDialogClose = () => {
         this.setState({
             addActionDialogOpen: false,
@@ -210,6 +214,7 @@ class ActionsDialog extends React.Component<Props, object> {
                         maxWidth={"lg"}
                         fullWidth={true}
                         disableEnforceFocus={true}
+                        onExit={this.onExit}
                     >
                         <Paper className={classes.paperHeader}>
                             <table className={classes.tableHeader}>
