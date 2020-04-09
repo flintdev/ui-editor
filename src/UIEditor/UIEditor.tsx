@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import {store} from "../redux/store";
 import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterData} from "../interface";
 import UIEditorContainer from "./UIEditorContainer";
+import {OpenVSCodeCallback} from "../containers/Toolbar/ActionsDialog/ActionsDialog";
 
 const styles = createStyles({
 
@@ -30,7 +31,8 @@ export interface Props extends WithStyles<typeof styles> {
     saveOnClick: () => void,
     handler: {
         getWidgetConfig: (name: string) => any;
-        getWidget: (name: string, props: any) => void
+        getWidget: (name: string, props: any) => void,
+        openVSCode: (code: string, callback: OpenVSCodeCallback) => void,
     },
 }
 

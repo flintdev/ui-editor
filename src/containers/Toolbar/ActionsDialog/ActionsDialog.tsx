@@ -137,6 +137,7 @@ class ActionsDialog extends React.Component<Props, object> {
     };
 
     actionOnSelect = (action: ActionData) => () => {
+        this.handleCodeSaveButtonClick();
         this.setState({
             actionSelected: action,
             codeValue: action.code,
@@ -186,6 +187,7 @@ class ActionsDialog extends React.Component<Props, object> {
                     codeValue: newCode,
                     vscodeEditing: false,
                 });
+                this.handleCodeSaveButtonClick();
             }
         });
     };
@@ -290,7 +292,7 @@ class ActionsDialog extends React.Component<Props, object> {
                                                                     size={"small"}
                                                                     variant={"outlined"}
                                                                     onClick={this.handleOpenVSCodeClick}
-                                                                    disabled={!vscodeEditing}
+                                                                    disabled={vscodeEditing}
                                                                 >
 
                                                                     <LaunchIcon/>&nbsp;{vscodeEditing ? "Editing In VSCode" : "Edit In VSCode"}
