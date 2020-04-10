@@ -114,6 +114,10 @@ const styles = createStyles({
         paddingLeft: 5,
         paddingRight: 5,
     },
+    listItem: {
+        paddingTop: 2,
+        paddingBottom: 2,
+    }
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
@@ -260,6 +264,7 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                     key={i}
                                                     selected={!!stateUpdaterSelected && stateUpdaterSelected.name === updater.name}
                                                     onClick={this.stateUpdaterOnSelect(updater)}
+                                                    className={classes.listItem}
                                                 >
                                                     <ListItemText className={classes.itemText} primary={updater.name}/>
                                                 </ListItem>

@@ -82,8 +82,12 @@ const styles = createStyles({
         marginLeft: 20,
         height: '100%',
     },
+    listItem: {
+        paddingTop: 2,
+        paddingBottom: 2,
+    },
     itemText: {
-        fontSize: 16
+        fontSize: 18
     },
     closeButton: {
         marginLeft: 20,
@@ -270,6 +274,7 @@ class ActionsDialog extends React.Component<Props, object> {
                                                             button key={i}
                                                             selected={!!actionSelected && action.name === actionSelected.name}
                                                             onClick={this.actionOnSelect(action)}
+                                                            className={classes.listItem}
                                                         >
                                                             <ListItemText className={classes.itemText}
                                                                           primary={action.name}/>

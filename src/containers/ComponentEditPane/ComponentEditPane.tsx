@@ -108,6 +108,10 @@ class ComponentEditPane extends React.Component<Props, object> {
         }
     }
 
+    componentWillUnmount(): void {
+        this.handleSaveClick();
+    }
+
     handleValuesChange = (values: any, init?: boolean) => {
         this.setState({values});
         if (!init && !this.state.editing) this.setState({editing: true});
