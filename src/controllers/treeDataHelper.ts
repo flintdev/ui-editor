@@ -52,15 +52,8 @@ export class TreeDataHelper {
     hideComponentsByState = (components: ComponentData[], stateJson: any): ComponentData[] => {
         const newComponents: ComponentData[] = [];
         for (let item of components) {
-            if (Object.keys(stateJson).length === 0) item.hidden = false;
-            else if (!!item.display && item.display.type === "conditional") {
-                const statePath = item.display.state;
-                const value = item.display.value;
-                if (!statePath || !value) item.hidden = true;
-                else item.hidden = this.getValueByPath(statePath, stateJson) !== value;
-            } else item.hidden = false;
-            item.children = this.recurToHideChildren(item, stateJson);
-            newComponents.push(item);
+            const newItem = this.updateHiddenInItem(item, stateJson);
+            newComponents.push(newItem);
         }
         return newComponents;
     };
@@ -68,15 +61,20 @@ export class TreeDataHelper {
     private recurToHideChildren = (componentData: ComponentData, stateJson: any): ComponentData[] => {
         if (!componentData.children) return [];
         return componentData.children.map((item) => {
-            if (!!item.display && item.display.type === "conditional") {
-                const statePath = item.display.state;
-                const value = item.display.value;
-                if (!statePath || !value) item.hidden = true;
-                else item.hidden = this.getValueByPath(statePath, stateJson) !== value;
-            } else item.hidden = false;
-            item.children = this.recurToHideChildren(item, stateJson);
-            return item;
+            return this.updateHiddenInItem(item, stateJson);
         });
+    };
+
+    private updateHiddenInItem = (item: ComponentData, stateJson: any) => {
+        if (Object.keys(stateJson).length === 0) item.hidden = false;
+        else if (!!item.display && item.display.type === "conditional") {
+            const statePath = item.display.state;
+            const value = item.display.value;
+            if (!statePath || !value) item.hidden = true;
+            else item.hidden = this.getValueByPath(statePath, stateJson) !== value;
+        } else item.hidden = false;
+        item.children = this.recurToHideChildren(item, stateJson);
+        return item;
     };
 
     private getValueByPath = (path: string, data: any) => {

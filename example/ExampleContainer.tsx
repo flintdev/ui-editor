@@ -145,7 +145,8 @@ class ExampleContainer extends React.Component<Props, object> {
                     }}
                     handler={{
                         getWidgetConfig: getWidgetConfiguration,
-                        getWidget: getWidget
+                        getWidget: getWidget,
+                        openVSCode: ((code, callback) => {})
                     }}
                 />
             </div>
