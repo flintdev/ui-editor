@@ -57,6 +57,12 @@ interface State {
     itemKeySelected: string,
 }
 
+const EmptyValueMap: any = {
+    integer: 0,
+    array: [],
+    object: {},
+    string: ""
+}
 
 class ParamFormGenerator extends React.Component<Props, object> {
     state: State = {
@@ -83,9 +89,14 @@ class ParamFormGenerator extends React.Component<Props, object> {
         this.props.onChange(values, true);
     };
 
-    getParamValue = (key: string, defaultValue: any) => {
+    getParamValue = (key: string, type: string) => {
         const {values} = this.props;
-        return values[key];
+        let value = values[key];
+        if (!value) {
+            value = EmptyValueMap[type];
+            if (!value) value = "";
+        }
+        return value;
     };
 
     getFormType = (type: string) => {
@@ -157,8 +168,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     handleStateChipClick = (item: ParamItem) => () => {
-        const {key, defaultValue} = item;
-        const value = this.getParamValue(key, defaultValue);
+        const {key, defaultValue, type} = item;
+        const value = this.getParamValue(key, type);
         const {state} = this.decodeDynamicValue(value);
         const params = {state};
         this.setState({
@@ -188,8 +199,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     renderListEditor = (item: ParamItem) => {
-        const {key, defaultValue} = item;
-        const value = this.getParamValue(key, defaultValue);
+        const {key, type} = item;
+        const value = this.getParamValue(key, type);
         return (
             <ListEditor
                 itemConfig={item}
@@ -200,8 +211,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     renderColorPicker = (item: ParamItem) => {
-        const {key, name, type, defaultValue} = item;
-        const value = this.getParamValue(key, defaultValue);
+        const {key, name, type} = item;
+        const value = this.getParamValue(key, type);
         return (
             <ColorPicker
                 name={name}
@@ -212,8 +223,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     renderInput = (item: ParamItem) => {
-        const {key, name, type, defaultValue} = item;
-        const value = this.getParamValue(key, defaultValue);
+        const {key, name, type} = item;
+        const value = this.getParamValue(key, type);
         return (
             <TextField
                 value={value}
@@ -228,8 +239,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     renderSelect = (item: ParamItem) => {
-        const {key, name, type, defaultValue, options} = item;
-        const value = this.getParamValue(key, defaultValue);
+        const {key, name, type, options} = item;
+        const value = this.getParamValue(key, type);
         return (
             <TextField
                 label={name}
@@ -251,8 +262,8 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     renderStateChip = (item: ParamItem) => {
-        const {key, defaultValue} = item;
-        const value = this.getParamValue(key, defaultValue);
+        const {key, type} = item;
+        const value = this.getParamValue(key, type);
         const {state} = this.decodeDynamicValue(value);
         return (
             <Chip
