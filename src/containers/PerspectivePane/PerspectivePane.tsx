@@ -71,7 +71,10 @@ class PerspectivePane extends React.Component<Props, object> {
     };
 
     componentDidMount(): void {
-
+        const {perspectiveDataSelected} = this.props;
+        if (!perspectiveDataSelected) {
+            this.handleInitialStateClick();
+        }
     }
 
     handlePerspectiveOnCreate = (perspectiveData: PerspectiveData) => {
