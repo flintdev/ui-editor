@@ -147,7 +147,6 @@ class UIEditorContainer extends React.Component<Props, object> {
     render() {
         const {classes, mode} = this.props;
         const components = this.hideComponents();
-        console.log('components', components);
         return (
             <div className={classes.root}>
                 <div className={classes.root}>

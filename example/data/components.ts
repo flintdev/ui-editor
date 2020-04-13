@@ -5,7 +5,7 @@ import {ComponentData} from "../../src/interface";
 export const componentsExample: ComponentData[] = [
     {
         id: '1',
-        name: 'SimpleTable',
+        name: 'material-widgets::SimpleTable',
         params: {
             columns: ['title1', 'title2', 'title3'],
             data: [
@@ -17,14 +17,14 @@ export const componentsExample: ComponentData[] = [
     },
     {
         id: '2',
-        name: 'TableContainer',
+        name: 'material-widgets::TableContainer',
         params: {
 
         },
         children: [
             {
                 id: '2-1',
-                name: "TableRow",
+                name: "material-widgets::TableRow",
                 params: {
                     cells: [
 
@@ -36,7 +36,7 @@ export const componentsExample: ComponentData[] = [
     },
     {
         id: '3',
-        name: 'NavBar',
+        name: 'material-widgets::NavBar',
         params: {
             bgColor: '#FFFFFF',
             titleColor: '#000000'

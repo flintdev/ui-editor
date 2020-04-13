@@ -129,7 +129,7 @@ class ComponentTreeView extends React.Component<Props, object> {
             >
                 <TreeNodeCell
                     isDragging={snapshot.isDragging}
-                    text={item.data ? item.data.title : ''}
+                    text={item.data ? item.data.title.split('::')[1] : ''}
                     icon={getIcon(item, onExpand, onCollapse)}
                     dragHandleProps={provided.dragHandleProps}
                     onClick={this.handleTreeItemSelect(item)}

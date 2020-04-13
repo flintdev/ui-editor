@@ -164,7 +164,7 @@ class ComponentEditPane extends React.Component<Props, object> {
                                             variant={"overline"}
                                             className={classes.headerText}
                                         >
-                                            {componentSelected.name}
+                                            {componentSelected.name.split('::')[1]}
                                         </Typography>
                                     </td>
                                     <td align={"right"}>

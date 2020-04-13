@@ -9,8 +9,27 @@ import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
 import {perspectivesSample} from "./data/perspectives";
-import {getWidgetConfiguration, getWidget} from '@flintdev/material-widgets';
+import * as library from '@flintdev/material-widgets';
 import * as _ from 'lodash';
+
+console.log('library', library);
+
+export function getWidget(name: string, props: any) {
+    const tempList = name.split('::');
+    const widgetName = tempList[1];
+    const pluginId = tempList[0];
+    const getWidgetFunc = library['getWidget'];
+    return getWidgetFunc(widgetName, props);
+}
+
+export function getWidgetConfiguration(name: string) {
+    const tempList = name.split('::');
+    const widgetName = tempList[1];
+    const pluginId = tempList[0];
+    const getWidgetConfigurationFunc = library['getWidgetConfiguration'];
+    return getWidgetConfigurationFunc(widgetName);
+}
+
 
 const styles = createStyles({
     root: {
@@ -49,7 +68,7 @@ class ExampleContainer extends React.Component<Props, object> {
         const id = _.uniqueId('w');
         const data = {
             id,
-            name: 'Button',
+            name: 'material-widgets::Button',
             params: {label: 'Button'},
             children: [],
             canvas: {
@@ -141,7 +160,6 @@ class ExampleContainer extends React.Component<Props, object> {
                     componentOnSelect={this.handleComponentOnSelect}
                     addComponentOnClick={this.handleAddComponentClick}
                     saveOnClick={() => {
-                        console.log('save on click');
                     }}
                     handler={{
                         getWidgetConfig: getWidgetConfiguration,
