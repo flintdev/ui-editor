@@ -176,6 +176,7 @@ class ActionsDialog extends React.Component<Props, object> {
         this.props.actionOnUpdate(ActionOperationType.Add, action);
         this.setState({actionSelected: action, codeValue: ActionTemplate});
         this.forceUpdate();
+        this.handleCodeSaveButtonClick();
         callback.close();
     };
 
