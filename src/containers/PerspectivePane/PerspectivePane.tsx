@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-import {DialogMode, StoreState} from "../../redux/state";
+import {ComponentsState, DialogMode, StoreState} from "../../redux/state";
 import * as actions from "../../redux/modules/components/actions";
 import {PerspectiveData} from "../../interface";
 import PerspectiveEditDialog from "./PerspectiveEditDialog";
@@ -16,7 +16,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import {ComponentState} from "react";
 
 const styles = createStyles({
     root: {
@@ -47,7 +46,7 @@ const styles = createStyles({
     }
 });
 
-export interface Props extends WithStyles<typeof styles>, ComponentState {
+export interface Props extends WithStyles<typeof styles>, ComponentsState {
     perspectives: PerspectiveData[],
     initialState: string,
     perspectivesOnUpdate: (perspectives: PerspectiveData[]) => void,
