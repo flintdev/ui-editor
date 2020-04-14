@@ -18,6 +18,7 @@ import Popover from "@material-ui/core/Popover";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from '@material-ui/core/MenuItem';
 import {Event, EventAction} from "../interface";
+import Alert from "@material-ui/lab/Alert";
 
 const styles = createStyles({
     root: {
@@ -60,6 +61,10 @@ const styles = createStyles({
     form: {
         marginBottom: 10,
     },
+    alert: {
+        marginTop: 10,
+        marginBottom: 10,
+    }
 });
 
 export interface Props extends WithStyles<typeof styles> {
@@ -124,10 +129,25 @@ class EventsPane extends React.Component<Props, object> {
         this.props.onChange([...eventActions]);
     };
 
+    getSelectedEventData = () => {
+        const {events} = this.props;
+        const {eventSelected} = this.state;
+        if (!eventSelected || eventSelected === "") return;
+        let eventData;
+        for (const event of events) {
+            if (event.key === eventSelected) {
+                eventData = event;
+                break;
+            }
+        }
+        return eventData;
+    };
+
     render() {
         const {classes, actions, events, eventActions} = this.props;
         const {anchorEl, eventSelected, actionSelected} = this.state;
         if (!events || events.length === 0) return <div/>;
+        const eventDataSelected = this.getSelectedEventData();
         return (
             <div className={classes.root}>
                 <table className={classes.tableHeader}>
@@ -229,6 +249,25 @@ class EventsPane extends React.Component<Props, object> {
                                 )
                             })}
                         </TextField>
+                        {!!eventDataSelected && !!eventDataSelected.args &&
+                        <Alert severity={"info"} className={classes.alert} variant={"outlined"}>
+                            <table>
+                                <tbody>
+                                {eventDataSelected.args.map((arg, i) => {
+                                    const requiredStr = !!arg.required ? "required" : "optional";
+                                    return (
+                                        <tr key={i}>
+                                            <td><b>{arg.name}</b>, </td>
+                                            <td>{arg.type}, </td>
+                                            <td>{requiredStr}</td>
+                                        </tr>
+                                    )
+                                })}
+                                </tbody>
+                            </table>
+
+                        </Alert>
+                        }
                         <Button
                             size={"small"}
                             variant={"contained"}
