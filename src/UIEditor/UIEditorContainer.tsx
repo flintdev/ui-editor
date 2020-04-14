@@ -70,6 +70,9 @@ const styles = createStyles({
         height: '100%',
 
     },
+    primaryPane: {
+        overflow: 'auto'
+    }
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState, ComponentState {
@@ -168,6 +171,8 @@ class UIEditorContainer extends React.Component<Props, object> {
                                             primaryPaneMinHeight={"50px"}
                                             primaryPaneHeight="200px"
                                             postPoned={false}
+                                            dispatchResize={true}
+                                            primaryPaneClassName={classes.primaryPane}
                                         >
                                             <div>
                                                 <PerspectivePane
