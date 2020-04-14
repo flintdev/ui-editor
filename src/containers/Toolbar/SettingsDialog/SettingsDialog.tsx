@@ -108,6 +108,7 @@ class SettingsDialog extends React.Component<Props, object> {
                     maxWidth={"lg"}
                     fullWidth={true}
                     disableEnforceFocus={true}
+                    transitionDuration={0}
                 >
                     <div className={classes.dialogContent}>
 

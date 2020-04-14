@@ -219,6 +219,7 @@ class ActionsDialog extends React.Component<Props, object> {
                         fullWidth={true}
                         disableEnforceFocus={true}
                         onExit={this.onExit}
+                        transitionDuration={0}
                     >
                         <Paper className={classes.paperHeader}>
                             <table className={classes.tableHeader}>

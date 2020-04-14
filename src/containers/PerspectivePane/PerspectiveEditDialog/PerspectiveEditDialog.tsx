@@ -100,6 +100,7 @@ class PerspectiveEditDialog extends React.Component<Props, object> {
                     onEnter={this.onEnter}
                     fullWidth
                     disableEnforceFocus={true}
+                    transitionDuration={0}
                 >
                     <DialogTitle>{mode === "create" ? "New Perspective" : "Edit Perspective"}</DialogTitle>
                     <DialogContent>

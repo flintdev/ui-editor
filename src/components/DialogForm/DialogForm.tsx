@@ -127,6 +127,7 @@ class DialogForm extends React.Component<Props, object> {
                     onClose={onClose}
                     onEnter={this.onEnter}
                     fullWidth={true}
+                    transitionDuration={0}
                 >
                     {!!title &&
                     <DialogTitle>{title}</DialogTitle>

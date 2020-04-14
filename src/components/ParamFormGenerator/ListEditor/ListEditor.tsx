@@ -235,6 +235,7 @@ class ListEditor extends React.Component<Props, object> {
                     onClose={this.handleDialogClose}
                     onEnter={this.onEnter}
                     fullWidth={true}
+                    transitionDuration={0}
                 >
                     <DialogContent>
                         <div className={classes.content}>

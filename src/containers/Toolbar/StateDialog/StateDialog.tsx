@@ -77,6 +77,7 @@ class StateDialog extends React.Component<Props, object> {
                     maxWidth={"lg"}
                     fullWidth={true}
                     disableEnforceFocus={true}
+                    transitionDuration={0}
                 >
                     <Paper className={classes.paperTabs}>
                         <table className={classes.table}>
