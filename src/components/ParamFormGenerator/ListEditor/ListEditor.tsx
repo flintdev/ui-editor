@@ -21,6 +21,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import MenuItem from "@material-ui/core/MenuItem";
+import ColorPicker from "../ColorPicker";
 
 const styles = createStyles({
     root: {},
@@ -143,6 +144,21 @@ class ListEditor extends React.Component<Props, object> {
         )
     };
 
+    renderColorPicker = (path, name: string) => {
+        const value = _.get(this.state.value, path);
+        return (
+            <ColorPicker
+                name={name}
+                value={value}
+                onChange={(color) => {
+                    let {value} = this.state;
+                    _.set(value, path, color);
+                    this.setState({value});
+                }}
+            />
+        )
+    };
+
     renderElementPanel = (index: number, path: any, elementValue: any, elementConfig?: Element): any => {
         if (!elementConfig) return <div/>;
         const {classes} = this.props;
@@ -181,6 +197,7 @@ class ListEditor extends React.Component<Props, object> {
                                     <div key={index}>
                                         {item.ui === "input" && this.renderInput(itemPath, item.type, item.name)}
                                         {item.ui === "select" && this.renderSelect(itemPath, item.type, item.name, item.options)}
+                                        {item.ui === "color-picker" && this.renderColorPicker(itemPath, item.name)}
                                     </div>
                                 )
                             })}
