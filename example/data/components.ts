@@ -14,6 +14,7 @@ export const componentsExample: ComponentData[] = [
         },
         children: [],
         // hidden: true,
+        overlay: true
     },
     {
         id: '2',

@@ -9,6 +9,8 @@ export interface ComponentData {
     repeat?: any,
     children?: ComponentData[],
     path?: Array<string|number>,
+    overlay?: boolean,
+    alias?: string,
     tag?: string,
     hidden?: boolean,
     canvas?: {

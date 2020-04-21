@@ -12,8 +12,6 @@ import {perspectivesSample} from "./data/perspectives";
 import * as library from '@flintdev/material-widgets';
 import * as _ from 'lodash';
 
-console.log('library', library);
-
 export function getWidget(name: string, props: any) {
     const tempList = name.split('::');
     const widgetName = tempList[1];

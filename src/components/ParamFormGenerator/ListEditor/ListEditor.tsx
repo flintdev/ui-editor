@@ -43,6 +43,14 @@ const styles = createStyles({
     }
 });
 
+
+const FormTypeMap: any = {
+    integer: 'number',
+    string: 'text',
+    password: 'password',
+    email: 'email'
+};
+
 export interface Props extends WithStyles<typeof styles> {
     itemConfig: ParamItem,
     value: any,
@@ -79,29 +87,39 @@ class ListEditor extends React.Component<Props, object> {
         this.setState({open: false})
     };
 
-    handleFormChange = (path: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleFormChange = (path: any, type: ItemType) => (event: React.ChangeEvent<HTMLInputElement>) => {
         let {value} = this.state;
-        _.set(value, path, event.target.value);
+        _.set(value, path, this.formatValue(type, event.target.value));
         this.setState({value});
     };
 
-    renderInput = (path, name?: string) => {
+    private formatValue = (type: ItemType, value: string) => {
+        if (type === ItemType.integer) return parseInt(value) as number;
+        return value;
+    };
+
+    private getFormType = (type: string) => {
+        return !!FormTypeMap[type] ? FormTypeMap[type] : 'text'
+    };
+
+    renderInput = (path, type: ItemType, name?: string) => {
         const {classes} = this.props;
         const value = _.get(this.state.value, path);
         return (
             <TextField
                 className={classes.form}
                 value={value}
-                onChange={this.handleFormChange(path)}
+                onChange={this.handleFormChange(path, type)}
                 label={!!name ? name : 'String'}
                 variant={"outlined"}
                 size={"small"}
+                type={this.getFormType(type)}
                 fullWidth={true}
             />
         )
     };
 
-    renderSelect = (path, name: string, options?: any[]) => {
+    renderSelect = (path, type: ItemType, name: string, options?: any[]) => {
         const {classes} = this.props;
         const value = _.get(this.state.value, path);
         return (
@@ -109,10 +127,11 @@ class ListEditor extends React.Component<Props, object> {
                 className={classes.form}
                 label={name}
                 value={value}
-                onChange={this.handleFormChange(path)}
+                onChange={this.handleFormChange(path, type)}
                 fullWidth={true}
                 variant={"outlined"}
                 size={"small"}
+                type={this.getFormType(type)}
                 select={true}
             >
                 {options!.map((option, i) => {
@@ -143,9 +162,9 @@ class ListEditor extends React.Component<Props, object> {
                         </IconButton>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails className={classes.panelContent}>
-                        {elementConfig?.type === 'string' &&
+                        {(elementConfig?.type === 'string' || elementConfig?.type === 'integer') &&
                         <div>
-                            {this.renderInput(path)}
+                            {this.renderInput(path, elementConfig!.type as ItemType, undefined)}
                         </div>
                         }
                         {elementConfig?.type === 'array' &&
@@ -160,8 +179,8 @@ class ListEditor extends React.Component<Props, object> {
                                 const itemPath = [...path, item.key];
                                 return (
                                     <div key={index}>
-                                        {item.ui === "input" && this.renderInput(itemPath, item.name)}
-                                        {item.ui === "select" && this.renderSelect(itemPath, item.name, item.options)}
+                                        {item.ui === "input" && this.renderInput(itemPath, item.type, item.name)}
+                                        {item.ui === "select" && this.renderSelect(itemPath, item.type, item.name, item.options)}
                                     </div>
                                 )
                             })}
