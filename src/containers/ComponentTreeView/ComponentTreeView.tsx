@@ -94,9 +94,13 @@ class ComponentTreeView extends React.Component<Props, object> {
     }
 
     updateTreeData = () => {
-        const {components} = this.props;
+        const {components, componentSelected} = this.props;
         const treeData = this.getTreeData(components);
         this.setState({treeData});
+        if (!!componentSelected) {
+            const item = this.treeDataHelper.getTreeItemById(treeData, componentSelected.id);
+            this.handleTreeItemSelect(item)();
+        }
     };
 
     componentWillMount(): void {
