@@ -99,7 +99,7 @@ class ComponentTreeView extends React.Component<Props, object> {
         this.setState({treeData});
         if (!!componentSelected) {
             const item = this.treeDataHelper.getTreeItemById(treeData, componentSelected.id);
-            this.handleTreeItemSelect(item)();
+            if (!!item) this.handleTreeItemSelect(item)();
         }
     };
 
