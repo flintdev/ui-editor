@@ -51,24 +51,37 @@ const styles = createStyles({
     tdMiddle: {
         height: '100%',
         flex: 1,
-        display: 'flex',
-        flexFlow: 'column'
     },
     tdRight: {
         width: 240,
         height: '100%',
         borderLeft: '1px solid #ddd'
     },
+    primaryContainer: {
+        overflow: "auto",
+        height: '100%',
+        width: window.innerWidth - 480,
+    },
+    secondaryContainer: {
+        overflow: "auto",
+        width: 1280,
+        height: '100%',
+        display: 'flex',
+        flexFlow: 'column',
+        margin: 'auto',
+        '&::-webkit-scrollbar': {
+            display: 'none'
+        }
+    },
     paperCanvas: {
         margin: 20,
-        flexGrow: 1
+        height: '100%'
     },
     splitView: {
         flexGrow: 1,
         display: 'flex',
         flexFlow: "column",
         height: '100%',
-
     },
     primaryPane: {
         overflow: 'auto'
@@ -105,6 +118,7 @@ class UIEditorContainer extends React.Component<Props, object> {
     state = {};
     treeOperations: any = {};
     treeDataHelper: TreeDataHelper = new TreeDataHelper();
+
     componentDidMount(): void {
 
     }
@@ -148,7 +162,7 @@ class UIEditorContainer extends React.Component<Props, object> {
     };
 
     render() {
-        const {classes, mode} = this.props;
+        const {classes, mode, canvasWidth} = this.props;
         const components = this.hideComponents();
         return (
             <div className={classes.root}>
@@ -195,9 +209,9 @@ class UIEditorContainer extends React.Component<Props, object> {
 
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
-                                    <Paper className={classes.paperCanvas}>
-                                        <div style={{overflow: "auto", height: '100%'}}>
-                                            <div style={{overflow: "auto", height: '100%'}}>
+                                    <div className={classes.primaryContainer}>
+                                        <div className={classes.secondaryContainer} style={{width: canvasWidth}}>
+                                            <Paper className={classes.paperCanvas}>
                                                 <UIEditorCanvas
                                                     operations={this.props.operations}
                                                     components={components}
@@ -207,9 +221,10 @@ class UIEditorContainer extends React.Component<Props, object> {
                                                     componentOnDelete={this.handleComponentOnDelete}
                                                     isDnd={mode === "editor"}
                                                 />
-                                            </div>
+                                            </Paper>
+                                            <br/><br/><br/>
                                         </div>
-                                    </Paper>
+                                    </div>
                                 </td>
                                 <td valign={"top"} className={classes.tdRight}>
                                     <ComponentEditPane

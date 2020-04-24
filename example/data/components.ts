@@ -4,43 +4,53 @@ import {ComponentData} from "../../src/interface";
 
 export const componentsExample: ComponentData[] = [
     {
-        id: '1',
-        name: 'material-widgets::SimpleTable',
+        id: "0",
+        name: 'material-widgets::Page',
         params: {
-            columns: ['title1', 'title2', 'title3'],
-            data: [
-                ["1-1", "1-2", "1-3"]
-            ]
-        },
-        children: [],
-        // hidden: true,
-        overlay: true
-    },
-    {
-        id: '2',
-        name: 'material-widgets::TableContainer',
-        params: {
-
+            layout: 'header-content',
+            color: "#ffffff"
         },
         children: [
             {
-                id: '2-1',
-                name: "material-widgets::TableRow",
+                id: '1',
+                name: 'material-widgets::SimpleTable',
                 params: {
-                    cells: [
-
+                    columns: ['title1', 'title2', 'title3'],
+                    data: [
+                        ["1-1", "1-2", "1-3"]
                     ]
                 },
                 children: [],
+                // hidden: true,
+                overlay: true,
+                tag: 'page-content',
+            },
+            {
+                id: '2',
+                name: 'material-widgets::TableContainer',
+                params: {},
+                tag: 'page-content',
+                children: [
+                    {
+                        id: '2-1',
+                        name: "material-widgets::TableRow",
+                        params: {
+                            cells: []
+                        },
+                        children: [],
+                    }
+                ],
+            },
+            {
+                id: '3',
+                name: 'material-widgets::NavBar',
+                params: {
+                    bgColor: '#FFFFFF',
+                    titleColor: '#000000'
+                },
+                tag: 'page-content',
             }
-        ],
+        ]
     },
-    {
-        id: '3',
-        name: 'material-widgets::NavBar',
-        params: {
-            bgColor: '#FFFFFF',
-            titleColor: '#000000'
-        }
-    }
+
 ];

@@ -47,6 +47,10 @@ export function reducer(state: ToolbarState, action: ToolbarAction) {
             return update(state, {
                 mode: {$set: action.mode}
             });
+        case types.SET_CANVAS_WIDTH:
+            return update(state, {
+                canvasWidth: {$set: action.value}
+            });
 
         default:
             return state;

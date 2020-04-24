@@ -1,7 +1,7 @@
 // example/ExampleContainer.tsx
 
 import * as React from 'react';
-import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {withStyles, WithStyles, createStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import UIEditor from "../src/UIEditor";
 import {actionsExample} from "./data/actions";
 import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterData} from '../src/interface';
@@ -9,23 +9,30 @@ import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
 import {perspectivesSample} from "./data/perspectives";
-import * as library from '@flintdev/material-widgets';
 import * as _ from 'lodash';
 
 export function getWidget(name: string, props: any) {
-    const tempList = name.split('::');
+    const tempList: any = name.split('::');
     const widgetName = tempList[1];
     const pluginId = tempList[0];
+    const library: any = window[pluginId]
     const getWidgetFunc = library['getWidget'];
     return getWidgetFunc(widgetName, props);
 }
 
 export function getWidgetConfiguration(name: string) {
-    const tempList = name.split('::');
+    const tempList: any = name.split('::');
     const widgetName = tempList[1];
     const pluginId = tempList[0];
+    const library: any = window[pluginId]
     const getWidgetConfigurationFunc = library['getWidgetConfiguration'];
     return getWidgetConfigurationFunc(widgetName);
+}
+
+export function getWidgetInfo(pluginId: string) {
+    const libraryName: any = pluginId;
+    const library: any = window[libraryName]
+    return library['widgetInfo'];
 }
 
 
@@ -35,7 +42,7 @@ const styles = createStyles({
     },
 });
 
-export interface Props extends WithStyles<typeof styles>{
+export interface Props extends WithStyles<typeof styles> {
 
 }
 
@@ -58,6 +65,7 @@ class ExampleContainer extends React.Component<Props, object> {
         perspectives: perspectivesSample,
     };
     operations: any = {};
+
     componentDidMount(): void {
 
     }
@@ -141,30 +149,35 @@ class ExampleContainer extends React.Component<Props, object> {
         const {actions, stateUpdaters, initialState, components, settings, perspectives} = this.state;
         return (
             <div className={classes.root}>
-                <UIEditor
-                    operations={this.operations}
-                    initialState={initialState}
-                    stateUpdaters={stateUpdaters}
-                    initialStateOnChange={this.handleInitialStateChange}
-                    stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
-                    actions={actions}
-                    actionOnUpdate={this.handleActionUpdate}
-                    settings={settings}
-                    settingsOnUpdate={this.handleSettingsOnUpdate}
-                    perspectives={perspectives}
-                    perspectivesOnUpdate={this.handlePerspectivesOnUpdate}
-                    components={components}
-                    componentsOnUpdate={this.handleComponentsOnUpdate}
-                    componentOnSelect={this.handleComponentOnSelect}
-                    addComponentOnClick={this.handleAddComponentClick}
-                    saveOnClick={() => {
-                    }}
-                    handler={{
-                        getWidgetConfig: getWidgetConfiguration,
-                        getWidget: getWidget,
-                        openVSCode: ((code, callback) => {})
-                    }}
-                />
+                <MuiThemeProvider theme={createMuiTheme()}>
+                    <MuiThemeProvider theme={createMuiTheme()}>
+                        <UIEditor
+                            operations={this.operations}
+                            initialState={initialState}
+                            stateUpdaters={stateUpdaters}
+                            initialStateOnChange={this.handleInitialStateChange}
+                            stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
+                            actions={actions}
+                            actionOnUpdate={this.handleActionUpdate}
+                            settings={settings}
+                            settingsOnUpdate={this.handleSettingsOnUpdate}
+                            perspectives={perspectives}
+                            perspectivesOnUpdate={this.handlePerspectivesOnUpdate}
+                            components={components}
+                            componentsOnUpdate={this.handleComponentsOnUpdate}
+                            componentOnSelect={this.handleComponentOnSelect}
+                            addComponentOnClick={this.handleAddComponentClick}
+                            saveOnClick={() => {
+                            }}
+                            handler={{
+                                getWidgetConfig: getWidgetConfiguration,
+                                getWidget: getWidget,
+                                openVSCode: ((code, callback) => {
+                                })
+                            }}
+                        />
+                    </MuiThemeProvider>
+                </MuiThemeProvider>
             </div>
         )
     }

@@ -33,6 +33,10 @@ export function setMode(mode: Mode): SetMode {
     return { type: types.SET_MODE, mode }
 }
 
+export function setCanvasWidth(value: number): SetCanvasWidth {
+    return { type: types.SET_CANVAS_WIDTH, value }
+}
+
 // interfaces
 
 export interface StateDialogOpen {
@@ -64,7 +68,13 @@ export interface SetMode {
     mode: Mode,
 }
 
+export interface SetCanvasWidth {
+    type: typeof types.SET_CANVAS_WIDTH,
+    value: number
+}
+
 export type ToolbarAction =
+    SetCanvasWidth |
     SetMode |
     SettingsDialogOpen |
     SettingsDialogClose |

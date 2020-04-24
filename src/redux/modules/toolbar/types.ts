@@ -14,3 +14,6 @@ export const SETTINGS_DIALOG_CLOSE = 'toolbar/SETTINGS_DIALOG_CLOSE';
 
 // mode
 export const SET_MODE = 'toolbar/SET_MODE';
+
+// canvas width
+export const SET_CANVAS_WIDTH = 'toolbar/SET_CANVAS_WIDTH';

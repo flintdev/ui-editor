@@ -18,6 +18,12 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import {GlobalHotKeys, HotKeys} from 'react-hotkeys';
+import AspectRatioIcon from '@material-ui/icons/AspectRatio';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import {CanvasWidthOptions, CanvasWidth} from "../../constants";
+import Typography from "@material-ui/core/Typography";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const styles = createStyles({
     root: {
@@ -67,11 +73,12 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     actionsDialogOpen: () => void,
     settingsDialogOpen: () => void,
     setMode: (mode: Mode) => void,
+    setCanvasWidth: (value: number) => void,
 }
 
 class Toolbar extends React.Component<Props, object> {
     state = {
-
+        canvasWidthMenuAnchorEl: undefined
     };
 
     componentDidMount(): void {
@@ -91,8 +98,22 @@ class Toolbar extends React.Component<Props, object> {
         else this.props.setMode("editor");
     };
 
+    handleSelectCanvasWidthClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        this.setState({canvasWidthMenuAnchorEl: event.currentTarget});
+    };
+
+    handleCanvasWidthMenuClose = () => {
+        this.setState({canvasWidthMenuAnchorEl: undefined});
+    };
+
+    handleCanvasWidthMenuItemClick = (value: number) => () => {
+        this.props.setCanvasWidth(value);
+        this.handleCanvasWidthMenuClose();
+    };
+
     render() {
-        const {classes, mode} = this.props;
+        const {classes, mode, canvasWidth} = this.props;
+        const {canvasWidthMenuAnchorEl} = this.state;
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -112,6 +133,13 @@ class Toolbar extends React.Component<Props, object> {
                                     className={classes.actionButton}
                                 >
                                     <ZoomInIcon/>&nbsp;&nbsp;100%&nbsp;&nbsp;<ZoomOutIcon/>
+                                </Button>
+                                <Button
+                                    variant={"contained"}
+                                    className={classes.actionButton}
+                                    onClick={this.handleSelectCanvasWidthClick}
+                                >
+                                    <AspectRatioIcon/>&nbsp;&nbsp;{`${CanvasWidth[canvasWidth].name} (${canvasWidth}px)`}
                                 </Button>
                                 <Paper className={classes.modePaper}>
                                     <FormControlLabel
@@ -177,6 +205,19 @@ class Toolbar extends React.Component<Props, object> {
                     }}
                 />
 
+                <Menu
+                    id="simple-menu"
+                    anchorEl={canvasWidthMenuAnchorEl}
+                    keepMounted
+                    open={Boolean(canvasWidthMenuAnchorEl)}
+                    onClose={this.handleCanvasWidthMenuClose}
+                >
+                    {CanvasWidthOptions.map((width, i) => {
+                        return (
+                            <MenuItem onClick={this.handleCanvasWidthMenuItemClick(width)}>{`${CanvasWidth[width].name} (${width}px)`}</MenuItem>
+                        )
+                    })}
+                </Menu>
             </div>
         )
     }
@@ -192,6 +233,7 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
         actionsDialogOpen: () => dispatch(actions.actionsDialogOpen()),
         settingsDialogOpen: () => dispatch(actions.settingsDialogOpen()),
         setMode: (mode: Mode) => dispatch(actions.setMode(mode)),
+        setCanvasWidth: (value: number) => dispatch((actions.setCanvasWidth(value))),
     }
 };
 

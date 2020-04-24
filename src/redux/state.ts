@@ -15,7 +15,8 @@ export interface ToolbarState {
     settingsDialog: {
         open: boolean
     },
-    mode: Mode
+    mode: Mode,
+    canvasWidth: number,
 }
 
 export interface PerspectiveEditDialogState {
@@ -39,6 +40,7 @@ export interface StoreState {
 export const initState: StoreState = {
     toolbar: {
         mode: 'editor',
+        canvasWidth: 1280,
         stateDialog: {
             open: false,
         },
