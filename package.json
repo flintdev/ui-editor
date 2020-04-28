@@ -1,6 +1,6 @@
 {
   "name": "@flintdev/ui-editor",
-  "version": "0.0.37",
+  "version": "0.0.39",
   "description": "npm package to build UI of applications by dragging and dropping components",
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "build-example": "webpack --config webpack.config.js -w",
     "build-dist": "rimraf dist && tsc --outDir dist/ && copyfiles -u 1 src/**/*.txt dist/",
     "install-material-widgets": "npm install @flintdev/material-widgets@latest --save-dev",
-    "update-all": "npm install @flintdev/material-widgets@latest --save-dev && npm install @flintdev/ui-editor-canvas@latest --save"
+    "update-all": "npm install @flintdev/material-widgets@latest --save-dev && npm install @flintdev/ui-editor-canvas@latest --save",
+    "pipeline": "npm run build-dist && npm publish"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,7 @@
   },
   "homepage": "https://github.com/flintdev/model-editor#readme",
   "devDependencies": {
-    "@flintdev/material-widgets": "0.0.66",
+    "@flintdev/material-widgets": "0.0.68",
     "@material-ui/core": "^4.8.3",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.39",
@@ -82,7 +83,7 @@
   },
   "dependencies": {
     "@atlaskit/tree": "^7.1.2",
-    "@flintdev/ui-editor-canvas": "0.0.12",
+    "@flintdev/ui-editor-canvas": "0.0.13",
     "react-color": "^2.18.0"
   }
 }

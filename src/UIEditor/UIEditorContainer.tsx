@@ -82,6 +82,7 @@ const styles = createStyles({
         display: 'flex',
         flexFlow: "column",
         height: '100%',
+        width: 240
     },
     primaryPane: {
         overflow: 'auto'
