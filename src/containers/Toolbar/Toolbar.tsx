@@ -214,7 +214,7 @@ class Toolbar extends React.Component<Props, object> {
                 >
                     {CanvasWidthOptions.map((width, i) => {
                         return (
-                            <MenuItem onClick={this.handleCanvasWidthMenuItemClick(width)}>{`${CanvasWidth[width].name} (${width}px)`}</MenuItem>
+                            <MenuItem onClick={this.handleCanvasWidthMenuItemClick(width)} key={i}>{`${CanvasWidth[width].name} (${width}px)`}</MenuItem>
                         )
                     })}
                 </Menu>

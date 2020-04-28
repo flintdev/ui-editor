@@ -202,6 +202,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                                     components={components}
                                                     componentsOnUpdate={this.handleTreeComponentsOnUpdate}
                                                     componentOnSelect={this.handleTreeViewComponentOnSelect}
+                                                    handler={{getWidgetConfig: this.props.handler.getWidgetConfig}}
                                                 />
                                             </div>
                                         </Splitter>

@@ -12,6 +12,7 @@ interface Items {
 type Path = Array<string|number>;
 
 export class TreeDataHelper {
+    getWidgetConfig: (name: string) => any;
     constructor() {
 
     }
@@ -35,9 +36,16 @@ export class TreeDataHelper {
         return treeData.items[id];
     };
 
-    convertTreeDataToComponents = (treeData: TreeData, components: ComponentData[]): ComponentData[] => {
+    convertTreeDataToComponents = (treeData: TreeData, components: ComponentData[], getWidgetConfig: (name: string) => any): ComponentData[] => {
         const {rootId, items} = treeData;
-        return this.recurToGetChildren(rootId as string, items, components);
+        this.getWidgetConfig = getWidgetConfig;
+        return this.recurToGetChildren(rootId as string, items, components, undefined);
+    };
+
+    private getDefaultTag = (name: string) => {
+        if (!this.getWidgetConfig) return;
+        const configData = this.getWidgetConfig(name);
+        return _.get(configData, ['canvas', 'defaultTag']);
     };
 
     private recurToGetIdPathMap = (idPathMap: any, path: Path, componentData: ComponentData) => {
@@ -82,22 +90,27 @@ export class TreeDataHelper {
         return _.get(data, pathList);
     };
 
-    private recurToGetChildren = (parentId: string, items: Items, componentChildren: ComponentData[]): ComponentData[] => {
+    private recurToGetChildren = (parentId: string, items: Items, componentChildren: ComponentData[], defaultTag?: string): ComponentData[] => {
         const itemChildIds = items[parentId].children;
         const newComponents: ComponentData[] = [];
         let tempIds: any[] = [];
         for (const itemId of itemChildIds) {
             for (const component of componentChildren) {
                 const {id, hidden} = component;
+
                 if (!!hidden) {
                     if (!tempIds.includes(id)) {
+                        // if (!component.tag && !!defaultTag) component.tag = defaultTag;
+                        // defaultTag = this.getDefaultTag(component.name);
                         newComponents.push(component);
                         tempIds.push(id);
                     }
                 } else {
                     if (itemId === id) {
+                        if (!!defaultTag) component.tag = defaultTag;
+                        // defaultTag = this.getDefaultTag(name);
                         component.children = !!component.children ? component.children : [];
-                        component.children = this.recurToGetChildren(id, items, component.children);
+                        component.children = this.recurToGetChildren(id, items, component.children, this.getDefaultTag(component.name));
                         newComponents.push(component);
                         tempIds.push(id);
                     }
@@ -107,12 +120,17 @@ export class TreeDataHelper {
         for (const itemId of itemChildIds) {
             if (!tempIds.includes(itemId)) {
                 const {data} = items[itemId];
-                newComponents.push({
+                const name = data.title;
+                let componentData = {
                     ...data.props,
                     id: itemId,
-                    name: data.title,
-                    children: this.recurToGetChildren(itemId as string, items, data.props.children)
-                });
+                    name
+                };
+                if (!!defaultTag) componentData.tag = defaultTag;
+                // next default tag
+                // defaultTag = this.getDefaultTag(name);
+                componentData.children = this.recurToGetChildren(itemId as string, items, data.props.children, this.getDefaultTag(name));
+                newComponents.push(componentData);
                 tempIds.push(itemId);
             }
         }

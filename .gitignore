@@ -33,3 +33,4 @@ node_modules
 webpack-stats.json
 dist/
 docs/
+resources/

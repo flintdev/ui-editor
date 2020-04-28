@@ -51,6 +51,9 @@ export interface Props extends WithStyles<typeof styles>, ComponentsState {
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
     selectComponent: (value: ComponentData) => void,
+    handler: {
+        getWidgetConfig: (name: string) => any;
+    }
 }
 
 interface State {
@@ -181,7 +184,9 @@ class ComponentTreeView extends React.Component<Props, object> {
         this.setState({
             treeData: newTree,
         });
-        const components = this.treeDataHelper.convertTreeDataToComponents(newTree, this.props.components);
+        const components = this.treeDataHelper.convertTreeDataToComponents(newTree, this.props.components, this.props.handler.getWidgetConfig);
+        const treeDataUpdated = this.getTreeData(components);
+        this.setState({treeData: treeDataUpdated});
         this.props.componentsOnUpdate(components);
     };
 
