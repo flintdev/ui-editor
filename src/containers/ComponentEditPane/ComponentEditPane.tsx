@@ -23,7 +23,7 @@ import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {
-        // width: 240,
+        width: 240,
         height: '100%',
         overflow: 'auto',
     },

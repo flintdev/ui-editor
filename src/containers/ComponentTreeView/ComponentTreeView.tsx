@@ -41,8 +41,12 @@ const styles = createStyles({
     treeContainer: {
         padding: 5,
         flexGrow: 1,
-        overflow: 'scroll',
+        overflow: 'auto',
     },
+    treeSecondaryContainer: {
+        height: '100%',
+        overflow: 'auto',
+    }
 });
 
 export interface Props extends WithStyles<typeof styles>, ComponentsState {
@@ -200,18 +204,21 @@ class ComponentTreeView extends React.Component<Props, object> {
                         <Typography variant={"subtitle2"} className={classes.headerText}>COMPONENTS</Typography>
                     </div>
                     <div className={classes.treeContainer}>
-                        {!!treeData &&
-                        <Tree
-                            tree={treeData}
-                            renderItem={this.renderTreeItem}
-                            onExpand={this.onTreeItemExpand}
-                            onCollapse={this.onTreeItemCollapse}
-                            onDragEnd={this.onDragEnd}
-                            isDragEnabled={true}
-                            isNestingEnabled={true}
-                            offsetPerLevel={PADDING_PER_LEVEL}
-                        />
-                        }
+                        <div className={classes.treeSecondaryContainer}>
+                            {!!treeData &&
+                            <Tree
+                                tree={treeData}
+                                renderItem={this.renderTreeItem}
+                                onExpand={this.onTreeItemExpand}
+                                onCollapse={this.onTreeItemCollapse}
+                                onDragEnd={this.onDragEnd}
+                                isDragEnabled={true}
+                                isNestingEnabled={true}
+                                offsetPerLevel={PADDING_PER_LEVEL}
+                            />
+                            }
+                        </div>
+
                     </div>
                 </Paper>
             </div>

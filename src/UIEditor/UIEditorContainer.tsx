@@ -21,7 +21,7 @@ import Splitter from 'm-react-splitters';
 import 'm-react-splitters/lib/splitters.css';
 import {TreeDataHelper} from "../controllers/treeDataHelper";
 
-const ContainerWidth = process.env.CLIENT === 'flint' ? window.innerWidth - 480 - 60 : window.innerWidth - 480;
+const ContainerWidth = process.env.CLIENT_APP === 'flint' ? window.innerWidth - 480 - 60 : window.innerWidth - 480;
 
 const styles = createStyles({
     root: {
@@ -48,16 +48,22 @@ const styles = createStyles({
     tdLeft: {
         width: 240,
         height: '100%',
-        borderRight: '1px solid #ddd'
+        borderRight: '1px solid #ddd',
+        padding: 0,
+        margin: 0,
     },
     tdMiddle: {
         height: '100%',
         flex: 1,
+        padding: 0,
+        margin: 0,
     },
     tdRight: {
         width: 240,
         height: '100%',
-        borderLeft: '1px solid #ddd'
+        borderLeft: '1px solid #ddd',
+        padding: 0,
+        margin: 0,
     },
     primaryContainer: {
         overflow: "auto",
@@ -88,6 +94,9 @@ const styles = createStyles({
     },
     primaryPane: {
         overflow: 'auto'
+    },
+    secondaryPane: {
+        overflow: 'auto',
     }
 });
 
@@ -190,6 +199,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                             postPoned={false}
                                             dispatchResize={true}
                                             primaryPaneClassName={classes.primaryPane}
+                                            secondaryPaneClassName={classes.secondaryPane}
                                         >
                                             <div>
                                                 <PerspectivePane
@@ -199,7 +209,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                                     perspectiveSelected={this.handlePerspectiveSelected}
                                                 />
                                             </div>
-                                            <div>
+                                            <div style={{overflow: 'auto', height: '100%'}}>
                                                 <ComponentTreeView
                                                     operations={this.treeOperations}
                                                     components={components}
