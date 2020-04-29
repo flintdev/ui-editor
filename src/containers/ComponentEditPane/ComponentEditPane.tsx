@@ -23,7 +23,7 @@ import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {
-        width: 240,
+        // width: 240,
         height: '100%',
         overflow: 'auto',
     },
@@ -176,7 +176,7 @@ class ComponentEditPane extends React.Component<Props, object> {
                                             onClick={this.handleSaveClick}
                                             disabled={!editing}
                                         >
-                                            <SaveIcon fontSize={"small"}/>&nbsp; Save
+                                            <SaveIcon fontSize={"small"}/>
                                         </Button>
                                     </td>
                                 </tr>

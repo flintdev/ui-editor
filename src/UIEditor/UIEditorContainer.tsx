@@ -21,6 +21,8 @@ import Splitter from 'm-react-splitters';
 import 'm-react-splitters/lib/splitters.css';
 import {TreeDataHelper} from "../controllers/treeDataHelper";
 
+const ContainerWidth = process.env.CLIENT === 'flint' ? window.innerWidth - 480 - 60 : window.innerWidth - 480;
+
 const styles = createStyles({
     root: {
         width: '100%',
@@ -60,7 +62,7 @@ const styles = createStyles({
     primaryContainer: {
         overflow: "auto",
         height: '100%',
-        width: window.innerWidth - 480,
+        width: ContainerWidth,
     },
     secondaryContainer: {
         overflow: "auto",
@@ -82,7 +84,7 @@ const styles = createStyles({
         display: 'flex',
         flexFlow: "column",
         height: '100%',
-        width: 240
+        width: 240,
     },
     primaryPane: {
         overflow: 'auto'

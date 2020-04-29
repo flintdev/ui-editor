@@ -34,6 +34,9 @@ const styles = createStyles({
     },
     tdAction: {
         width: 30,
+    },
+    selectForm: {
+        whiteSpace: 'normal'
     }
 });
 
@@ -239,6 +242,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
     };
 
     renderSelect = (item: ParamItem) => {
+        const {classes} = this.props;
         const {key, name, type, options} = item;
         const value = this.getParamValue(key, type);
         return (
@@ -251,11 +255,14 @@ class ParamFormGenerator extends React.Component<Props, object> {
                 variant={"outlined"}
                 size={"small"}
                 select={true}
+                SelectProps={{
+                    classes: {
+                        select: classes.selectForm
+                    }
+                }}
             >
                 {options!.map((option, i) => {
-                    return (
-                        <MenuItem key={i} value={option}>{option}</MenuItem>
-                    )
+                    return <MenuItem key={i} value={option}>{option}</MenuItem>
                 })}
             </TextField>
         )
