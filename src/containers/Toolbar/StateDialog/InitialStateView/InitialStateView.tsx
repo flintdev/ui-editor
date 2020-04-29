@@ -1,7 +1,7 @@
 // src/containers/Toolbar/StateDialog/InitialStateView/InitialStateView.tsx
 
 import * as React from 'react';
-import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
+import {createStyles, WithStyles, withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import {Dispatch} from "redux";
 import {StoreState} from "../../../../redux/state";
@@ -15,6 +15,8 @@ import Typography from "@material-ui/core/Typography";
 import SaveIcon from '@material-ui/icons/Save';
 import CodeTemplate from './codeTemplate.txt';
 import {HotKeys} from "react-hotkeys";
+import {LOADING_STATUS} from "../../../../constants";
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const styles = createStyles({
     root: {
@@ -47,19 +49,26 @@ export interface Props extends WithStyles<typeof styles> {
 
 interface State {
     codeValue: string,
-    editing: boolean
+    editing: boolean,
+    validationStatus: LOADING_STATUS,
+    errorMessage: string
 }
 
 class InitialStateView extends React.Component<Props, object> {
     state: State = {
         codeValue: '',
         editing: false,
+        validationStatus: LOADING_STATUS.NOT_STARTED,
+        errorMessage: ""
     };
 
     componentDidMount(): void {
         let codeValue = this.props.initialState;
         if (codeValue === '') codeValue = CodeTemplate;
-        this.setState({codeValue});
+        this.setState({
+            codeValue,
+            validationStatus: LOADING_STATUS.NOT_STARTED
+        });
     }
 
     handleCodeChange = (codeValue: string) => {
@@ -67,15 +76,38 @@ class InitialStateView extends React.Component<Props, object> {
         this.setState({codeValue});
     };
 
-    handleSaveButtonClick = () => {
+    handleSaveButtonClick = async () => {
+        const valid = await this.validateJsonFormat();
+        if (!valid) return;
         const {codeValue} = this.state;
         this.props.initialStateOnChange(codeValue);
         this.setState({editing: false});
     };
 
+    handleCodeEditorOnBlur = async () => {
+        await this.validateJsonFormat();
+    };
+
+    validateJsonFormat = async () => {
+        const {codeValue} = this.state;
+        try {
+            JSON.parse(codeValue);
+            this.setState({
+                validationStatus: LOADING_STATUS.COMPLETE
+            })
+            return true
+        } catch (e) {
+            this.setState({
+                validationStatus: LOADING_STATUS.FAILED,
+                errorMessage: e.toString(),
+            })
+            return false;
+        }
+    };
+
     render() {
         const {classes} = this.props;
-        const {codeValue, editing} = this.state;
+        const {codeValue, editing, validationStatus, errorMessage} = this.state;
         return (
             <div className={classes.root}>
                 <HotKeys
@@ -106,12 +138,19 @@ class InitialStateView extends React.Component<Props, object> {
                                 </tbody>
                             </table>
                         </Paper>
+                        {validationStatus === LOADING_STATUS.FAILED &&
+                        <Alert severity={"error"}>
+                            <AlertTitle>Invalid JSON Format</AlertTitle>
+                            {errorMessage}
+                        </Alert>
+                        }
                         <AceEditor
                             mode="json"
                             theme="tomorrow"
                             fontSize={14}
                             value={codeValue}
                             onChange={this.handleCodeChange}
+                            onBlur={this.handleCodeEditorOnBlur}
                             showPrintMargin={true}
                             showGutter={true}
                             highlightActiveLine={true}

@@ -21,7 +21,7 @@ import Splitter from 'm-react-splitters';
 import 'm-react-splitters/lib/splitters.css';
 import {TreeDataHelper} from "../controllers/treeDataHelper";
 
-const ContainerWidth = process.env.CLIENT_APP === 'flint' ? window.innerWidth - 480 - 60 : window.innerWidth - 480;
+const ContainerWidth = process.env.CLIENT_APP === 'flint' ? window.innerWidth - 480 - 60 - 10 : window.innerWidth - 480;
 
 const styles = createStyles({
     root: {
@@ -236,7 +236,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                                                     isDnd={mode === "editor"}
                                                 />
                                             </Paper>
-                                            <br/><br/><br/>
+                                            <br/><br/>
                                         </div>
                                     </div>
                                 </td>
