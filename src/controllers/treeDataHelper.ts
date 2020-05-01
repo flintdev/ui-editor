@@ -100,15 +100,12 @@ export class TreeDataHelper {
 
                 if (!!hidden) {
                     if (!tempIds.includes(id)) {
-                        // if (!component.tag && !!defaultTag) component.tag = defaultTag;
-                        // defaultTag = this.getDefaultTag(component.name);
                         newComponents.push(component);
                         tempIds.push(id);
                     }
                 } else {
                     if (itemId === id) {
                         if (!!defaultTag) component.tag = defaultTag;
-                        // defaultTag = this.getDefaultTag(name);
                         component.children = !!component.children ? component.children : [];
                         component.children = this.recurToGetChildren(id, items, component.children, this.getDefaultTag(component.name));
                         newComponents.push(component);
@@ -169,6 +166,7 @@ export class TreeDataHelper {
             data: {
                 title: name,
                 path: [...path],
+                overlay: componentData.overlay,
                 props: {...componentData},
             }
         };

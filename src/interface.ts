@@ -15,6 +15,7 @@ export interface ComponentData {
     hidden?: boolean,
     canvas?: {
         display?: string
+        defaultTag?: string
     }
 }
 

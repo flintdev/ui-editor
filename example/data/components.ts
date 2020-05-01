@@ -12,6 +12,21 @@ export const componentsExample: ComponentData[] = [
         },
         children: [
             {
+                id: '0-1',
+                name: 'material-widgets::Dialog',
+                params: {
+                    status: 'closed',
+                    size: 'md',
+                    title: 'Dialog Title'
+                },
+                children: [],
+                overlay: true,
+                tag: 'page-content',
+                canvas: {
+                    defaultTag: 'dialog-content'
+                }
+            },
+            {
                 id: '1',
                 name: 'material-widgets::SimpleTable',
                 params: {
@@ -21,8 +36,6 @@ export const componentsExample: ComponentData[] = [
                     ]
                 },
                 children: [],
-                // hidden: true,
-                overlay: true,
                 tag: 'page-content',
             },
             {
