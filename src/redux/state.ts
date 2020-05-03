@@ -17,6 +17,7 @@ export interface ToolbarState {
     },
     mode: Mode,
     canvasWidth: number,
+    widgetPickerAnchorEl?: Element
 }
 
 export interface PerspectiveEditDialogState {
@@ -25,6 +26,7 @@ export interface PerspectiveEditDialogState {
     index?: number,
     mode: DialogMode
 }
+
 export interface ComponentsState {
     componentSelected: ComponentData | null,
     perspectiveDataSelected?: PerspectiveData,

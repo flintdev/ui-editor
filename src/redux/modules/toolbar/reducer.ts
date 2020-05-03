@@ -51,6 +51,14 @@ export function reducer(state: ToolbarState, action: ToolbarAction) {
             return update(state, {
                 canvasWidth: {$set: action.value}
             });
+        case types.OPEN_WIDGET_PICKER:
+            return update(state, {
+                widgetPickerAnchorEl: {$set: action.anchorEl}
+            });
+        case types.CLOSE_WIDGET_PICKER:
+            return update(state, {
+                widgetPickerAnchorEl: {$set: undefined}
+            });
 
         default:
             return state;

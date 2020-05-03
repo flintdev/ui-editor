@@ -120,8 +120,9 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     addComponentOnClick: () => void,
     saveOnClick: () => void,
     handler: {
-        getWidgetConfig: (name: string) => any;
-        getWidget: (name: string, props: any) => any
+        getWidgetConfig: (name: string) => any,
+        getWidget: (name: string, props: any) => any,
+        getWidgetInfo: (pluginId: string) => any,
         openVSCode: (code: string, callback: OpenVSCodeCallback) => void,
     },
 }
@@ -181,8 +182,14 @@ class UIEditorContainer extends React.Component<Props, object> {
                 <div className={classes.root}>
                     <div className={classes.header}>
                         <Toolbar
+                            operations={this.props.operations}
                             addComponentOnClick={this.props.addComponentOnClick}
                             saveOnClick={this.props.saveOnClick}
+                            handler={{
+                                getWidget: this.props.handler.getWidget,
+                                getWidgetConfig: this.props.handler.getWidgetConfig,
+                                getWidgetInfo: this.props.handler.getWidgetInfo,
+                            }}
                         />
                     </div>
                     <div className={classes.content}>

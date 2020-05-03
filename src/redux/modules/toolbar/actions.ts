@@ -37,7 +37,24 @@ export function setCanvasWidth(value: number): SetCanvasWidth {
     return { type: types.SET_CANVAS_WIDTH, value }
 }
 
+export function openWidgetPicker(anchorEl: Element): OpenWidgetPicker {
+    return { type: types.OPEN_WIDGET_PICKER, anchorEl }
+}
+
+export function closeWidgetPicker(): CloseWidgetPicker {
+    return { type: types.CLOSE_WIDGET_PICKER }
+}
+
 // interfaces
+
+export interface OpenWidgetPicker {
+    type: typeof types.OPEN_WIDGET_PICKER,
+    anchorEl: Element
+}
+
+export interface CloseWidgetPicker {
+    type: typeof types.CLOSE_WIDGET_PICKER,
+}
 
 export interface StateDialogOpen {
     type: typeof types.STATE_DIALOG_OPEN,
@@ -74,6 +91,8 @@ export interface SetCanvasWidth {
 }
 
 export type ToolbarAction =
+    OpenWidgetPicker |
+    CloseWidgetPicker |
     SetCanvasWidth |
     SetMode |
     SettingsDialogOpen |

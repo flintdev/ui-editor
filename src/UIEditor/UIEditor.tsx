@@ -32,10 +32,10 @@ export interface Props extends WithStyles<typeof styles> {
     handler: {
         getWidgetConfig: (name: string) => any;
         getWidget: (name: string, props: any) => void,
+        getWidgetInfo: (pluginId: string) => void,
         openVSCode: (code: string, callback: OpenVSCodeCallback) => void,
     },
 }
-
 
 class UIEditor extends React.Component<Props, object> {
     state = {

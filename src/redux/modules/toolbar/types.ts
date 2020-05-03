@@ -17,3 +17,7 @@ export const SET_MODE = 'toolbar/SET_MODE';
 
 // canvas width
 export const SET_CANVAS_WIDTH = 'toolbar/SET_CANVAS_WIDTH';
+
+// widget picker
+export const OPEN_WIDGET_PICKER = 'toolbar/OPEN_WIDGET_PICKER';
+export const CLOSE_WIDGET_PICKER = 'toolbar/CLOSE_WIDGET_PICKER';

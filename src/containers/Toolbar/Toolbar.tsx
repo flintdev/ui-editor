@@ -24,6 +24,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {CanvasWidthOptions, CanvasWidth} from "../../constants";
 import Typography from "@material-ui/core/Typography";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import WidgetPicker from "./WidgetPicker";
 
 const styles = createStyles({
     root: {
@@ -67,6 +68,7 @@ const styles = createStyles({
 });
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
+    operations: any,
     addComponentOnClick: () => void;
     saveOnClick: () => void;
     stateDialogOpen: () => void,
@@ -74,11 +76,17 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     settingsDialogOpen: () => void,
     setMode: (mode: Mode) => void,
     setCanvasWidth: (value: number) => void,
+    openWidgetPicker: (anchorEl: Element) => void,
+    handler: {
+        getWidgetConfig: (name: string) => any,
+        getWidget: (name: string, props: any) => any,
+        getWidgetInfo: (pluginId: string) => any,
+    }
 }
 
 class Toolbar extends React.Component<Props, object> {
-    state = {
-        canvasWidthMenuAnchorEl: undefined
+    state: any = {
+        canvasWidthMenuAnchorEl: undefined,
     };
 
     componentDidMount(): void {
@@ -111,6 +119,10 @@ class Toolbar extends React.Component<Props, object> {
         this.handleCanvasWidthMenuClose();
     };
 
+    handleAddComponentClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        this.props.openWidgetPicker(event.currentTarget);
+    };
+
     render() {
         const {classes, mode, canvasWidth} = this.props;
         const {canvasWidthMenuAnchorEl} = this.state;
@@ -124,10 +136,17 @@ class Toolbar extends React.Component<Props, object> {
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButton}
-                                    onClick={this.handleInsertButtonClick}
+                                    onClick={this.handleAddComponentClick}
                                 >
-                                    <AddIcon/>&nbsp;Insert
+                                    <AddIcon/>&nbsp;Add Component
                                 </Button>
+                                {/*<Button*/}
+                                {/*    variant={"contained"}*/}
+                                {/*    className={classes.actionButton}*/}
+                                {/*    onClick={this.handleInsertButtonClick}*/}
+                                {/*>*/}
+                                {/*    <AddIcon/>&nbsp;Insert*/}
+                                {/*</Button>*/}
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButton}
@@ -218,6 +237,11 @@ class Toolbar extends React.Component<Props, object> {
                         )
                     })}
                 </Menu>
+
+                <WidgetPicker
+                    operations={this.props.operations}
+                    handler={this.props.handler}
+                />
             </div>
         )
     }
@@ -234,6 +258,7 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
         settingsDialogOpen: () => dispatch(actions.settingsDialogOpen()),
         setMode: (mode: Mode) => dispatch(actions.setMode(mode)),
         setCanvasWidth: (value: number) => dispatch((actions.setCanvasWidth(value))),
+        openWidgetPicker: (anchorEl: Element) => dispatch(actions.openWidgetPicker(anchorEl)),
     }
 };
 

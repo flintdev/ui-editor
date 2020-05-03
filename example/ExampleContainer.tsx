@@ -137,7 +137,6 @@ class ExampleContainer extends React.Component<Props, object> {
     };
 
     handleComponentsOnUpdate = (components: ComponentData[]) => {
-        console.log('components', components);
         this.setState({components});
     };
 
@@ -173,6 +172,7 @@ class ExampleContainer extends React.Component<Props, object> {
                             handler={{
                                 getWidgetConfig: getWidgetConfiguration,
                                 getWidget: getWidget,
+                                getWidgetInfo: getWidgetInfo,
                                 openVSCode: ((code, callback) => {
                                 })
                             }}
