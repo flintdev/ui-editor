@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import {store} from "../redux/store";
 import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterData} from "../interface";
 import UIEditorContainer from "./UIEditorContainer";
-import {OpenVSCodeCallback} from "../containers/Toolbar/ActionsDialog/ActionsDialog";
+import {OpenVSCodeCallback} from "../containers/Toolbar/StateActionsDialog/ActionsPane/ActionsPane";
 
 const styles = createStyles({
 
