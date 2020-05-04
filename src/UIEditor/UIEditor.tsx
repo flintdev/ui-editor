@@ -28,7 +28,6 @@ export interface Props extends WithStyles<typeof styles> {
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
-    addComponentOnClick: () => void,
     saveOnClick: () => void,
     handler: {
         getWidgetConfig: (name: string) => any;

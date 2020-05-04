@@ -118,7 +118,6 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     components: ComponentData[],
     componentsOnUpdate: (components: ComponentData[]) => void,
     componentOnSelect: (componentData: ComponentData) => void,
-    addComponentOnClick: () => void,
     saveOnClick: () => void,
     handler: {
         getWidgetConfig: (name: string) => any,
@@ -185,7 +184,6 @@ class UIEditorContainer extends React.Component<Props, object> {
                         <Toolbar
                             operations={this.props.operations}
                             plugins={this.props.plugins}
-                            addComponentOnClick={this.props.addComponentOnClick}
                             saveOnClick={this.props.saveOnClick}
                             handler={{
                                 getWidget: this.props.handler.getWidget,

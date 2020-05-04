@@ -53,6 +53,7 @@ interface State {
     components: ComponentData[],
     settings: SettingsData,
     perspectives: PerspectiveData[],
+    plugins: any[],
 }
 
 class ExampleContainer extends React.Component<Props, object> {
@@ -63,26 +64,13 @@ class ExampleContainer extends React.Component<Props, object> {
         components: componentsExample,
         settings: {},
         perspectives: perspectivesSample,
+        plugins: [],
     };
     operations: any = {};
 
     componentDidMount(): void {
-
+        this.setState({plugins: [{id: 'material-widgets', name: 'Material Design'}]})
     }
-
-    handleAddComponentClick = () => {
-        const id = _.uniqueId('w');
-        const data = {
-            id,
-            name: 'material-widgets::Button',
-            params: {label: 'Button'},
-            children: [],
-            canvas: {
-                display: 'inline-block'
-            }
-        };
-        this.operations.addComponent(data);
-    };
 
     handleActionUpdate = (type: string, data: ActionData) => {
         let {actions} = this.state;
@@ -146,14 +134,14 @@ class ExampleContainer extends React.Component<Props, object> {
 
     render() {
         const {classes} = this.props;
-        const {actions, stateUpdaters, initialState, components, settings, perspectives} = this.state;
+        const {actions, stateUpdaters, initialState, components, settings, perspectives, plugins} = this.state;
         return (
             <div className={classes.root}>
                 <MuiThemeProvider theme={createMuiTheme()}>
                     <MuiThemeProvider theme={createMuiTheme()}>
                         <UIEditor
                             operations={this.operations}
-                            plugins={[{id: 'material-widgets', name: 'Material Design'}]}
+                            plugins={plugins}
                             initialState={initialState}
                             stateUpdaters={stateUpdaters}
                             initialStateOnChange={this.handleInitialStateChange}
@@ -167,7 +155,6 @@ class ExampleContainer extends React.Component<Props, object> {
                             components={components}
                             componentsOnUpdate={this.handleComponentsOnUpdate}
                             componentOnSelect={this.handleComponentOnSelect}
-                            addComponentOnClick={this.handleAddComponentClick}
                             saveOnClick={() => {
                             }}
                             handler={{

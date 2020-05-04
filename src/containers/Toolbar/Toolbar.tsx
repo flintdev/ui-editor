@@ -22,8 +22,6 @@ import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {CanvasWidthOptions, CanvasWidth} from "../../constants";
-import Typography from "@material-ui/core/Typography";
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import WidgetPicker from "./WidgetPicker";
 
 const styles = createStyles({
@@ -69,7 +67,6 @@ const styles = createStyles({
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
     operations: any,
-    addComponentOnClick: () => void;
     saveOnClick: () => void;
     stateDialogOpen: () => void,
     actionsDialogOpen: () => void,

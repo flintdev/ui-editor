@@ -4,11 +4,10 @@ import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-import {StoreState, ToolbarState} from "src/redux/state";
-import * as actions from "src/redux/modules/toolbar/actions";
+import {StoreState, ToolbarState} from "../../../redux/state";
+import * as actions from "../../../redux/modules/toolbar/actions";
 import Draggable from 'react-draggable';
 import Paper from "@material-ui/core/Paper";
-import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -16,12 +15,10 @@ import {WidgetManager} from "../../../controllers/widgetManager";
 import {WidgetDndWrapper} from "@flintdev/ui-editor-canvas/dist";
 import List from '@material-ui/core/List';
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from "@material-ui/core/IconButton";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = createStyles({
     root: {
@@ -105,10 +102,20 @@ class WidgetPicker extends React.Component<Props, object> {
         this.props.handler.getWidgetInfo,
     )
     componentDidMount(): void {
+        this.preselectPlugin();
+    }
+
+    preselectPlugin = () => {
         if (!this.props.plugins || this.props.plugins.length === 0) return;
         const pluginIdSelected = this.props.plugins[0].id;
         const widgetList = this.getWidgetList(pluginIdSelected);
         this.setState({pluginIdSelected, widgetList});
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<object>, snapshot?: any) {
+        if (prevProps.plugins !== this.props.plugins) {
+            this.preselectPlugin();
+        }
     }
 
     toggleExpansionClick = () => {
