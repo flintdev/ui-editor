@@ -12,6 +12,10 @@ export const ACTIONS_DIALOG_CLOSE = 'toolbar/ACTIONS_DIALOG_CLOSE';
 export const SETTINGS_DIALOG_OPEN = 'toolbar/SETTINGS_DIALOG_OPEN';
 export const SETTINGS_DIALOG_CLOSE = 'toolbar/SETTINGS_DIALOG_CLOSE';
 
+// state actions dialog
+export const STATE_ACTIONS_DIALOG_OPEN = 'toolbar/STATE_ACTIONS_DIALOG_OPEN';
+export const STATE_ACTIONS_DIALOG_CLOSE = 'toolbar/STATE_ACTIONS_DIALOG_CLOSE';
+
 // mode
 export const SET_MODE = 'toolbar/SET_MODE';
 

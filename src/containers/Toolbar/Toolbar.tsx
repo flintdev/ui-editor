@@ -68,8 +68,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
     operations: any,
     saveOnClick: () => void;
-    stateDialogOpen: () => void,
-    actionsDialogOpen: () => void,
+    stateActionsDialogOpen: () => void,
     settingsDialogOpen: () => void,
     setMode: (mode: Mode) => void,
     setCanvasWidth: (value: number) => void,
@@ -166,16 +165,9 @@ class Toolbar extends React.Component<Props, object> {
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButtonBordered}
-                                    onClick={this.props.stateDialogOpen}
+                                    onClick={this.props.stateActionsDialogOpen}
                                 >
-                                    <AlbumOutlinedIcon/>&nbsp;&nbsp;State
-                                </Button>
-                                <Button
-                                    variant={"contained"}
-                                    className={classes.actionButtonBordered}
-                                    onClick={this.props.actionsDialogOpen}
-                                >
-                                    <BuildOutlinedIcon/>&nbsp;&nbsp;Actions
+                                    <AlbumOutlinedIcon/>&nbsp;&nbsp;State & Actions
                                 </Button>
                                 <Button
                                     variant={"contained"}
@@ -201,13 +193,9 @@ class Toolbar extends React.Component<Props, object> {
                 <GlobalHotKeys
                     keyMap={{
                         SAVE: "command+s",
-                        STATE: "command+a",
-                        ACTION: "command+d"
                     }}
                     handlers={{
                         SAVE: this.handleSaveButtonClick,
-                        STATE: this.props.stateDialogOpen,
-                        ACTION: this.props.actionsDialogOpen
                     }}
                 />
 
@@ -241,8 +229,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
     return {
-        stateDialogOpen: () => dispatch(actions.stateDialogOpen()),
-        actionsDialogOpen: () => dispatch(actions.actionsDialogOpen()),
+        stateActionsDialogOpen: () => dispatch(actions.stateActionsDialogOpen()),
         settingsDialogOpen: () => dispatch(actions.settingsDialogOpen()),
         setMode: (mode: Mode) => dispatch(actions.setMode(mode)),
         setCanvasWidth: (value: number) => dispatch((actions.setCanvasWidth(value))),

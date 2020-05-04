@@ -59,6 +59,18 @@ export function reducer(state: ToolbarState, action: ToolbarAction) {
             return update(state, {
                 widgetPickerAnchorEl: {$set: undefined}
             });
+        case types.STATE_ACTIONS_DIALOG_OPEN:
+            return update(state, {
+                stateActionsDialog: {
+                    open: {$set: true}
+                }
+            });
+        case types.STATE_ACTIONS_DIALOG_CLOSE:
+            return update(state, {
+                stateActionsDialog: {
+                    open: {$set: false}
+                }
+            });
 
         default:
             return state;

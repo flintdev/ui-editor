@@ -10,8 +10,6 @@ import {ActionData, ComponentData, PerspectiveData, SettingsData, StateUpdaterDa
 import Toolbar from "../containers/Toolbar/Toolbar";
 import ComponentTreeView from "../containers/ComponentTreeView/ComponentTreeView";
 import ComponentEditPane from "../containers/ComponentEditPane/ComponentEditPane";
-import ActionsDialog, {OpenVSCodeCallback} from "../containers/Toolbar/ActionsDialog/ActionsDialog";
-import StateDialog from "../containers/Toolbar/StateDialog/StateDialog";
 import UIEditorCanvas from '@flintdev/ui-editor-canvas';
 import {ComponentState} from "react";
 import SettingsDialog from "../containers/Toolbar/SettingsDialog";
@@ -20,6 +18,8 @@ import PerspectivePane from "../containers/PerspectivePane";
 import Splitter from 'm-react-splitters';
 import 'm-react-splitters/lib/splitters.css';
 import {TreeDataHelper} from "../controllers/treeDataHelper";
+import StateActionsDialog from "../containers/Toolbar/StateActionsDialog";
+import {OpenVSCodeCallback} from "../containers/Toolbar/StateActionsDialog/ActionsPane/ActionsPane";
 
 const ContainerWidth = process.env.CLIENT_APP === 'flint' ? window.innerWidth - 480 - 60 - 10 : window.innerWidth - 480;
 
@@ -260,13 +260,10 @@ class UIEditorContainer extends React.Component<Props, object> {
                         </table>
                     </div>
 
-                    <ActionsDialog
+                    <StateActionsDialog
                         actions={this.props.actions}
                         actionOnUpdate={this.props.actionOnUpdate}
                         openVSCode={this.props.handler.openVSCode}
-                    />
-
-                    <StateDialog
                         initialState={this.props.initialState}
                         stateUpdaters={this.props.stateUpdaters}
                         initialStateOnChange={this.props.initialStateOnChange}

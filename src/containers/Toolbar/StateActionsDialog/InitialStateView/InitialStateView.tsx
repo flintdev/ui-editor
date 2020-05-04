@@ -20,8 +20,8 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 
 const styles = createStyles({
     root: {
-        width: '100%',
-        height: '100%',
+        margin: 10,
+        height: '80vh'
     },
     paper: {
         marginLeft: 20,

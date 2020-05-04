@@ -15,6 +15,9 @@ export interface ToolbarState {
     settingsDialog: {
         open: boolean
     },
+    stateActionsDialog: {
+        open: boolean
+    },
     mode: Mode,
     canvasWidth: number,
     widgetPickerAnchorEl?: Element
@@ -51,6 +54,9 @@ export const initState: StoreState = {
         },
         settingsDialog: {
             open: false,
+        },
+        stateActionsDialog: {
+            open: false
         }
     },
     components: {

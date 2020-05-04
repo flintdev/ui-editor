@@ -45,7 +45,23 @@ export function closeWidgetPicker(): CloseWidgetPicker {
     return { type: types.CLOSE_WIDGET_PICKER }
 }
 
+export function stateActionsDialogOpen(): StateActionsDialogOpen {
+    return { type: types.STATE_ACTIONS_DIALOG_OPEN }
+}
+
+export function stateActionsDialogClose(): StateActionDialogClose {
+    return { type: types.STATE_ACTIONS_DIALOG_CLOSE }
+}
+
 // interfaces
+
+export interface StateActionDialogClose {
+    type: typeof types.STATE_ACTIONS_DIALOG_CLOSE,
+}
+
+export interface StateActionsDialogOpen {
+    type: typeof types.STATE_ACTIONS_DIALOG_OPEN,
+}
 
 export interface OpenWidgetPicker {
     type: typeof types.OPEN_WIDGET_PICKER,
@@ -91,6 +107,8 @@ export interface SetCanvasWidth {
 }
 
 export type ToolbarAction =
+    StateActionsDialogOpen |
+    StateActionDialogClose |
     OpenWidgetPicker |
     CloseWidgetPicker |
     SetCanvasWidth |

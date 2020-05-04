@@ -1,4 +1,4 @@
-// src/containers/Toolbar/StateDialog/StateUpdatersView/StateUpdatersView.tsx
+// src/containers/Toolbar/StateActionsDialog/StateUpdatersView/StateUpdatersView.tsx
 
 import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
@@ -38,8 +38,8 @@ import {HotKeys} from "react-hotkeys";
 
 const styles = createStyles({
     root: {
-        width: '100%',
-        height: '100%'
+        margin: 10,
+        height: '80vh'
     },
     tableHeader: {
         width: '100%'
