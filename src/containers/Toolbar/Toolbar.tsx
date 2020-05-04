@@ -93,10 +93,6 @@ class Toolbar extends React.Component<Props, object> {
 
     }
 
-    handleInsertButtonClick = () => {
-        this.props.addComponentOnClick();
-    };
-
     handleSaveButtonClick = () => {
         this.props.saveOnClick();
     };
@@ -138,15 +134,8 @@ class Toolbar extends React.Component<Props, object> {
                                     className={classes.actionButton}
                                     onClick={this.handleAddComponentClick}
                                 >
-                                    <AddIcon/>&nbsp;Add Component
+                                    <AddIcon/>&nbsp;Insert
                                 </Button>
-                                {/*<Button*/}
-                                {/*    variant={"contained"}*/}
-                                {/*    className={classes.actionButton}*/}
-                                {/*    onClick={this.handleInsertButtonClick}*/}
-                                {/*>*/}
-                                {/*    <AddIcon/>&nbsp;Insert*/}
-                                {/*</Button>*/}
                                 <Button
                                     variant={"contained"}
                                     className={classes.actionButton}

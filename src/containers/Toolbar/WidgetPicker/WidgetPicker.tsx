@@ -8,9 +8,6 @@ import {StoreState, ToolbarState} from "src/redux/state";
 import * as actions from "src/redux/modules/toolbar/actions";
 import Draggable from 'react-draggable';
 import Paper from "@material-ui/core/Paper";
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from "@material-ui/core/TextField";
@@ -21,6 +18,10 @@ import List from '@material-ui/core/List';
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from "@material-ui/core/IconButton";
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CloseIcon from '@material-ui/icons/Close';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = createStyles({
     root: {
@@ -29,17 +30,49 @@ const styles = createStyles({
     draggableContainer: {
         position: 'absolute',
         display: 'inline-block',
-        width: 300,
+        width: 340,
     },
     panel: {
-        border: '1px solid grey',
+        border: '2px solid grey',
     },
     panelSummary: {
-        cursor: 'pointer',
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
+        cursor: 'move',
+    },
+    panelDetails: {
+        overflow: "auto",
+        maxHeight: window.innerHeight * 0.5,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 10
+    },
+    list: {
+        overflow: "auto",
+        width: '100%',
     },
     listItem: {
         paddingTop: 2,
         paddingBottom: 2,
+    },
+    selectForm: {
+        width: 200,
+    },
+    table: {
+        width: '100%',
+        border: 0,
+        cellSpacing: 0,
+        cellPadding: 0,
+        borderSpacing: 0,
+        borderCollapse: 'collapse',
+    },
+    tdIconButton: {
+        width: 20,
+    },
+    tdSelect: {
+        paddingRight: 10,
     }
 });
 
@@ -53,10 +86,15 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     closeWidgetPicker: () => void,
 }
 
-class WidgetPicker extends React.Component<Props, object> {
-    state = {
-        widgetList: [],
+interface State {
+    widgetList: any[],
+    expanded: boolean,
+}
 
+class WidgetPicker extends React.Component<Props, object> {
+    state: State = {
+        widgetList: [],
+        expanded: true,
     };
     widgetManager = new WidgetManager(
         this.props.handler.getWidgetConfig,
@@ -66,8 +104,18 @@ class WidgetPicker extends React.Component<Props, object> {
     componentDidMount(): void {
         this.setState({
             widgetList: this.getWidgetList('material-widgets'),
+            expanded: true,
         });
     }
+
+    toggleExpansionClick = () => {
+        const expanded = !this.state.expanded;
+        this.setState({expanded});
+    };
+
+    handleMenuOpen = () => {
+
+    };
 
     getWidgetList = (pluginId: string) => {
         return this.widgetManager.getWidgetList(pluginId);
@@ -82,7 +130,7 @@ class WidgetPicker extends React.Component<Props, object> {
 
     render() {
         const {classes, widgetPickerAnchorEl} = this.props;
-        const {widgetList} = this.state;
+        const {widgetList, expanded} = this.state;
         const {x, y} = this.getPosition();
         return (
             <div className={classes.root}>
@@ -97,26 +145,50 @@ class WidgetPicker extends React.Component<Props, object> {
                             top: y,
                         }}
                     >
-                        <ExpansionPanel
+                        <Paper
                             className={classes.panel}
-                            defaultExpanded={true}
+                            elevation={4}
                         >
-                            <ExpansionPanelSummary
+                            <div
                                 className={classes.panelSummary}
-                                expandIcon={<ExpandMoreIcon />}
                             >
-                                <TextField
-                                    select
-                                    size={"small"}
-                                    value={"material-widgets"}
-                                    variant={"outlined"}
-                                    label={"Component Library"}
-                                >
-                                    <MenuItem value={"material-widgets"}>{"Material Design Widgets"}</MenuItem>
-                                </TextField>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <List>
+                                <table className={classes.table}>
+                                    <tbody>
+                                    <tr>
+                                        <td className={classes.tdSelect}>
+                                            <TextField
+                                                className={classes.selectForm}
+                                                select
+                                                size={"small"}
+                                                value={"material-widgets"}
+                                                label={"Component Library"}
+                                                variant={"filled"}
+                                            >
+                                                <MenuItem value={"material-widgets"}>{"Material Design Widgets"}</MenuItem>
+                                            </TextField>
+                                        </td>
+                                        <td align={"right"} className={classes.tdIconButton}>
+                                            <IconButton size={"small"} onClick={this.toggleExpansionClick}>
+                                                {expanded ? <ExpandMoreIcon/> : <ChevronRightIcon/>}
+                                            </IconButton>
+                                        </td>
+                                        <td align={"right"} className={classes.tdIconButton}>
+                                            <IconButton size={"small"} onClick={this.handleMenuOpen}>
+                                                <MoreVertIcon/>
+                                            </IconButton>
+                                        </td>
+                                        <td align={"right"} className={classes.tdIconButton}>
+                                            <IconButton size={"small"} onClick={this.props.closeWidgetPicker}>
+                                                <CloseIcon/>
+                                            </IconButton>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {expanded &&
+                            <div className={classes.panelDetails}>
+                                <List className={classes.list}>
                                     {widgetList.map((item: any, i) => {
                                         return (
                                             <WidgetDndWrapper
@@ -134,8 +206,9 @@ class WidgetPicker extends React.Component<Props, object> {
                                         )
                                     })}
                                 </List>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
+                            </div>
+                            }
+                        </Paper>
                     </div>
                 </Draggable>
                 }
