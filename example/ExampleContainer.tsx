@@ -153,6 +153,7 @@ class ExampleContainer extends React.Component<Props, object> {
                     <MuiThemeProvider theme={createMuiTheme()}>
                         <UIEditor
                             operations={this.operations}
+                            plugins={[{id: 'material-widgets', name: 'Material Design'}]}
                             initialState={initialState}
                             stateUpdaters={stateUpdaters}
                             initialStateOnChange={this.handleInitialStateChange}

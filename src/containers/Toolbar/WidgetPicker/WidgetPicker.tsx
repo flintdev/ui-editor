@@ -58,7 +58,7 @@ const styles = createStyles({
         paddingBottom: 2,
     },
     selectForm: {
-        width: 200,
+        width: 220,
     },
     table: {
         width: '100%',
@@ -78,6 +78,7 @@ const styles = createStyles({
 
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
     operations: any,
+    plugins: any[],
     handler: {
         getWidgetConfig: (name: string) => any,
         getWidget: (name: string, props: any) => any,
@@ -89,12 +90,14 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
 interface State {
     widgetList: any[],
     expanded: boolean,
+    pluginIdSelected: string,
 }
 
 class WidgetPicker extends React.Component<Props, object> {
     state: State = {
         widgetList: [],
         expanded: true,
+        pluginIdSelected: ''
     };
     widgetManager = new WidgetManager(
         this.props.handler.getWidgetConfig,
@@ -102,19 +105,15 @@ class WidgetPicker extends React.Component<Props, object> {
         this.props.handler.getWidgetInfo,
     )
     componentDidMount(): void {
-        this.setState({
-            widgetList: this.getWidgetList('material-widgets'),
-            expanded: true,
-        });
+        if (!this.props.plugins || this.props.plugins.length === 0) return;
+        const pluginIdSelected = this.props.plugins[0].id;
+        const widgetList = this.getWidgetList(pluginIdSelected);
+        this.setState({pluginIdSelected, widgetList});
     }
 
     toggleExpansionClick = () => {
         const expanded = !this.state.expanded;
         this.setState({expanded});
-    };
-
-    handleMenuOpen = () => {
-
     };
 
     getWidgetList = (pluginId: string) => {
@@ -128,9 +127,15 @@ class WidgetPicker extends React.Component<Props, object> {
         return {x, y: y + height + 10};
     };
 
+    handlePluginSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const pluginIdSelected = event.target.value;
+        const widgetList = this.getWidgetList(pluginIdSelected);
+        this.setState({pluginIdSelected, widgetList});
+    };
+
     render() {
         const {classes, widgetPickerAnchorEl} = this.props;
-        const {widgetList, expanded} = this.state;
+        const {widgetList, expanded, pluginIdSelected} = this.state;
         const {x, y} = this.getPosition();
         return (
             <div className={classes.root}>
@@ -160,21 +165,26 @@ class WidgetPicker extends React.Component<Props, object> {
                                                 className={classes.selectForm}
                                                 select
                                                 size={"small"}
-                                                value={"material-widgets"}
+                                                value={pluginIdSelected}
+                                                onChange={this.handlePluginSelectChange}
                                                 label={"Component Library"}
                                                 variant={"filled"}
                                             >
-                                                <MenuItem value={"material-widgets"}>{"Material Design Widgets"}</MenuItem>
+                                                {this.props.plugins.map((plugin, i) => {
+                                                    return (
+                                                        <MenuItem
+                                                            key={i}
+                                                            value={plugin.id}
+                                                        >
+                                                            {plugin.name}
+                                                        </MenuItem>
+                                                    )
+                                                })}
                                             </TextField>
                                         </td>
                                         <td align={"right"} className={classes.tdIconButton}>
                                             <IconButton size={"small"} onClick={this.toggleExpansionClick}>
                                                 {expanded ? <ExpandMoreIcon/> : <ChevronRightIcon/>}
-                                            </IconButton>
-                                        </td>
-                                        <td align={"right"} className={classes.tdIconButton}>
-                                            <IconButton size={"small"} onClick={this.handleMenuOpen}>
-                                                <MoreVertIcon/>
                                             </IconButton>
                                         </td>
                                         <td align={"right"} className={classes.tdIconButton}>

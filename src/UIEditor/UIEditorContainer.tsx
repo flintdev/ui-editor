@@ -104,6 +104,7 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     selectComponent: (value: ComponentData) => void,
     increaseMark: () => void,
     operations: any,
+    plugins: any[],
     actions: ActionData[],
     actionOnUpdate: (type: string, data: ActionData) => void,
     initialState: string,
@@ -183,6 +184,7 @@ class UIEditorContainer extends React.Component<Props, object> {
                     <div className={classes.header}>
                         <Toolbar
                             operations={this.props.operations}
+                            plugins={this.props.plugins}
                             addComponentOnClick={this.props.addComponentOnClick}
                             saveOnClick={this.props.saveOnClick}
                             handler={{

@@ -77,6 +77,7 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     setMode: (mode: Mode) => void,
     setCanvasWidth: (value: number) => void,
     openWidgetPicker: (anchorEl: Element) => void,
+    plugins: any[],
     handler: {
         getWidgetConfig: (name: string) => any,
         getWidget: (name: string, props: any) => any,
@@ -229,6 +230,7 @@ class Toolbar extends React.Component<Props, object> {
 
                 <WidgetPicker
                     operations={this.props.operations}
+                    plugins={this.props.plugins}
                     handler={this.props.handler}
                 />
             </div>
