@@ -21,6 +21,7 @@ import List from '@material-ui/core/List';
 import ListItem, {ListItemProps} from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = createStyles({
     root: {
@@ -53,6 +54,7 @@ export interface Props extends WithStyles<typeof styles> {
 }
 
 type DataType = 'string' | 'integer' | 'boolean';
+
 interface State {
     dataType: DataType,
     typeMenuAnchorEl?: Element
@@ -172,13 +174,19 @@ class DisplayPane extends React.Component<Props, object> {
                         size={"small"}
                         type={dataType === "integer" ? "number" : "text"}
                         fullWidth={true}
+                        select={dataType === "boolean"}
+                        children={dataType === "boolean" ?
+                            (
+                                [<MenuItem value={"true"}>true</MenuItem>, <MenuItem value={"false"}>false</MenuItem>]
+                            ) : undefined
+                        }
                         InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
+                            startAdornment: (
+                                <InputAdornment position="start">
                                     <Tooltip title={"Change Data Type"}>
                                         <IconButton
                                             size={"small"}
-                                            edge="end"
+                                            edge="start"
                                             onClick={this.openTypeMenu}
                                         >
                                             <FlipCameraAndroidIcon fontSize={"small"}/>
@@ -197,11 +205,11 @@ class DisplayPane extends React.Component<Props, object> {
                     anchorEl={typeMenuAnchorEl}
                     anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right',
+                        horizontal: 'left',
                     }}
                     transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'right',
+                        horizontal: 'left',
                     }}
                 >
                     <Paper className={classes.menuPaper}>
