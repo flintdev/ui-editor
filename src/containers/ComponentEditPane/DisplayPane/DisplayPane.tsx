@@ -11,6 +11,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {DisplayInfo, DisplayType} from "./interface";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
+import IconButton from "@material-ui/core/IconButton";
+import {Tooltip} from "@material-ui/core";
 
 const styles = createStyles({
     root: {
@@ -39,11 +43,28 @@ export interface Props extends WithStyles<typeof styles> {
     onChange: (displayInfo: DisplayInfo) => void,
 }
 
+interface State {
+    dataType: 'string' | 'integer' | 'boolean',
+    typeMenuAnchorEl?: Element
+}
+
 class DisplayPane extends React.Component<Props, object> {
+    state: State = {
+        dataType: "string",
+        typeMenuAnchorEl: undefined
+    };
 
     componentDidMount(): void {
 
     }
+
+    openTypeMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+        this.setState({typeMenuAnchorEl: event.currentTarget});
+    };
+
+    closeTypeMenu = () => {
+
+    };
 
     handleDisplayTypeButtonClick = (displayType: DisplayType) => () => {
         if (displayType === 'always') {
@@ -102,12 +123,26 @@ class DisplayPane extends React.Component<Props, object> {
                     />
                     <TextField
                         className={classes.form}
-                        label={"Value"}
+                        label={"Value (string)"}
                         value={!!value ? value : ''}
                         onChange={this.handleValueChange}
                         variant={"outlined"}
                         size={"small"}
                         fullWidth={true}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Tooltip title={"Change Data Type"}>
+                                        <IconButton
+                                            size={"small"}
+                                            edge="end"
+                                        >
+                                            <FlipCameraAndroidIcon fontSize={"small"}/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </InputAdornment>
+                            )
+                        }}
                     />
                 </div>
                 }

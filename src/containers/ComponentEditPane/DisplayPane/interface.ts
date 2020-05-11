@@ -5,5 +5,5 @@ export type DisplayType = 'always' | 'conditional';
 export interface DisplayInfo {
     type: DisplayType,
     state? : string,
-    value? : string,
+    value? : any,
 }
