@@ -97,7 +97,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
         let value = values[key];
         if (!value) {
             value = EmptyValueMap[type];
-            if (!value) value = "";
+            if (value === undefined) value = "";
         }
         return value;
     };
