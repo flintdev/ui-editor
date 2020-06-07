@@ -227,7 +227,6 @@ class UIEditorContainer extends React.Component<Props, object> {
                                             </div>
                                         </Splitter>
                                     </Paper>
-
                                 </td>
                                 <td valign={"top"} className={classes.tdMiddle}>
                                     <div className={classes.primaryContainer}>
@@ -243,7 +242,6 @@ class UIEditorContainer extends React.Component<Props, object> {
                                                     isDnd={mode === "editor"}
                                                 />
                                             </Paper>
-                                            <br/><br/>
                                         </div>
                                     </div>
                                 </td>
