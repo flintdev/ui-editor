@@ -4,10 +4,11 @@ import * as React from 'react';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-import { StoreState } from "src/redux/state";
-import * as actions from "src/redux/modules/toolbar/actions";
+import { StoreState } from "../../../../redux/state";
+import * as actions from "../../../../redux/modules/toolbar/actions";
 import {ModelEditorCanvas, getInitialEditorData} from "@flintdev/model-editor-canvas";
 import Paper from "@material-ui/core/Paper";
+import BlockEditDialog from "./BlockEditDialog";
 
 const styles = createStyles({
     root: {
@@ -22,6 +23,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles>{
     schemaEditorData: any,
     schemaEditorDataOnUpdate: (editorData: any) => void,
+    blockEditDialogOpen: (blockData: any) => void,
 }
 
 class StateStructureEditor extends React.Component<Props, object> {
@@ -41,7 +43,7 @@ class StateStructureEditor extends React.Component<Props, object> {
     };
 
     handleBlockDbClick = (blockData: any) => {
-
+        this.props.blockEditDialogOpen(blockData);
     };
 
     handleOnSaved = (editorData: any) => {
@@ -65,6 +67,11 @@ class StateStructureEditor extends React.Component<Props, object> {
                         onSchemaBtnClick={this.handleOnSchemaBtnClick}
                     />
                 </Paper>
+
+                <BlockEditDialog
+                    operations={this.operations}
+                />
+
             </div>
         )
     }
@@ -76,7 +83,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
     return {
-
+        blockEditDialogOpen: (blockData: any) => dispatch(actions.blockEditDialogOpen(blockData)),
     }
 };
 

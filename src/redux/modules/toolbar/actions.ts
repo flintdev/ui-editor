@@ -5,22 +5,6 @@ import {Mode} from "../../state";
 
 // functions
 
-export function stateDialogOpen(): StateDialogOpen {
-    return { type: types.STATE_DIALOG_OPEN }
-}
-
-export function stateDialogClose(): StateDialogClose {
-    return { type: types.STATE_DIALOG_CLOSE }
-}
-
-export function actionsDialogOpen(): ActionsDialogOpen {
-    return { type: types.ACTIONS_DIALOG_OPEN }
-}
-
-export function actionsDialogClose(): ActionsDialogClose {
-    return { type: types.ACTIONS_DIALOG_CLOSE }
-}
-
 export function settingsDialogOpen(): SettingsDialogOpen {
     return { type: types.SETTINGS_DIALOG_OPEN }
 }
@@ -53,6 +37,16 @@ export function stateActionsDialogClose(): StateActionDialogClose {
     return { type: types.STATE_ACTIONS_DIALOG_CLOSE }
 }
 
+export function blockEditDialogOpen(blockData: any): BlockEditDialogOpen {
+    return { type: types.BLOCK_EDIT_DIALOG_OPEN, blockData }
+}
+
+export function blockEditDialogClose(): BlockEditDialogClose {
+    return { type: types.BLOCK_EDIT_DIALOG_CLOSE }
+}
+
+
+
 // interfaces
 
 export interface StateActionDialogClose {
@@ -70,22 +64,6 @@ export interface OpenWidgetPicker {
 
 export interface CloseWidgetPicker {
     type: typeof types.CLOSE_WIDGET_PICKER,
-}
-
-export interface StateDialogOpen {
-    type: typeof types.STATE_DIALOG_OPEN,
-}
-
-export interface StateDialogClose {
-    type: typeof types.STATE_DIALOG_CLOSE,
-}
-
-export interface ActionsDialogOpen {
-    type: typeof types.ACTIONS_DIALOG_OPEN,
-}
-
-export interface ActionsDialogClose {
-    type: typeof types.ACTIONS_DIALOG_CLOSE,
 }
 
 export interface SettingsDialogOpen {
@@ -106,7 +84,18 @@ export interface SetCanvasWidth {
     value: number
 }
 
+export interface BlockEditDialogOpen {
+    type: typeof types.BLOCK_EDIT_DIALOG_OPEN,
+    blockData: any,
+}
+
+export interface BlockEditDialogClose {
+    type: typeof types.BLOCK_EDIT_DIALOG_CLOSE,
+}
+
 export type ToolbarAction =
+    BlockEditDialogOpen |
+    BlockEditDialogClose |
     StateActionsDialogOpen |
     StateActionDialogClose |
     OpenWidgetPicker |
@@ -114,9 +103,5 @@ export type ToolbarAction =
     SetCanvasWidth |
     SetMode |
     SettingsDialogOpen |
-    SettingsDialogClose |
-    ActionsDialogOpen |
-    ActionsDialogClose |
-    StateDialogClose |
-    StateDialogOpen;
+    SettingsDialogClose;
 

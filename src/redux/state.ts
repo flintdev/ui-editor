@@ -6,17 +6,15 @@ export type Mode = 'editor' | 'preview';
 export type DialogMode = 'create' | 'edit';
 
 export interface ToolbarState {
-    stateDialog: {
-        open: boolean
-    },
-    actionsDialog: {
-        open: boolean
-    },
     settingsDialog: {
         open: boolean
     },
     stateActionsDialog: {
         open: boolean
+    },
+    blockEditDialog: {
+        open: boolean,
+        blockData?: any,
     },
     mode: Mode,
     canvasWidth: number,
@@ -46,17 +44,14 @@ export const initState: StoreState = {
     toolbar: {
         mode: 'editor',
         canvasWidth: 1280,
-        stateDialog: {
-            open: false,
-        },
-        actionsDialog: {
-            open: false,
-        },
         settingsDialog: {
             open: false,
         },
         stateActionsDialog: {
             open: false
+        },
+        blockEditDialog: {
+            open: false,
         }
     },
     components: {

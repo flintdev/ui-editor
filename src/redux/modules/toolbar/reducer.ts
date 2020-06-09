@@ -7,30 +7,6 @@ import {ToolbarState} from "../../state";
 
 export function reducer(state: ToolbarState, action: ToolbarAction) {
     switch (action.type) {
-        case types.STATE_DIALOG_OPEN:
-            return update(state, {
-                stateDialog: {
-                    open: {$set: true}
-                }
-            });
-        case types.STATE_DIALOG_CLOSE:
-            return update(state, {
-                stateDialog: {
-                    open: {$set: false}
-                }
-            });
-        case types.ACTIONS_DIALOG_OPEN:
-            return update(state, {
-                actionsDialog: {
-                    open: {$set: true}
-                }
-            });
-        case types.ACTIONS_DIALOG_CLOSE:
-            return update(state, {
-                actionsDialog: {
-                    open: {$set: false}
-                }
-            });
         case types.SETTINGS_DIALOG_OPEN:
             return update(state, {
                 settingsDialog: {
@@ -69,6 +45,19 @@ export function reducer(state: ToolbarState, action: ToolbarAction) {
             return update(state, {
                 stateActionsDialog: {
                     open: {$set: false}
+                }
+            });
+        case types.BLOCK_EDIT_DIALOG_OPEN:
+            return update(state, {
+                blockEditDialog: {
+                    open: {$set: true},
+                    blockData: {$set: action.blockData},
+                }
+            });
+        case types.BLOCK_EDIT_DIALOG_CLOSE:
+            return update(state, {
+                blockEditDialog: {
+                    open: {$set: false},
                 }
             });
 
