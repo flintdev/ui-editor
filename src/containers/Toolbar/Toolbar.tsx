@@ -12,7 +12,6 @@ import AddIcon from '@material-ui/icons/Add';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';

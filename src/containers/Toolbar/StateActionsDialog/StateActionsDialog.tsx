@@ -7,9 +7,6 @@ import { Dispatch } from "redux";
 import {StoreState, ToolbarState} from "../../../redux/state";
 import * as actions from "../../../redux/modules/toolbar/actions";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
@@ -20,6 +17,8 @@ import StateUpdatersView from "./StateUpdatersView";
 import {ActionData, StateUpdaterData} from "../../../interface";
 import InitialStateView from "./InitialStateView";
 import {OpenVSCodeCallback} from "./ActionsPane/ActionsPane";
+import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
+import StateStructureEditor from "./StateStructureEditor";
 
 const styles = createStyles({
     root: {
@@ -44,6 +43,8 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState {
     stateUpdaters: StateUpdaterData[],
     initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    schemaEditorData: any,
+    schemaEditorDataOnUpdate: (editorData: any) => void,
     //
     stateActionsDialogClose: () => void,
 }
@@ -52,6 +53,7 @@ enum View {
     Actions = "Actions",
     StateUpdaters = "StateUpdaters",
     InitialState = "InitialState",
+    StateStructure = "StateStructure",
 }
 
 interface State {
@@ -111,6 +113,14 @@ class StateActionsDialog extends React.Component<Props, object> {
                         </Button>
                         <Button
                             className={classes.tabButton}
+                            variant={currentView === View.StateStructure ? "contained": "text"}
+                            color={currentView === View.StateStructure ? "primary" : "default"}
+                            onClick={this.setCurrentView(View.StateStructure)}
+                        >
+                            <AccountTreeOutlinedIcon/>&nbsp;State Structure
+                        </Button>
+                        <Button
+                            className={classes.tabButton}
                             variant={currentView === View.InitialState ? "contained" : "text"}
                             color={currentView === View.InitialState ? "primary" : "default"}
                             onClick={this.setCurrentView(View.InitialState)}
@@ -130,6 +140,12 @@ class StateActionsDialog extends React.Component<Props, object> {
                         <StateUpdatersView
                             stateUpdaters={this.props.stateUpdaters}
                             stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
+                        />
+                        }
+                        {currentView === View.StateStructure &&
+                        <StateStructureEditor
+                            schemaEditorData={this.props.schemaEditorData}
+                            schemaEditorDataOnUpdate={this.props.schemaEditorDataOnUpdate}
                         />
                         }
                         {currentView === View.InitialState &&

@@ -21,6 +21,8 @@ export interface Props extends WithStyles<typeof styles> {
     stateUpdaters: StateUpdaterData[],
     initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    schemaEditorData: any,
+    schemaEditorDataOnUpdate: (editorData: any) => void,
     settings: SettingsData,
     settingsOnUpdate: (settings: SettingsData) => void,
     perspectives: PerspectiveData[],

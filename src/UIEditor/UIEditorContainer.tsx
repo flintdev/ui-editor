@@ -111,6 +111,8 @@ export interface Props extends WithStyles<typeof styles>, ToolbarState, Componen
     stateUpdaters: StateUpdaterData[],
     initialStateOnChange: (value: string) => void,
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    schemaEditorData: any,
+    schemaEditorDataOnUpdate: (editorData: any) => void,
     settings: SettingsData,
     settingsOnUpdate: (settings: SettingsData) => void,
     perspectives: PerspectiveData[],
@@ -266,6 +268,8 @@ class UIEditorContainer extends React.Component<Props, object> {
                         stateUpdaters={this.props.stateUpdaters}
                         initialStateOnChange={this.props.initialStateOnChange}
                         stateUpdaterOnUpdate={this.props.stateUpdaterOnUpdate}
+                        schemaEditorData={this.props.schemaEditorData}
+                        schemaEditorDataOnUpdate={this.props.schemaEditorDataOnUpdate}
                     />
 
                     <SettingsDialog

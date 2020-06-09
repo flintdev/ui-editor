@@ -9,7 +9,6 @@ import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
 import {perspectivesSample} from "./data/perspectives";
-import * as _ from 'lodash';
 
 export function getWidget(name: string, props: any) {
     const tempList: any = name.split('::');
@@ -50,6 +49,7 @@ interface State {
     actions: ActionData[],
     stateUpdaters: StateUpdaterData[],
     initialState: string,
+    schemaEditorData: any,
     components: ComponentData[],
     settings: SettingsData,
     perspectives: PerspectiveData[],
@@ -65,6 +65,7 @@ class ExampleContainer extends React.Component<Props, object> {
         settings: {},
         perspectives: perspectivesSample,
         plugins: [],
+        schemaEditorData: undefined
     };
     operations: any = {};
 
@@ -132,9 +133,13 @@ class ExampleContainer extends React.Component<Props, object> {
 
     };
 
+    handleSchemaEditorDataOnUpdate = (editorData: any) => {
+        this.setState({schemaEditorData: editorData});
+    };
+
     render() {
         const {classes} = this.props;
-        const {actions, stateUpdaters, initialState, components, settings, perspectives, plugins} = this.state;
+        const {actions, stateUpdaters, initialState, components, settings, perspectives, plugins, schemaEditorData} = this.state;
         return (
             <div className={classes.root}>
                 <MuiThemeProvider theme={createMuiTheme()}>
@@ -148,6 +153,8 @@ class ExampleContainer extends React.Component<Props, object> {
                             stateUpdaterOnUpdate={this.handleStateUpdatersOnUpdate}
                             actions={actions}
                             actionOnUpdate={this.handleActionUpdate}
+                            schemaEditorData={schemaEditorData}
+                            schemaEditorDataOnUpdate={this.handleSchemaEditorDataOnUpdate}
                             settings={settings}
                             settingsOnUpdate={this.handleSettingsOnUpdate}
                             perspectives={perspectives}
