@@ -2,6 +2,10 @@
 
 import * as React from 'react';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {Dispatch} from "redux";
+import {FieldSelectorOnSelectFunc, StoreState} from "../../redux/state";
+import * as commonActions from '../../redux/modules/common/actions';
 import {ItemType, ItemUI, Param, ParamItem} from "./interface";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -10,10 +14,9 @@ import IconButton from "@material-ui/core/IconButton";
 import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Chip from '@material-ui/core/Chip';
-import DialogForm, {Callback, Params} from "../DialogForm";
-import {UpdateStateDef} from "./definition";
 import ListEditor from "./ListEditor";
 import ColorPicker from "./ColorPicker";
+import * as actions from "../../redux/modules/components/actions";
 
 const styles = createStyles({
     root: {},
@@ -44,6 +47,7 @@ export interface Props extends WithStyles<typeof styles> {
     params: Param[],
     values?: any,
     onChange: (values: any, init?: boolean) => void,
+    openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => void,
 }
 
 const FormTypeMap: any = {
@@ -53,12 +57,6 @@ const FormTypeMap: any = {
     email: 'email'
 };
 
-interface State {
-    stateDialogOpen: boolean,
-    stateDialogParams: any,
-    stateEncodedValue: string,
-    itemKeySelected: string,
-}
 
 const EmptyValueMap: any = {
     integer: 0,
@@ -68,11 +66,8 @@ const EmptyValueMap: any = {
 }
 
 class ParamFormGenerator extends React.Component<Props, object> {
-    state: State = {
-        stateDialogOpen: false,
-        stateDialogParams: {},
-        stateEncodedValue: '',
-        itemKeySelected: '',
+    state = {
+
     };
 
     componentDidMount(): void {
@@ -148,11 +143,11 @@ class ParamFormGenerator extends React.Component<Props, object> {
             // switch to static
             const {displayValue} = this.decodeDynamicValue(value);
             values[key] = displayValue;
-            this.props.onChange(values);
+            this.props.onChange({...values});
         } else {
             // switch to dynamic
             values[key] = this.encodeDynamicValue('$', value);
-            this.props.onChange(values);
+            this.props.onChange({...values});
             this.handleStateChipClick(item)();
         }
     };
@@ -172,33 +167,15 @@ class ParamFormGenerator extends React.Component<Props, object> {
 
     handleStateChipClick = (item: ParamItem) => () => {
         const {key, defaultValue, type} = item;
-        const value = this.getParamValue(key, type);
-        const {state} = this.decodeDynamicValue(value);
-        const params = {state};
-        this.setState({
-            stateDialogOpen: true,
-            stateDialogParams: params,
-            stateEncodedValue: value,
-            itemKeySelected: key
+        const encodedValue = this.getParamValue(key, type);
+        // const path = this.decodeDynamicValue(encodedValue).state as string;
+        this.props.openFieldSelectorDialog(pathStr => {
+            console.log('pathStr', pathStr);
+            let {values} = this.props;
+            const {displayValue} = this.decodeDynamicValue(encodedValue);
+            values[key] = this.encodeDynamicValue(pathStr, displayValue!);
+            this.props.onChange({...values});
         });
-    };
-
-    handleUpdateStateDialogClose = () => {
-        this.setState({
-            stateDialogOpen: false,
-            stateDialogParams: {},
-            stateEncodedValue: '',
-        });
-    };
-
-    handleUpdateStateSubmit = (params: Params, callback: Callback) => {
-        const state = params.state as string;
-        let {values} = this.props;
-        const {itemKeySelected, stateEncodedValue} = this.state;
-        const {displayValue} = this.decodeDynamicValue(stateEncodedValue);
-        values[itemKeySelected] = this.encodeDynamicValue(state, displayValue!);
-        this.props.onChange(values);
-        callback.close();
     };
 
     renderListEditor = (item: ParamItem) => {
@@ -284,7 +261,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
 
     render() {
         const {classes, params} = this.props;
-        const {stateDialogOpen, stateDialogParams} = this.state;
+        console.log('values', this.props.values);
         return (
             <div className={classes.root}>
                 {params.map((param, i) => {
@@ -342,19 +319,19 @@ class ParamFormGenerator extends React.Component<Props, object> {
                     )
                 })}
 
-                <DialogForm
-                    open={stateDialogOpen}
-                    onClose={this.handleUpdateStateDialogClose}
-                    title={"Edit State Field"}
-                    submitButtonTitle={"Update"}
-                    params={this.state.stateDialogParams}
-                    forms={UpdateStateDef}
-                    onSubmit={this.handleUpdateStateSubmit}
-                />
-
             </div>
         )
     }
 }
 
-export default withStyles(styles)(ParamFormGenerator);
+const mapStateToProps = (state: StoreState) => {
+    return state.components;
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction | commonActions.CommonAction>) => {
+    return {
+        openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => dispatch(commonActions.openFieldSelectorDialog(onSelect)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParamFormGenerator));
