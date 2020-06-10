@@ -4,8 +4,9 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import {Dispatch} from "redux";
-import {StoreState} from "../../../redux/state";
+import {FieldSelectorOnSelectFunc, StoreState} from "../../../redux/state";
 import * as actions from "../../../redux/modules/components/actions";
+import * as commonActions from '../../../redux/modules/common/actions';
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -22,6 +23,7 @@ import ListItem, {ListItemProps} from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from "@material-ui/core/MenuItem";
+import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
 
 const styles = createStyles({
     root: {
@@ -51,6 +53,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles> {
     displayInfo: DisplayInfo,
     onChange: (displayInfo: DisplayInfo) => void,
+    openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => void,
 }
 
 type DataType = 'string' | 'integer' | 'boolean';
@@ -129,6 +132,13 @@ class DisplayPane extends React.Component<Props, object> {
         this.closeTypeMenu();
     };
 
+    handleSelectFieldClick = () => {
+        this.props.openFieldSelectorDialog((path) => {
+            let {displayInfo} = this.props;
+            this.props.onChange({...displayInfo, state: path});
+        });
+    };
+
     render() {
         const {classes, displayInfo} = this.props;
         const {typeMenuAnchorEl, dataType} = this.state;
@@ -163,6 +173,21 @@ class DisplayPane extends React.Component<Props, object> {
                         variant={"outlined"}
                         size={"small"}
                         fullWidth={true}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Tooltip title={"Select Field"}>
+                                        <IconButton
+                                            size={"small"}
+                                            edge="start"
+                                            onClick={this.handleSelectFieldClick}
+                                        >
+                                            <AlbumOutlinedIcon fontSize={"small"}/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </InputAdornment>
+                            )
+                        }}
                     />
                     <TextField
                         id={"display-value-input"}
@@ -238,8 +263,10 @@ const mapStateToProps = (state: StoreState) => {
     return state.components;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction>) => {
-    return {}
+const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction | commonActions.CommonAction>) => {
+    return {
+        openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => dispatch(commonActions.openFieldSelectorDialog(onSelect)),
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DisplayPane));

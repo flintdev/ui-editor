@@ -20,6 +20,7 @@ import 'm-react-splitters/lib/splitters.css';
 import {TreeDataHelper} from "../controllers/treeDataHelper";
 import StateActionsDialog from "../containers/Toolbar/StateActionsDialog";
 import {OpenVSCodeCallback} from "../containers/Toolbar/StateActionsDialog/ActionsPane/ActionsPane";
+import FieldSelectorDialog from "../components/FieldSelectorDialog";
 
 const ContainerWidth = process.env.CLIENT_APP === 'flint' ? window.innerWidth - 480 - 60 - 10 : window.innerWidth - 480;
 
@@ -275,6 +276,10 @@ class UIEditorContainer extends React.Component<Props, object> {
                     <SettingsDialog
                         settings={this.props.settings}
                         settingsOnUpdate={this.props.settingsOnUpdate}
+                    />
+
+                    <FieldSelectorDialog
+                        editorData={this.props.schemaEditorData}
                     />
 
                 </div>

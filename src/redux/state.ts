@@ -4,6 +4,7 @@ import {ComponentData, PerspectiveData} from "../interface";
 
 export type Mode = 'editor' | 'preview';
 export type DialogMode = 'create' | 'edit';
+export type FieldSelectorOnSelectFunc = (pathStr: string) => void;
 
 export interface ToolbarState {
     settingsDialog: {
@@ -19,6 +20,13 @@ export interface ToolbarState {
     mode: Mode,
     canvasWidth: number,
     widgetPickerAnchorEl?: Element
+}
+
+export interface CommonState {
+    fieldSelectorDialog: {
+        open: boolean,
+        onSelect?: FieldSelectorOnSelectFunc
+    }
 }
 
 export interface PerspectiveEditDialogState {
@@ -38,6 +46,7 @@ export interface ComponentsState {
 export interface StoreState {
     toolbar: ToolbarState,
     components: ComponentsState,
+    common: CommonState,
 }
 
 export const initState: StoreState = {
@@ -64,5 +73,10 @@ export const initState: StoreState = {
             index: -1
         },
         _mark: 1,
+    },
+    common: {
+        fieldSelectorDialog: {
+            open: false,
+        }
     }
 };
