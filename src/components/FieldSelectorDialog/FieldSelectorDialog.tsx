@@ -31,43 +31,6 @@ interface State {
     path: any[],
 }
 
-const exampleSchemaData = [
-    {
-        name: "apple",
-        dataType: "string",
-        required: false
-    },
-    {
-        name: "banana",
-        dataType: 'integer',
-        required: true,
-        children: [
-            {
-                name: "name",
-                dataType: 'integer',
-                required: true,
-            },
-            {
-                name: "age",
-                dataType: 'boolean',
-                required: false,
-                children: [
-                    {
-                        name: "username",
-                        dataType: 'object',
-                        required: true
-                    },
-                    {
-                        name: "password",
-                        dataType: 'array',
-                        required: true
-                    }
-                ]
-            }
-        ]
-    }
-]
-
 class FieldSelectorDialog extends React.Component<Props, object> {
     state: State = {
         schemaData: [],
@@ -102,7 +65,7 @@ class FieldSelectorDialog extends React.Component<Props, object> {
     render() {
         const {classes, fieldSelectorDialog} = this.props;
         const {schemaData} = this.state;
-        const {open} = fieldSelectorDialog
+        const {open} = fieldSelectorDialog;
         return (
             <div className={classes.root}>
                 <Dialog
