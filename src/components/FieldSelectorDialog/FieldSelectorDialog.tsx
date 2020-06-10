@@ -44,9 +44,7 @@ class FieldSelectorDialog extends React.Component<Props, object> {
     onEnter = () => {
         const {editorData} = this.props;
         const schemaData = new DataConverter().convertEditorDataToSchemaData(editorData);
-        console.log('schemaData', schemaData);
-        console.log('editorData', editorData);
-        this.setState({schemaData});
+        this.setState({schemaData, path: []});
     };
 
     handleFieldSelect = (path: any[]) => {

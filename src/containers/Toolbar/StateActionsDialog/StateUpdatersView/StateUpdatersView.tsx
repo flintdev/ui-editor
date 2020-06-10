@@ -4,12 +4,12 @@ import * as React from 'react';
 import {withStyles, WithStyles, createStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import {Dispatch} from "redux";
-import {StoreState, ToolbarState} from "../../../../redux/state";
+import {FieldSelectorOnSelectFunc, StoreState, ToolbarState} from "../../../../redux/state";
 import * as actions from "../../../../redux/modules/toolbar/actions";
 import {StateUpdaterData, UpdaterOperationData, UpdaterOperatorOptions} from "../../../../interface";
 import List from '@material-ui/core/List';
 import ListItem, {ListItemProps} from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -35,6 +35,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {HotKeys} from "react-hotkeys";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Tooltip from "@material-ui/core/Tooltip";
+import * as commonActions from '../../../../redux/modules/common/actions';
 
 const styles = createStyles({
     root: {
@@ -123,6 +126,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
     stateUpdaters: StateUpdaterData[],
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
+    openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => void,
 }
 
 interface State {
@@ -220,8 +224,18 @@ class StateUpdatersView extends React.Component<Props, object> {
     handleRemoveOperationClick = (index: number) => () => {
         let {editingParams} = this.state;
         editingParams.operations.splice(index, 1);
-        this.setState({editingParams});
+        this.setState({...editingParams});
         this.setAsEditing();
+    };
+
+    handleSelectFieldClick = (index: number) => () => {
+        let {editingParams} = this.state;
+        this.props.openFieldSelectorDialog(pathStr => {
+            console.log('path str', pathStr);
+            editingParams.operations[index]["field"] = pathStr;
+            this.setState({...editingParams});
+            this.setAsEditing();
+        });
     };
 
     render() {
@@ -358,6 +372,21 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                             variant={"outlined"}
                                                                             size={"small"}
                                                                             fullWidth={true}
+                                                                            InputProps={{
+                                                                                startAdornment: (
+                                                                                    <InputAdornment position="start">
+                                                                                        <Tooltip title={"Select Field"}>
+                                                                                            <IconButton
+                                                                                                size={"small"}
+                                                                                                edge="start"
+                                                                                                onClick={this.handleSelectFieldClick(i)}
+                                                                                            >
+                                                                                                <AlbumOutlinedIcon fontSize={"small"}/>
+                                                                                            </IconButton>
+                                                                                        </Tooltip>
+                                                                                    </InputAdornment>
+                                                                                )
+                                                                            }}
                                                                         />
                                                                     </TableCell>
                                                                     <TableCell className={classes.tdOperator}>
@@ -373,8 +402,7 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                             >
                                                                                 {UpdaterOperatorOptions.map((operator, i) => {
                                                                                     return (
-                                                                                        <MenuItem key={i}
-                                                                                                  value={operator}>{operator}</MenuItem>
+                                                                                        <MenuItem key={i} value={operator}>{operator}</MenuItem>
                                                                                     )
                                                                                 })}
                                                                             </Select>
@@ -433,8 +461,10 @@ const mapStateToProps = (state: StoreState) => {
     return state.toolbar;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction>) => {
-    return {}
+const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction | commonActions.CommonAction>) => {
+    return {
+        openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => dispatch(commonActions.openFieldSelectorDialog(onSelect)),
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(StateUpdatersView));
