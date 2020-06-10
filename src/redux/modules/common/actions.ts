@@ -3,10 +3,15 @@
 import * as types from './types';
 import {FieldSelectorOnSelectFunc} from "../../state";
 
+export interface FieldSelectorOptions {
+    onSelect: FieldSelectorOnSelectFunc,
+    localVar: boolean,
+}
+
 // functions
 
-export function openFieldSelectorDialog(onSelect: FieldSelectorOnSelectFunc): OpenFieldSelectorDialog {
-    return { type: types.OPEN_FIELD_SELECTOR_DIALOG, onSelect }
+export function openFieldSelectorDialog(options: FieldSelectorOptions): OpenFieldSelectorDialog {
+    return { type: types.OPEN_FIELD_SELECTOR_DIALOG, options }
 }
 
 export function closeFieldSelectorDialog(): CloseFieldSelectorDialog {
@@ -17,7 +22,7 @@ export function closeFieldSelectorDialog(): CloseFieldSelectorDialog {
 
 export interface OpenFieldSelectorDialog {
     type: typeof types.OPEN_FIELD_SELECTOR_DIALOG,
-    onSelect: FieldSelectorOnSelectFunc
+    options: FieldSelectorOptions
 }
 
 export interface CloseFieldSelectorDialog {

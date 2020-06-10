@@ -38,6 +38,7 @@ import {HotKeys} from "react-hotkeys";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Tooltip from "@material-ui/core/Tooltip";
 import * as commonActions from '../../../../redux/modules/common/actions';
+import {FieldSelectorOptions} from "../../../../redux/modules/common/actions";
 
 const styles = createStyles({
     root: {
@@ -126,7 +127,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles>, ToolbarState {
     stateUpdaters: StateUpdaterData[],
     stateUpdaterOnUpdate: (type: string, data: StateUpdaterData) => void,
-    openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => void,
+    openFieldSelectorDialog: (options: FieldSelectorOptions) => void,
 }
 
 interface State {
@@ -230,11 +231,14 @@ class StateUpdatersView extends React.Component<Props, object> {
 
     handleSelectFieldClick = (index: number) => () => {
         let {editingParams} = this.state;
-        this.props.openFieldSelectorDialog(pathStr => {
-            console.log('path str', pathStr);
-            editingParams.operations[index]["field"] = pathStr;
-            this.setState({...editingParams});
-            this.setAsEditing();
+        this.props.openFieldSelectorDialog({
+            localVar: false,
+            onSelect: (pathStr: string) => {
+                console.log('path str', pathStr);
+                editingParams.operations[index]["field"] = pathStr;
+                this.setState({...editingParams});
+                this.setAsEditing();
+            }
         });
     };
 
@@ -381,7 +385,8 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                                                 edge="start"
                                                                                                 onClick={this.handleSelectFieldClick(i)}
                                                                                             >
-                                                                                                <AlbumOutlinedIcon fontSize={"small"}/>
+                                                                                                <AlbumOutlinedIcon
+                                                                                                    fontSize={"small"}/>
                                                                                             </IconButton>
                                                                                         </Tooltip>
                                                                                     </InputAdornment>
@@ -402,7 +407,8 @@ class StateUpdatersView extends React.Component<Props, object> {
                                                                             >
                                                                                 {UpdaterOperatorOptions.map((operator, i) => {
                                                                                     return (
-                                                                                        <MenuItem key={i} value={operator}>{operator}</MenuItem>
+                                                                                        <MenuItem key={i}
+                                                                                                  value={operator}>{operator}</MenuItem>
                                                                                     )
                                                                                 })}
                                                                             </Select>
@@ -463,7 +469,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ToolbarAction | commonActions.CommonAction>) => {
     return {
-        openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => dispatch(commonActions.openFieldSelectorDialog(onSelect)),
+        openFieldSelectorDialog: (options: FieldSelectorOptions) => dispatch(commonActions.openFieldSelectorDialog(options)),
     }
 };
 

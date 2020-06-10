@@ -17,6 +17,7 @@ import Chip from '@material-ui/core/Chip';
 import ListEditor from "./ListEditor";
 import ColorPicker from "./ColorPicker";
 import * as actions from "../../redux/modules/components/actions";
+import {FieldSelectorOptions} from "../../redux/modules/common/actions";
 
 const styles = createStyles({
     root: {},
@@ -47,7 +48,7 @@ export interface Props extends WithStyles<typeof styles> {
     params: Param[],
     values?: any,
     onChange: (values: any, init?: boolean) => void,
-    openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => void,
+    openFieldSelectorDialog: (options: FieldSelectorOptions) => void,
 }
 
 const FormTypeMap: any = {
@@ -66,9 +67,7 @@ const EmptyValueMap: any = {
 }
 
 class ParamFormGenerator extends React.Component<Props, object> {
-    state = {
-
-    };
+    state = {};
 
     componentDidMount(): void {
         this.initValues();
@@ -169,12 +168,14 @@ class ParamFormGenerator extends React.Component<Props, object> {
         const {key, defaultValue, type} = item;
         const encodedValue = this.getParamValue(key, type);
         // const path = this.decodeDynamicValue(encodedValue).state as string;
-        this.props.openFieldSelectorDialog(pathStr => {
-            console.log('pathStr', pathStr);
-            let {values} = this.props;
-            const {displayValue} = this.decodeDynamicValue(encodedValue);
-            values[key] = this.encodeDynamicValue(pathStr, displayValue!);
-            this.props.onChange({...values});
+        this.props.openFieldSelectorDialog({
+            localVar: true,
+            onSelect: (pathStr: string) => {
+                let {values} = this.props;
+                const {displayValue} = this.decodeDynamicValue(encodedValue);
+                values[key] = this.encodeDynamicValue(pathStr, displayValue!);
+                this.props.onChange({...values});
+            }
         });
     };
 
@@ -330,7 +331,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction | commonActions.CommonAction>) => {
     return {
-        openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => dispatch(commonActions.openFieldSelectorDialog(onSelect)),
+        openFieldSelectorDialog: (options: FieldSelectorOptions) => dispatch(commonActions.openFieldSelectorDialog(options)),
     }
 };
 

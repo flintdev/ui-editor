@@ -25,6 +25,7 @@ export interface ToolbarState {
 export interface CommonState {
     fieldSelectorDialog: {
         open: boolean,
+        localVar: boolean,
         onSelect?: FieldSelectorOnSelectFunc
     }
 }
@@ -77,6 +78,7 @@ export const initState: StoreState = {
     common: {
         fieldSelectorDialog: {
             open: false,
+            localVar: false
         }
     }
 };

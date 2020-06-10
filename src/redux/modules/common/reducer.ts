@@ -11,7 +11,8 @@ export function reducer(state: CommonState, action: CommonAction) {
             return update(state, {
                 fieldSelectorDialog: {
                     open: {$set: true},
-                    onSelect: {$set: action.onSelect}
+                    localVar: {$set: action.options.localVar},
+                    onSelect: {$set: action.options.onSelect}
                 }
             });
         case types.CLOSE_FIELD_SELECTOR_DIALOG:

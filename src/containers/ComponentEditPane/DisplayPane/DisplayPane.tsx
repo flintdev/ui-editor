@@ -24,6 +24,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from "@material-ui/core/MenuItem";
 import AlbumOutlinedIcon from '@material-ui/icons/AlbumOutlined';
+import {FieldSelectorOptions} from "../../../redux/modules/common/actions";
 
 const styles = createStyles({
     root: {
@@ -53,7 +54,7 @@ const styles = createStyles({
 export interface Props extends WithStyles<typeof styles> {
     displayInfo: DisplayInfo,
     onChange: (displayInfo: DisplayInfo) => void,
-    openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => void,
+    openFieldSelectorDialog: (options: FieldSelectorOptions) => void,
 }
 
 type DataType = 'string' | 'integer' | 'boolean';
@@ -133,9 +134,12 @@ class DisplayPane extends React.Component<Props, object> {
     };
 
     handleSelectFieldClick = () => {
-        this.props.openFieldSelectorDialog((path) => {
-            let {displayInfo} = this.props;
-            this.props.onChange({...displayInfo, state: path});
+        this.props.openFieldSelectorDialog({
+            localVar: false,
+            onSelect: (path) => {
+                let {displayInfo} = this.props;
+                this.props.onChange({...displayInfo, state: path});
+            }
         });
     };
 
@@ -265,7 +269,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.ComponentsAction | commonActions.CommonAction>) => {
     return {
-        openFieldSelectorDialog: (onSelect: FieldSelectorOnSelectFunc) => dispatch(commonActions.openFieldSelectorDialog(onSelect)),
+        openFieldSelectorDialog: (options: FieldSelectorOptions) => dispatch(commonActions.openFieldSelectorDialog(options)),
     }
 };
 
