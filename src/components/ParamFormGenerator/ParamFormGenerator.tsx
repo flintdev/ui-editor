@@ -4,7 +4,7 @@ import * as React from 'react';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import {Dispatch} from "redux";
-import {FieldSelectorOnSelectFunc, StoreState} from "../../redux/state";
+import {StoreState} from "../../redux/state";
 import * as commonActions from '../../redux/modules/common/actions';
 import {ItemType, ItemUI, Param, ParamItem} from "./interface";
 import Typography from "@material-ui/core/Typography";
