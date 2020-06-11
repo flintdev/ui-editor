@@ -234,7 +234,6 @@ class StateUpdatersView extends React.Component<Props, object> {
         this.props.openFieldSelectorDialog({
             localVar: false,
             onSelect: (pathStr: string) => {
-                console.log('path str', pathStr);
                 editingParams.operations[index]["field"] = pathStr;
                 this.setState({...editingParams});
                 this.setAsEditing();

@@ -121,7 +121,6 @@ class BlockEditDialog extends React.Component<Props, object> {
         let {blockData} = this.props.blockEditDialog;
         const {blockNameInput, items} = this.state;
         blockData = {...blockData, name: blockNameInput, items};
-        console.log('block data', blockData);
         this.props.operations.updateBlockData(blockData);
         this.props.blockEditDialogClose();
     };

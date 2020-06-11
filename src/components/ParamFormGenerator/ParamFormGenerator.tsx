@@ -262,7 +262,6 @@ class ParamFormGenerator extends React.Component<Props, object> {
 
     render() {
         const {classes, params} = this.props;
-        console.log('values', this.props.values);
         return (
             <div className={classes.root}>
                 {params.map((param, i) => {

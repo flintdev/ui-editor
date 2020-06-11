@@ -11,6 +11,18 @@ export class DataConverter {
         return this.getChildrenOfSchemaData('State', blockDataMap);
     };
 
+    getArrayElementSchemaData = (editorData: any, arrayPath: any[]) => {
+        if (arrayPath.length === 0) return [];
+        const blockDataMap = this.getBlockDataMap(editorData.blockData);
+        let nextName = 'State';
+        let {refs} = blockDataMap[nextName];
+        for (const item of arrayPath) {
+            nextName = refs[item];
+            refs = blockDataMap[nextName];
+        }
+        return this.getChildrenOfSchemaData(nextName, blockDataMap);
+    };
+
     private getChildrenOfSchemaData = (refName: string, blockDataMap: any) => {
         let children: any[] = [];
         const data = blockDataMap[refName];
