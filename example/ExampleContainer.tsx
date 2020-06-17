@@ -9,6 +9,7 @@ import {ActionOperationType, StateUpdaterOperationType} from "../src/constants";
 import {stateUpdatersExample} from "./data/stateUpdaters";
 import {componentsExample} from "./data/components";
 import {perspectivesSample} from "./data/perspectives";
+import 'normalize.css';
 
 export function getWidget(name: string, props: any) {
     const tempList: any = name.split('::');

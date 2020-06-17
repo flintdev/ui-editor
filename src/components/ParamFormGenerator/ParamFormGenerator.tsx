@@ -104,19 +104,19 @@ class ParamFormGenerator extends React.Component<Props, object> {
         let {values} = this.props;
         let value: any = event.target.value;
         values[key] = this.formatValue(type, value);
-        this.props.onChange(values);
+        this.props.onChange({...values});
     };
 
     handleColorChange = (key: string) => (color: string) => {
         let {values} = this.props;
         values[key] = color;
-        this.props.onChange(values);
+        this.props.onChange({...values});
     };
 
     handleArrayValueUpdate = (key: string) => (value: any) => {
         let {values} = this.props;
         values[key] = value;
-        this.props.onChange(values);
+        this.props.onChange({...values});
     };
 
     private formatValue = (type: ItemType, value: string) => {
@@ -126,7 +126,7 @@ class ParamFormGenerator extends React.Component<Props, object> {
 
     checkInputType = (key: string) => {
         let {values} = this.props;
-        const value = (values[key]);
+        const value = values[key];
         if (typeof value === "string" && value.includes('state::')) {
             return 'dynamic';
         } else {
